@@ -1,0 +1,23 @@
+{
+  "name": "tyrone",
+  "version": "5.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --exec babel-node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-dotenv-import": "^2.0.0",
+    "babel-preset-env": "^1.7.0",
+    "dotenv": "^6.0.0",
+    "nodemon": "^1.18.4"
+  },
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "discord.js": "^11.4.2"
+  }
+}

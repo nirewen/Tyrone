@@ -1,0 +1,10 @@
+{
+    "presets": ["env"],
+    "plugins": [
+        ["dotenv-import", {
+          "moduleName": "@env",
+          "path": ".env",
+          "safe": true
+        }]
+    ]
+}
