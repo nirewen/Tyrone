@@ -1,9 +1,11 @@
 import Discord from 'discord.js';
 import fs from 'fs';
-import {Category} from './structures/Category';
 import config from './config.json';
+import {Category} from './structures/Category';
+import {Logger} from './structures/Logger';
 import {TOKEN, OWNER_ID} from "@env"
 
+const logger = new Logger();
 const bot = new Discord.Client({disableEveryone: true});
 
 bot.categories = [];
@@ -39,6 +41,7 @@ function initCategories(index = 0) {
 	return new Promise((resolve, reject) => {
 		bot.categories[index].initialize(bot)
 			.then(() => {
+				logger.debug(`Carregado categoria ${bot.categories[index].name}`, 'CATEG');
 				index++;
 				if (bot.categories.length > index) {
 					initCategories(index)
