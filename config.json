@@ -1,0 +1,7 @@
+{
+	"commandSets": {
+		"ty@": {"name": "Moderação", "dir": "commands/mod/", "color": "blue"}
+	},
+	"inviteLink": "https://discordapp.com/oauth2/authorize?client_id=199921449006268416&scope=bot&permissions=8",
+	"errorMessage": "sla algum erro"
+}
