@@ -1,6 +1,7 @@
 import Discord from 'discord.js';
 import util from 'util';
 
+export const hidden = true;
 export const ownerOnly = true;
 export async function run(msg, suffix) {
     let code = suffix.replace(/^```(js ?\n)?|```$/g, ''),

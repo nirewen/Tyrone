@@ -1,4 +1,5 @@
 import fs from 'fs';
+import Discord from 'discord.js';
 import {Command} from './Command';
 import {Logger} from './Logger';
 
@@ -15,8 +16,8 @@ export class Category {
     initialize(bot) {
         return new Promise((resolve, reject) => {
             fs.readdir(this.directory, (err, files) => {
-                if (err) reject(err);
-                else if (!files) reject('Nenhum arquivo no diretório ' + this.dir);
+                if (err) return this.logger.error(err);
+                else if (!files) return this.logger.warn('Nenhum arquivo no diretório ' + this.dir);
                 else {
                     for (let name of files) {
                         if (name.endsWith('.js') && !name.startsWith('-')) {
@@ -35,15 +36,38 @@ export class Category {
         });
     }
 
+    help(msg, command) {
+        this.logger.logCommand(msg.guild ? msg.guild.name : null, msg.author.username, this.prefix + 'help', command);
+        if (!command) {
+            let comandos = Object.keys(this.commands).filter(c => !this.commands[c].hidden);
+            return new Discord.RichEmbed()
+                .setTitle(`Aqui tem uma lista dos comandos para o prefixo \`${this.prefix}\`:`)
+                .setDescription(`\`${comandos.join('\` \`')}\``)
+				.setFooter(`Para mais informações, digite ${this.prefix}help ‹comando›`)
+				.setColor('#e67e22');
+        } else {
+            let cmd = this.find(command);
+			if (cmd === null) {
+				return new Discord.RichEmbed()
+					.setDescription(`:interrobang: Comando \`${this.prefix}${command}\` não encontrado`)
+					.setColor('RED');
+			} else
+				return cmd.helpMessage;
+        }
+    }
+
     process(msg) {
-        let name = msg.content.split(/\s+/)[0].replace(new RegExp(this.prefix, 'i'), '');
-        let command = this.find(name);
+        let name = msg.content.split(/\s+/)[0].replace(new RegExp(this.prefix, 'i'), ''),
+            suffix = msg.content.replace(new RegExp(this.prefix + name, 'i'), '').trim(),
+            command = this.find(name);
+
+        if (name == 'help')
+            return msg.channel.send(this.help(msg, suffix));
         if (command) {
-            let suffix = msg.content.replace(new RegExp(this.prefix + name, 'i'), '').trim(),
-                cleanSuffix = msg.cleanContent.replace(new RegExp(escape(this.prefix) + name, 'i'), '').trim();
+            let cleanSuffix = msg.cleanContent.replace(new RegExp(escape(this.prefix) + name, 'i'), '').trim();
             
             this.logger.logCommand(msg.guild ? msg.guild.name : null, msg.author.username, this.prefix + command.name, cleanSuffix);
-            command.run(msg, suffix);
+            command.process(msg, suffix);
         }
     }
 
