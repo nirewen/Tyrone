@@ -56,7 +56,7 @@ export class Command {
         if (!msg.guild && this.guildOnly)
             return msg.channel.send('Este comando só está disponível em servidores');
 
-        let regex = /--(\w+)\s?(.+?(?=--|$))?/g;
+        let regex = /--(\w+)\s??(.+?(?=--|$))?/g;
         let flags = new Map();
         getMatches(suffix, regex).forEach(k =>
             flags.set(k[0], k[1] && k[1].trim())
