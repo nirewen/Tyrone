@@ -58,13 +58,13 @@ export class Category {
 
     process(msg) {
         let name = msg.content.split(/\s+/)[0].replace(new RegExp(this.prefix, 'i'), ''),
-            suffix = msg.content.replace(new RegExp(this.prefix + name, 'i'), '').trim(),
+            suffix = msg.content.slice((this.prefix + name).length).trim(),
             command = this.find(name);
 
         if (name == 'help')
             return msg.channel.send(this.help(msg, suffix));
         if (command) {
-            let cleanSuffix = msg.cleanContent.replace(new RegExp(escape(this.prefix) + name, 'i'), '').trim();
+            let cleanSuffix = msg.cleanContent.slice((this.prefix + name).length).trim();
             
             this.logger.logCommand(msg.guild ? msg.guild.name : null, msg.author.username, this.prefix + command.name, cleanSuffix);
             command.process(msg, suffix);

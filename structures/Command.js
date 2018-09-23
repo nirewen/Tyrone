@@ -19,10 +19,12 @@ export class Command {
         this.bot = bot;
         this.usage = cmd.usage || '';
         this.desc = cmd.desc || 'Sem descrição';
+        this.details = cmd.details || this.desc;
         this.aliases = cmd.aliases || [];
         this.cooldown = cmd.cooldown || 0;
         this.hidden = cmd.hidden || false;
         this.ownerOnly = cmd.ownerOnly || false;
+        this.subcommands = cmd.subcommands || {};
         this.run = cmd.run;
         this.usersOnCooldown = new Set();
     }
@@ -38,6 +40,7 @@ export class Command {
     get helpMessage() {
         return new Discord.RichEmbed()
             .addField('Comando', `\`${this.correctUsage}\``, true)
+            .addField('Detalhes', this.details)
             .addField('Descrição', this.desc)
             .addField('Cooldown', this.commandCooldown, true)
             .addField('Aliases', `${this.aliases.join(', ') || "Nenhuma"}`, true)
@@ -49,7 +52,9 @@ export class Command {
             return;
 
         if (this.ownerOnly && msg.author.id !== this.bot.ownerId)
-            return;
+            return msg.channel.send('Este comando é só para o dono do bot');
+        if (!msg.guild && this.guildOnly)
+            return msg.channel.send('Este comando só está disponível em servidores');
 
         let regex = /--(\w+)\s?(.+?(?=--|$))?/g;
         let flags = new Map();
@@ -62,7 +67,10 @@ export class Command {
         
         let result;
         try {
-            result = await this.run(msg, suffix);
+            let cmd = this;
+            if (this.subcommands[suffix.split(/\s+/)[0].toLowerCase()])
+                cmd = this.subcommands[suffix.split(/\s+/)[0].toLowerCase()];
+            result = await cmd.run(msg, suffix);
         } catch (err) {
             logger.error(`${err}\n${err.stack}`, 'ERRO DE EXECUÇÃO DE COMANDO');
             if (config.errorMessage) {

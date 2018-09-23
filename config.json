@@ -1,5 +1,6 @@
 {
     "commandSets": {
+        "ty!": {"name": "Normal", "dir": "commands/normal/"},
         "ty@": {"name": "Moderação", "dir": "commands/mod/", "color": "blue"},
         "ty-": {"name": "Memes", "dir": "commands/memes/", "color": "green"}
     },
