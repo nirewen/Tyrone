@@ -1,3 +1,11 @@
+import request from 'request-promise-native';
+
+export async function osu(user, mode, color) {
+	let url = `https://lemmmy.pw/osusig/sig.php?colour=${color}&uname=${user}&pp=1&darktriangles&mode=${mode}&xpbar&xpbarhex`;
+
+	return await request({url, encoding: null});
+}
+
 export function findRole(query, guild, exact = false) {
 	let found = null;
 	if (query === undefined || guild === undefined)
