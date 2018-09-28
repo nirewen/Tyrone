@@ -3,7 +3,7 @@ import {RichEmbed, Attachment} from 'discord.js';
 import * as utils from '../../utils/utils';
 
 const {Font} = Canvas;
-const WHITE = 0xFFFFFF;
+const WHITE = '#FFFFFF';
 new Font("Whitney", __dirname + "/../../src/font/Whitney.otf");
 
 export const desc = "Mostra o seu avatar ou o de @alguém";
@@ -24,9 +24,12 @@ export function run(msg, suffix) {
 
                 ctx.fillStyle = '#2f3136';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                let font = [184, 163, 163, 143, 122, 102][msg.guild.nameAcronym.length - 1] || 102, x = canvas.width / 2;
-                ctx.font = `${font}px Whitney`;
-                ctx.fillStyle = "#fff";
+
+                let font = [184, 163, 163, 143, 122, 102][msg.guild.nameAcronym.length - 1] || 102, 
+                    x    = canvas.width / 2;
+
+                ctx.font = font + 'px Whitney';
+                ctx.fillStyle = WHITE;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
 
