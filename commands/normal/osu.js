@@ -10,7 +10,7 @@ const colors = {
     'blue'     : '#66ccff',
     'purple'   : '#8866ee',
     'pink'     : '#ff66aa',
-    'darkblue' : '#2255ee',
+    'dark blue': '#2255ee',
     'dark pink': '#bb1177',
     'black'    : '#000000',
 };
