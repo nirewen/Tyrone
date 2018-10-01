@@ -22,10 +22,11 @@ export async function run(msg, suffix) {
     if (!suffix)
         return 'wrong usage';
     let user  = suffix, 
-        mode  = msg.flags.get('mode') || '', 
+        mode  = msg.flags.get('mode'), 
         color = msg.flags.get('color') || 'pink';
 
-    mode = modes.indexOf(mode);
+    mode = modes.indexOf(mode) > -1 ? modes.indexOf(mode) : 0;
+
     if (colors[color])
         color = colors[color];
 
