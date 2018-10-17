@@ -28,7 +28,7 @@ export async function run(msg, suffix) {
     ctx.textAlign = "center";
     ctx.textBaseline = "top"; 
     ctx.translate(369, 665);
-    ctx.fillText(member.nick || member.user.username, 0, 0);
+    ctx.fillText(member.displayName, 0, 0);
     ctx.font = '500 25px Coolvetica';
     ctx.fillText((Number(member.user.discriminator) * 100000).toLocaleString('pt-BR') + '°C', 0, 34);
     
