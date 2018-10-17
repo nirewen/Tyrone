@@ -25,12 +25,15 @@ export async function run(msg, suffix) {
 
         let message = ins(await result(eval(code)));
 
+        this.logger.debug(message, 'EVAL RESULT');
+
         if (message.length > 2000)
             message = 'Mensagem muito longa, veja o console';
 
         msg.channel.send(getEmbed(message, '#2ecc71'));
 
     } catch (error) {
+        this.logger.debug(error, 'EVAL FAILED');
         msg.channel.send(getEmbed(error, '#ff2626')).catch(err => console.log(err.message));
     }
 }
