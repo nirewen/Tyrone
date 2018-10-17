@@ -30,8 +30,8 @@ export async function run(msg, suffix) {
 export const subcommands = {
     help: {
         aliases: ['h'],
-        run: async () => {
-            return this.helpMessage;
+        run: async (msg) => {
+            return msg.channel.send(this.helpMessage);
         }
     },
     join: {
