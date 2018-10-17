@@ -2,7 +2,6 @@ import Discord from 'discord.js';
 import {Logger} from './Logger';
 import config from '../config.json';
 
-const logger = new Logger();
 const getMatches = (string, regex) => {
     var matches = [];
     var match;
@@ -14,6 +13,8 @@ const getMatches = (string, regex) => {
 
 export class Command {
     constructor(name, prefix, cmd, bot) {
+        this.logger = new Logger();
+
         this.name = name;
         this.prefix = prefix;
         this.bot = bot;
@@ -67,12 +68,9 @@ export class Command {
         
         let result;
         try {
-            let cmd = this;
-            if (this.subcommands[suffix.split(/\s+/)[0].toLowerCase()])
-                cmd = this.subcommands[suffix.split(/\s+/)[0].toLowerCase()];
-            result = await cmd.run(msg, suffix);
+            result = await this.run(msg, suffix);
         } catch (err) {
-            logger.error(`${err}\n${err.stack}`, 'ERRO DE EXECUÇÃO DE COMANDO');
+            this.logger.error(`${err}\n${err.stack}`, 'ERRO DE EXECUÇÃO DE COMANDO');
             if (config.errorMessage) {
                 try {
                     msg.channel.send(config.errorMessage);
@@ -94,5 +92,14 @@ export class Command {
                 this.usersOnCooldown.delete(msg.author.id);
             }, this.cooldown * 1000);
         }
+    }
+
+    find(name) {
+        for (let command in this.subcommands) {
+            if (name == command || this.subcommands[command].aliases.includes(name))
+                return this.subcommands[command];
+        }
+
+        return null;
     }
 }
