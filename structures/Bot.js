@@ -14,9 +14,6 @@ export class Bot extends Client {
         this.categories = [];
         this.ownerId = OWNER_ID;
         this.config = config;
-        this.games = {
-            uno: {},
-        };
     }
 
     initEvents() {
