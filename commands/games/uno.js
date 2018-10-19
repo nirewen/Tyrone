@@ -1,6 +1,8 @@
 import {UNO} from '../../games/UNO';
 import {RichEmbed, Util, Attachment} from 'discord.js';
-let s = n => n == 1 ? '' : 's';
+
+const s = n => n == 1 ? '' : 's';
+const games = {};
 
 export const desc = 'Jogue UNO com seus amigos';
 export const help = `\`\`\`
@@ -37,15 +39,15 @@ export const subcommands = {
     join: {
         aliases: ['enter'],
         run: async function(msg) {
-            let game = this.bot.games.uno[msg.channel.id];
+            let game = games[msg.channel.id];
             if (!game) {
-                game = this.bot.games.uno[msg.channel.id] = new UNO(msg.channel);
+                game = games[msg.channel.id] = new UNO(msg.channel);
                 game.generateDeck();
             }
             if (game.started) {
                 return msg.channel.send('Desculpa, esse jogo já começou!');
             }
-            let res = game.addPlayer(msg.member);
+            let res = game.addPlayer(msg.author);
             if (res === null)
                 return msg.channel.send('Você já entrou nesse jogo!');
             else {
@@ -61,7 +63,7 @@ export const subcommands = {
     quit: {
         run: async function(msg) {
             let {id} = msg.author,
-                game = this.bot.games.uno[msg.channel.id];
+                game = games[msg.channel.id];
             if (game && game.players.hasOwnProperty(id)) {
                 let out = 'Você não está mais participando do jogo.\n\n';
                 if (game.started && game.queue.length <= 2) {
@@ -71,7 +73,7 @@ export const subcommands = {
                     for (let i = 0; i < game.finished.length; i++) {
                         out += `#${i++} **${Util.escapeMarkdown(game.finished[i].member.user.username)}**\n`;
                     }
-                    delete this.bot.games.uno[game.channel.id];
+                    delete games[game.channel.id];
                     return msg.channel.send(out);
                 }
                 if (game.started && game.player.member.id === id) {
@@ -87,7 +89,7 @@ export const subcommands = {
                 delete game.players[id];
                 game.queue = game.queue.filter(p => p.id !== id);
                 if (game.players.length == 0)
-                    delete this.bot.games.uno[msg.channel.id];
+                    delete games[msg.channel.id];
                 return msg.channel.send(out);
             }
             else
@@ -97,7 +99,7 @@ export const subcommands = {
     play: {
         aliases: ['p'],
         run: async function(msg, words) {
-            let game = this.bot.games.uno[msg.channel.id];
+            let game = games[msg.channel.id];
             if (game) {
                 if (!game.started)
                     return msg.channel.send('Desculpa, mas o jogo ainda não começou!');
@@ -122,7 +124,7 @@ export const subcommands = {
                             for (let i = 0; i < game.finished.length; i++) {
                                 pref += `${i + 1}. **${Util.escapeMarkdown(game.finished[i].member.user.username)}**\n`;
                             }
-                            delete this.bot.games.uno[game.channel.id];
+                            delete games[game.channel.id];
                             return msg.channel.send(pref);
                         }
                     }
@@ -185,7 +187,7 @@ export const subcommands = {
     pickup: {
         aliases: ['d', 'draw', 'c', 'comprar'],
             run: async function(msg) {
-            let game = this.bot.games.uno[msg.channel.id];
+            let game = games[msg.channel.id];
             if (game) {
                 if (!game.started)
                     return "Desculpa, mas o jogo ainda não começou!";
@@ -209,7 +211,7 @@ export const subcommands = {
     start: {
         aliases: ['s'],
         run: async function(msg) {
-            let game = this.bot.games.uno[msg.channel.id];
+            let game = games[msg.channel.id];
             if (!game)
                 return msg.channel.send("Nenhum jogo foi registrado nesse canal.");
 
@@ -238,7 +240,7 @@ export const subcommands = {
     },
     mesa: {
         run: async function(msg) {
-            let game = this.bot.games.uno[msg.channel.id],
+            let game = games[msg.channel.id],
             embed = new RichEmbed()
                 .setAuthor('UNO', 'https://i.imgur.com/Zzs9X74.png');
 
@@ -262,7 +264,7 @@ export const subcommands = {
     },
     '!': {
         run: async function(msg) {
-            let game = this.bot.games.uno[msg.channel.id];
+            let game = games[msg.channel.id];
             if (game && game.started && game.players[msg.author.id] && game.players[msg.author.id].hand.length === 1) {
                 let p = game.players[msg.author.id];
                 if (!p.called) {
@@ -276,7 +278,7 @@ export const subcommands = {
     },
     'contra-uno': {
         run: async function(msg) {
-            let game = this.bot.games.uno[msg.channel.id];
+            let game = games[msg.channel.id];
             if (game && game.started && game.players[msg.author.id]) {
                 let baddies = [];
                 for (const player of game.queue) {

@@ -31,8 +31,8 @@ export async function run(msg, suffix) {
     if (!suffix)
         return 'wrong usage';
 
-    let escolha = ~~(Math.random() * RESPOSTAS.length);
+    let escolha = ~~(Math.random() * answers.length);
     return msg.channel.send(new RichEmbed()
-        .setDescription(`:grey_question: | **${suffix}**\n:8ball: | **${RESPOSTAS[escolha]}**`)
+        .setDescription(`:grey_question: | **${suffix}**\n:8ball: | **${answers[escolha]}**`)
         .setColor('#292F33'));
 }

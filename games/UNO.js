@@ -1,5 +1,6 @@
+import {Game} from './structures/Game';
+import {AbstractPlayer} from './structures/AbstractPlayer';
 import {RichEmbed, Attachment} from 'discord.js';
-import {Game} from '../structures/Game';
 import Canvas from 'canvas';
 import fs from 'fs';
 
@@ -42,9 +43,9 @@ export class UNO extends Game {
         this.channel.send(content);
     }
 
-    addPlayer(member) {
-        if (!this.players[member.id]) {
-            let player = this.players[member.id] = new Player(member, this);
+    addPlayer(user) {
+        if (!this.players[user.id]) {
+            let player = this.players[user.id] = new Player(user, this);
             this.queue.push(player);
             return player;
         }
@@ -158,11 +159,10 @@ export class UNO extends Game {
     }
 }
 
-class Player {
-    constructor(member, game) {
-        this.member = member;
-        this.game = game;
-        this.id = member.id;
+class Player extends AbstractPlayer {
+    constructor(user, game) {
+        super(user, game);
+        
         this.hand = [];
         this.called = false;
         this.finished = false;
@@ -234,7 +234,7 @@ class Player {
     }
 
     send(content) {
-        this.member.user.send(content);
+        this.user.send(content);
     }
 
     async sendHand(turn = false) {
