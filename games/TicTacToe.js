@@ -1,6 +1,6 @@
-import {Player} from './structures/TTT/Player';
 import {Game} from './structures/Game';
 import {Grid} from './structures/TTT/Grid';
+import {Player} from './structures/TTT/Player';
 
 const emojify = i => [
     ':zero:', 
@@ -39,6 +39,7 @@ export class TicTacToe extends Game {
 
     play(position, player = this.player) {
         let cell = this.getCell(position);
+
         return cell ? cell.claim(player) : null;
     }
     
@@ -147,6 +148,7 @@ export class TicTacToe extends Game {
     getCell(position) {
         let i = Math.ceil(position / 3) - 1,
             j = (position % 3 || 3) - 1;
+
         return this.matrix[i][j];
     }
 }
