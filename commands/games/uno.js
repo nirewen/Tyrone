@@ -78,7 +78,6 @@ export const subcommands = {
                 }
                 if (game.started && game.player.member.id === id) {
                     game.next();
-                    file = game.flipped.URL;
                     out = new RichEmbed()
                         .setAuthor('UNO', 'https://i.imgur.com/Zzs9X74.png')
                         .setDescription(`${out}Um **${game.flipped}** foi jogado por último. \n\nAgora é a vez de ${Util.escapeMarkdown(game.player.member.user.username)}!`)
@@ -136,8 +135,8 @@ export const subcommands = {
                                 game.queue.reverse();
                                 game.queue.unshift(player);
                                 extra = `Os turnos agora estão em ordem reversa! `;
-                                break;
                             }
+                            break;
                         case 'SKIP':
                             game.queue.push(game.queue.shift());
                             extra = `Foi mal, ${Util.escapeMarkdown(game.player.member.user.username)}! Pulou a vez! `;
@@ -196,7 +195,6 @@ export const subcommands = {
                 game.deal(game.player, 1);
                 let player = game.player;
                 await game.next();
-                file = game.flipped.URL;
                 return msg.channel.send(new RichEmbed()
                     .setAuthor('UNO', 'https://i.imgur.com/Zzs9X74.png')
                     .setDescription(`${Util.escapeMarkdown(player.member.user.username)} comprou uma carta.\n\n**${game.flipped}** foi jogada por último. \n\nAgora é o turno de ${Util.escapeMarkdown(game.player.member.user.username)}!`)
@@ -280,13 +278,10 @@ export const subcommands = {
         run: async function(msg) {
             let game = games[msg.channel.id];
             if (game && game.started && game.players[msg.author.id]) {
-                let baddies = [];
-                for (const player of game.queue) {
-                    if (player.hand.length === 1 && !player.called && !player.immune) {
-                        baddies.push(player);
-                        player.called = true;
-                    }
-                }
+                let baddies = game.queue.filter(player => player.hand.length === 1 && !player.called && !player.immune);
+                
+                baddies.forEach(player => player.called = true);
+                
                 game.dealAll(2, baddies);
                 if (baddies.length > 0)
                     return msg.channel.send(`Uh oh! ${baddies.map(p => `**${Util.escapeMarkdown(p.member.user.username)}**`).join(', ')}, você não disse UNO! Pegue 2 cartas!`);

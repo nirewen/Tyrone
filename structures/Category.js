@@ -14,7 +14,7 @@ export class Category {
     }
 
     initialize(bot) {
-        return new Promise((resolve, reject) => {
+        return new Promise(resolve => {
             fs.readdir(this.directory, (err, files) => {
                 if (err) return this.logger.error(err);
                 else if (!files) return this.logger.warn('Nenhum arquivo no diretório ' + this.dir);
@@ -26,7 +26,7 @@ export class Category {
                                 this.commands[name] = new Command(name, this.prefix, require(this.directory + name + '.js'), bot);
                                 resolve();
                             } catch (e) {
-                                console.error(e);
+                                this.logger.error(e);
                             }
                         } else
                             continue;
@@ -42,7 +42,7 @@ export class Category {
             let comandos = Object.keys(this.commands).filter(c => !this.commands[c].hidden);
             return new Discord.RichEmbed()
                 .setTitle(`Aqui tem uma lista dos comandos para o prefixo \`${this.prefix}\`:`)
-                .setDescription(`\`${comandos.join('\` \`')}\``)
+                .setDescription(`\`${comandos.join('` `')}\``)
 				.setFooter(`Para mais informações, digite ${this.prefix}help ‹comando›`)
 				.setColor('#e67e22');
         } else {
@@ -72,11 +72,6 @@ export class Category {
     }
 
     find(name) {
-        for (let command in this.commands) {
-            if (name == command || this.commands[command].aliases.includes(name))
-                return this.commands[command];
-        }
-
-        return null;
+        return Object.keys(this.commands).find(cmd => name == cmd || this.commands[cmd].aliases.includes(name));
     }
 }

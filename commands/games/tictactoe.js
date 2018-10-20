@@ -1,17 +1,13 @@
 import Canvas from 'canvas';
+import util from 'util';
 import {Util, Attachment} from 'discord.js';
 import {CanvasUtils} from '../../utils/CanvasUtils';
 import {TicTacToe} from '../../games/TicTacToe';
 
 const games = {};
 const modes = ['easy', 'medium', 'hard'];
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-const getGame = id => {
-    for (let key in games)
-        if (games[key].players && games[key].players.hasOwnProperty(id))
-            return games[key];
-    return null;
-};
+const sleep = util.promisify(setTimeout);
+const getGame = id => Object.values(games).find(game => game.players && game.players.hasOwnProperty(id)) || null;
 
 export const desc = 'Jogue jogo da velha pelo Discord';
 export const usage = '<@usuário> | aceitar | cancelar | recusar';
@@ -33,7 +29,7 @@ export async function run(msg, suffix) {
         if (mention.bot && mention.id !== this.bot.user.id)
             return 'wrong usage';
 
-        let mode = modes.indexOf(msg.flags.get('mode')) ? msg.flags.get('mode') : 'hard', 
+        let mode = modes.indexOf(msg.flags.get('mode')) > -1 ? msg.flags.get('mode') : 'hard', 
             type = msg.flags.get('type') || 'x',
             jogoUser = getGame(msg.author.id),
             jogoOponente = getGame(mention.id);
@@ -65,8 +61,7 @@ export async function run(msg, suffix) {
             reaction.remove();
 
         game.started = true;
-        let opponent = game.queue[0], 
-            challenger = game.queue[1];
+        let [opponent, challenger] = game.queue;
 
         let canvas = new Canvas(104, 50), 
             ctx = canvas.getContext('2d'), 

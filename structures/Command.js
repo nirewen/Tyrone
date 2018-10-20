@@ -3,11 +3,13 @@ import {Logger} from './Logger';
 import config from '../config.json';
 
 const getMatches = (string, regex) => {
-    var matches = [];
-    var match;
+    let matches = [],
+        match;
+
     while (match = regex.exec(string)) {
         matches.push([match[1], match[2]]);
     }
+    
     return matches;
 }
 
@@ -95,11 +97,6 @@ export class Command {
     }
 
     find(name) {
-        for (let command in this.subcommands) {
-            if (name == command || this.subcommands[command].aliases.includes(name))
-                return this.subcommands[command];
-        }
-
-        return null;
+        return Object.keys(this.subcommands).find(cmd => name == cmd || this.subcommands[cmd].aliases.includes(name));
     }
 }
