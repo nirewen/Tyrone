@@ -1,13 +1,13 @@
 export const desc = 'Cara ou coroa.';
 export const usage = '<cara | coroa | heads | tails | h | t>';
 export const aliases = ['coin', 'flip'];
-export function task(msg, suffix) {
+export async function tarunsk(msg, suffix) {
     if (!suffix)
         return 'wrong usage';
 
-    let bet = suffix[0] == 'h' || suffix == 'cara' ? 'h' :
-              suffix[0] == 't' || suffix == 'coroa' ? 't' : null,
-        flip = Math.random() < 0.5 ? 'h' : 't';
+    let bet = suffix[0] == 'h' || suffix == 'cara' ? 'cara' :
+              suffix[0] == 't' || suffix == 'coroa' ? 'coroa' : null,
+        flip = Math.random() < 0.5 ? 'cara' : 'coroa';
 
     if (!bet)
         return 'wrong usage';
