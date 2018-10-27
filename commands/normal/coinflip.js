@@ -1,7 +1,7 @@
 export const desc = 'Cara ou coroa.';
 export const usage = '<cara | coroa | heads | tails | h | t>';
 export const aliases = ['coin', 'flip'];
-export async function tarunsk(msg, suffix) {
+export async function run(msg, suffix) {
     if (!suffix)
         return 'wrong usage';
 
