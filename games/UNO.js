@@ -1,7 +1,7 @@
-import {Card} from './structures/UNO/Card';
-import {Game} from './structures/Game';
-import {Player} from './structures/UNO/Player';
-import {RichEmbed, Attachment} from 'discord.js';
+import { Card } from './structures/UNO/Card';
+import { Game } from './structures/Game';
+import { Player } from './structures/UNO/Player';
+import { RichEmbed, Attachment } from 'discord.js';
 import Canvas from 'canvas';
 
 const s = n => n == 1 ? '' : 's';
@@ -57,12 +57,12 @@ export class UNO extends Game {
         for (let i = 0; i < number; i++)
             for (const player of players) {
                 if (this.deck.length === 0) {
-                    if (this.discard.length === 1) 
+                    if (this.discard.length === 1)
                         break;
                     this.shuffleDeck();
                 }
                 let c = this.deck.pop();
-                if (!cards[player.id]) 
+                if (!cards[player.id])
                     cards[player.id] = [];
 
                 cards[player.id].push(c);
@@ -74,7 +74,7 @@ export class UNO extends Game {
                 let len = (cards[player.id].length * 112) + 130,
                     canvas = new Canvas(len, 362),
                     ctx = canvas.getContext('2d');
-                    
+
                 for (let i in cards[player.id]) {
                     let card = cards[player.id][i],
                         image = new Canvas.Image;
@@ -105,9 +105,9 @@ export class UNO extends Game {
         player.called = false;
         if (cards.length > 0) {
             let len = (cards.length * 112) + 130,
-                    canvas = new Canvas(len, 362),
-                    ctx = canvas.getContext('2d');
-                    
+                canvas = new Canvas(len, 362),
+                ctx = canvas.getContext('2d');
+
             for (let i in cards) {
                 let card = cards[i],
                     image = new Canvas.Image;
