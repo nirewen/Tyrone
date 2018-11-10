@@ -1,4 +1,4 @@
-import {RichEmbed} from 'discord.js';
+import { MessageEmbed } from 'discord.js'
 
 // traduzido de https://en.wikipedia.org/wiki/Magic_8-Ball#Possible_answers
 const answers = [
@@ -21,19 +21,19 @@ const answers = [
     'Minha resposta é não.',
     'Minhas fontes dizem não.',
     'Não parece nada bom.',
-    'Bem duvidoso.',
-];
+    'Bem duvidoso.'
+]
 
-export const desc = 'Deixe a Bola 8 responder sua pergunta!';
-export const usage = '<pergunta>';
-export const aliases = ['ball', 'bola8'];
-export async function run(msg, suffix) {
+export const desc = 'Deixe a Bola 8 responder sua pergunta!'
+export const usage = '<pergunta>'
+export const aliases = ['ball', 'bola8']
+export async function run (msg, suffix) {
     if (!suffix)
-        return 'wrong usage';
+        return 'wrong usage'
 
-    let escolha = ~~(Math.random() * answers.length);
+    let escolha = ~~(Math.random() * answers.length)
 
-    return msg.channel.send(new RichEmbed()
+    return msg.send(new MessageEmbed()
         .setDescription(`:grey_question: | **${suffix}**\n:8ball: | **${answers[escolha]}**`)
-        .setColor('#292F33'));
+        .setColor('#292F33'))
 }

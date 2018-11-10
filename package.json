@@ -17,9 +17,9 @@
     "nodemon": "^1.18.4"
   },
   "dependencies": {
-    "canvas": "^1.6.12",
+    "canvas": "^2.0.1",
     "chalk": "^2.4.1",
-    "discord.js": "^11.4.2",
+    "discord.js": "github:discordjs/discord.js#master",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5"
   }
