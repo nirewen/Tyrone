@@ -1,5 +1,5 @@
 import { UNO } from '../../games/UNO'
-import { RichEmbed, Util, Attachment } from 'discord.js'
+import { MessageEmbed, Util, MessageAttachment } from 'discord.js'
 
 const s = n => n === 1 ? '' : 's'
 const games = {}
@@ -79,12 +79,12 @@ export const subcommands = {
                 }
                 if (game.started && game.player.member.id === id) {
                     game.next()
-                    out = new RichEmbed()
+                    out = new MessageEmbed()
                         .setAuthor('UNO', 'https://i.imgur.com/Zzs9X74.png')
                         .setDescription(`${out}Um **${game.flipped}** foi jogado por último. \n\nAgora é a vez de ${Util.escapeMarkdown(game.player.member.user.username)}!`)
                         .setThumbnail('attachment://card.png')
                         .setColor(game.flipped.colorCode)
-                        .attachFile(new Attachment(game.flipped.URL, 'card.png'))
+                        .attachFile(new MessageAttachment(game.flipped.URL, 'card.png'))
                 }
                 delete game.players[id]
                 game.queue = game.queue.filter(p => p.id !== id)
@@ -172,12 +172,12 @@ export const subcommands = {
                     }
                     await game.next()
                     
-                    return msg.channel.send(new RichEmbed()
+                    return msg.channel.send(new MessageEmbed()
                         .setAuthor('UNO', 'https://i.imgur.com/Zzs9X74.png')
                         .setDescription(`${Util.escapeMarkdown(msg.author.username)} jogou **${game.flipped}**. ${extra}\n\nAgora é a vez de ${Util.escapeMarkdown(game.player.member.user.username)}!`)
                         .setThumbnail('attachment://card.png')
                         .setColor(game.flipped.colorCode)
-                        .attachFile(new Attachment(game.flipped.URL, 'card.png')))
+                        .attachFile(new MessageAttachment(game.flipped.URL, 'card.png')))
                 }
                 else
                     return msg.channel.send('Desculpa, você não pode jogar esta carta aqui!')
@@ -198,12 +198,12 @@ export const subcommands = {
                 game.deal(game.player, 1)
                 let player = game.player
                 await game.next()
-                return msg.channel.send(new RichEmbed()
+                return msg.channel.send(new MessageEmbed()
                     .setAuthor('UNO', 'https://i.imgur.com/Zzs9X74.png')
                     .setDescription(`${Util.escapeMarkdown(player.member.user.username)} comprou uma carta.\n\n**${game.flipped}** foi jogada por último. \n\nAgora é o turno de ${Util.escapeMarkdown(game.player.member.user.username)}!`)
                     .setThumbnail('attachment://card.png')
                     .setColor(game.flipped.colorCode)
-                    .attachFile(new Attachment(game.flipped.URL, 'card.png')))
+                    .attachFile(new MessageAttachment(game.flipped.URL, 'card.png')))
             }
             else
                 return msg.channel.send('Desculpa, mas um jogo não foi criado ainda! Você pode criar um com `ty.uno join`')
@@ -227,12 +227,12 @@ export const subcommands = {
                 if (['WILD', 'WILD+4'].includes(game.flipped.id))
                     extra += '\n\nVocê pode jogar qualquer carta.'
                     
-                return msg.channel.send(new RichEmbed()
+                return msg.channel.send(new MessageEmbed()
                     .setAuthor('UNO', 'https://i.imgur.com/Zzs9X74.png')
                     .setDescription(`O jogo começou com ${game.queue.length} jogadores! A carta à mesa é **${game.flipped}**. \n\nAgora é o turno de ${Util.escapeMarkdown(game.player.member.user.username)}!${extra}`)
                     .setThumbnail('attachment://card.png')
                     .setColor(game.flipped.colorCode)
-                    .attachFile(new Attachment(game.flipped.URL, 'card.png')))
+                    .attachFile(new MessageAttachment(game.flipped.URL, 'card.png')))
             }
             else {
                 return 'Não há pessoas suficientes pra jogar!'
@@ -242,7 +242,7 @@ export const subcommands = {
     mesa: {
         run: async function (msg) {
             let game = games[msg.channel.id]
-            let embed = new RichEmbed()
+            let embed = new MessageEmbed()
                 .setAuthor('UNO', 'https://i.imgur.com/Zzs9X74.png')
 
             if (!game) {
@@ -259,7 +259,7 @@ export const subcommands = {
                     .addField('Última carta jogada', `${game.flipped}`)
                     .setThumbnail('attachment://card.png')
                     .setColor(game.flipped.colorCode)
-                    .attachFile(new Attachment(game.flipped.URL, 'card.png')))
+                    .attachFile(new MessageAttachment(game.flipped.URL, 'card.png')))
             }
         }
     },
