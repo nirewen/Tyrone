@@ -20,6 +20,7 @@
     "canvas": "^2.0.1",
     "chalk": "^2.4.1",
     "discord.js": "github:discordjs/discord.js#master",
+    "mathjs": "^5.2.3",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5"
   }
