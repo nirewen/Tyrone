@@ -64,11 +64,9 @@ export class Category {
         let command = this.find(name)
 
         if (name === 'help')
-            return msg.channel.send(this.help(msg, suffix))
+            return msg.send(this.help(msg, suffix))
 
         if (command) {
-            msg.command = true
-
             let cleanSuffix = msg.cleanContent.slice((this.prefix + name).length).trim()
 
             this.logger.logCommand(msg.guild ? msg.guild.name : null, msg.author.username, this.prefix + command.name, cleanSuffix)

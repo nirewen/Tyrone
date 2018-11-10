@@ -94,5 +94,7 @@ export class Command {
                 this.usersOnCooldown.delete(msg.author.id)
             }, this.cooldown * 1000)
         }
+
+        msg.command = true
     }
 }
