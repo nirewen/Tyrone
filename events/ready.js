@@ -1,5 +1,5 @@
 import { Logger } from '../structures/Logger'
-import { Structures } from 'discord.js'
+import { Structures, MessageEmbed } from 'discord.js'
 
 let logger = new Logger()
 
@@ -8,14 +8,18 @@ export default function () {
 
     Structures.get('Message').prototype.send = async function (content, options) {
         if (this.response) {
-            if (this.response.attachments.size)
+            if (this.response.attachments.size) {
                 await this.response.delete()
+                return this.send(content, options)
+            }
 
-            else if (this.collector)
+            if (this.collector)
                 this.collector.stop()
 
-            else
-                return this.response.edit(content, options)
+            if (!(content instanceof MessageEmbed))
+                content = { content, embed: null }
+
+            return this.response.edit(content, options)
         }
 
         this.response = await this.channel.send(content, options)
