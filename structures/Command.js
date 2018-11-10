@@ -38,7 +38,7 @@ export class Command {
     }
 
     get helpMessage () {
-        return new Discord.RichEmbed()
+        return new Discord.MessageEmbed()
             .addField('Comando', `\`${this.correctUsage}\``, true)
             .addField('Detalhes', this.details)
             .addField('Descrição', this.desc)
@@ -81,7 +81,7 @@ export class Command {
         }
 
         if (result === 'wrong usage') {
-            let m = await msg.channel.send(new Discord.RichEmbed()
+            let m = await msg.channel.send(new Discord.MessageEmbed()
                 .setTitle(':interrobang: Uso incorreto')
                 .setDescription(`Tente de novo:\n${this.correctUsage}`)
                 .setColor('RED'))

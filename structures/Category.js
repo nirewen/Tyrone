@@ -40,7 +40,7 @@ export class Category {
         this.logger.logCommand(msg.guild ? msg.guild.name : null, msg.author.username, this.prefix + 'help', command)
         if (!command) {
             let comandos = Object.keys(this.commands).filter(c => !this.commands[c].hidden)
-            return new Discord.RichEmbed()
+            return new Discord.MessageEmbed()
                 .setTitle(`Aqui tem uma lista dos comandos para o prefixo \`${this.prefix}\`:`)
                 .setDescription(`\`${comandos.join('` `')}\``)
                 .setFooter(`Para mais informações, digite ${this.prefix}help ‹comando›`)
@@ -48,7 +48,7 @@ export class Category {
         } else {
             let cmd = this.find(command)
             if (cmd === null) {
-                return new Discord.RichEmbed()
+                return new Discord.MessageEmbed()
                     .setDescription(`:interrobang: Comando \`${this.prefix}${command}\` não encontrado`)
                     .setColor('RED')
             } else
