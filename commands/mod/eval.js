@@ -10,7 +10,7 @@ export async function run (msg, suffix) {
 
     let getEmbed = (arg, color) => {
         return new MessageEmbed()
-            .setAuthor(msg.author.username + ' - Eval de código JavaScript', msg.author.avatarURL)
+            .setAuthor(msg.author.username + ' - Eval de código JavaScript', msg.author.avatarURL({ size: 2048 }))
             .addField('resultado', `\`\`\`js\n${arg}\n\`\`\``)
             .setColor(color)
     }
