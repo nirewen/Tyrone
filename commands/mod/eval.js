@@ -1,4 +1,4 @@
-import Discord from 'discord.js'
+import { MessageEmbed } from 'discord.js'
 import util from 'util'
 
 export const hidden = true
@@ -9,7 +9,7 @@ export async function run (msg, suffix) {
     let ins  = e => util.inspect(e, { depth: 0 })
 
     let getEmbed = (arg, color) => {
-        return new Discord.RichEmbed()
+        return new MessageEmbed()
             .setAuthor(msg.author.username + ' - Eval de código JavaScript', msg.author.avatarURL)
             .addField('resultado', `\`\`\`js\n${arg}\n\`\`\``)
             .setColor(color)
