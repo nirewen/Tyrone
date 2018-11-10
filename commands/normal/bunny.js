@@ -1,7 +1,11 @@
 import { MessageEmbed } from 'discord.js'
 import request from 'request-promise-native'
 
-const requestBunny = () => request({ url: 'https://api.bunnies.io/v2/loop/random/?media=poster', json: true }).then(b => b.media.poster)
+const requestBunny = () => request({
+    url: 'https://api.bunnies.io/v2/loop/random/?media=poster',
+    json: true,
+    transform: b => b.media.poster
+})
 
 export const desc = 'Envia a imagem de um coelho'
 export async function run (msg) {
