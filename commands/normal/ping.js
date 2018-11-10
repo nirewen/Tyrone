@@ -5,5 +5,5 @@ export const cooldown = 2
 export async function run (msg) {
     let m = await msg.send(':ping_pong: Pong!')
 
-    m.edit(m.content + `**${m.timestamp - (msg.editedTimestamp || msg.timestamp)}**ms`)
+    m.edit(m.content + ` **${Date.now() - (msg.editedTimestamp || m.createdTimestamp)}**ms`)
 }

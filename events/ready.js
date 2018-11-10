@@ -1,5 +1,5 @@
 import { Logger } from '../structures/Logger'
-import { Structures, MessageAttachment } from 'discord.js'
+import { Structures } from 'discord.js'
 
 let logger = new Logger()
 
@@ -8,13 +8,14 @@ export default function () {
 
     Structures.get('Message').prototype.send = async function (content, options) {
         if (this.response) {
-            if (content instanceof MessageAttachment || options instanceof MessageAttachment)
+            if (this.response.attachments.size)
                 await this.response.delete()
 
-            if (this.collector)
+            else if (this.collector)
                 this.collector.stop()
 
-            return this.response.edit(content, options)
+            else
+                return this.response.edit(content, options)
         }
 
         this.response = await this.channel.send(content, options)
