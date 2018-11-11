@@ -1,11 +1,11 @@
-import { Player } from './structures/Player'
+import { Player } from './structures/Connect4/Player'
 import { Grid } from './structures/Connect4/Grid'
-import { Game } from './Game'
+import { Game } from './structures/Game'
 
 export class Connect4 extends Game {
     constructor (opponent) {
         super()
-        
+
         this.opponent = opponent
         this.holes = new Grid(6, 7)
         this.queue = []
@@ -33,7 +33,7 @@ export class Connect4 extends Game {
     play (col, player = this.player) {
         const target = this.holes.copy().reverse().find(c => c[col].color === 0)
 
-        if (target) 
+        if (target)
             target.claim(player)
 
         return this.checkWin()
@@ -48,7 +48,7 @@ export class Connect4 extends Game {
                 if (this.holes[i][j].color === this.holes[i][j + 1].color &&
                     this.holes[i][j].color === this.holes[i][j + 2].color &&
                     this.holes[i][j].color === this.holes[i][j + 3].color &&
-                    this.holes[i][j].color !== 0) 
+                    this.holes[i][j].color !== 0)
                     return this.holes[i][j]
             }
         }
@@ -59,7 +59,7 @@ export class Connect4 extends Game {
                 if (this.holes[j][i].color === this.holes[j + 1][i].color &&
                     this.holes[j][i].color === this.holes[j + 2][i].color &&
                     this.holes[j][i].color === this.holes[j + 3][i].color &&
-                    this.holes[j][i].color !== 0) 
+                    this.holes[j][i].color !== 0)
                     return this.holes[j][i]
             }
         }
@@ -70,7 +70,7 @@ export class Connect4 extends Game {
                 if (this.holes[i][j].color === this.holes[i + 1][j + 1].color &&
                     this.holes[i][j].color === this.holes[i + 2][j + 2].color &&
                     this.holes[i][j].color === this.holes[i + 3][j + 3].color &&
-                    this.holes[i][j].color !== 0) 
+                    this.holes[i][j].color !== 0)
                     return this.holes[i][j]
             }
         }
@@ -81,7 +81,7 @@ export class Connect4 extends Game {
                 if (this.holes[i][j].color === this.holes[i + 1][j - 1].color &&
                     this.holes[i][j].color === this.holes[i + 2][j - 2].color &&
                     this.holes[i][j].color === this.holes[i + 3][j - 3].color &&
-                    this.holes[i][j].color !== 0) 
+                    this.holes[i][j].color !== 0)
                     return this.holes[i][j]
             }
         }
