@@ -31,7 +31,7 @@ export class Connect4 extends Game {
     }
 
     play (col, player = this.player) {
-        const target = this.holes.copy().reverse().find(c => c[col].color === 0)
+        const target = this.holes.slice(0).reverse().map(c => c[col]).find(h => h.color === 0)
 
         if (target)
             target.claim(player)

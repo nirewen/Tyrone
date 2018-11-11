@@ -4,7 +4,13 @@ export class Matrix extends Array {
 
         this.rows = rows
         this.cols = cols
+    }
 
-        this.fill([])
+    populate (cb) {
+        for (let i = 0; i < this.rows; i++) {
+            this[i] = []
+            for (let j = 0; j < this.cols; j++)
+                this[i][j] = cb(i, j)
+        }
     }
 }

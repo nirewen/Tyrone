@@ -10,7 +10,7 @@ export const aliases = ['c4']
 export async function run (msg, suffix) {
     if (!suffix)
         return 'wrong usage'
-    
+
     let mention = msg.mentions.users.first()
 
     if (mention && mention.id !== msg.author.id) {
@@ -23,7 +23,7 @@ export async function run (msg, suffix) {
 
         if (jogoUser && jogoUser.started)
             return msg.send('Você já está em jogo')
-            
+
         if (jogoOponente)
             if (jogoOponente.started)
                 return msg.send('Esse usuário já está em jogo')
@@ -40,37 +40,37 @@ export async function run (msg, suffix) {
 
         if (mention.id !== this.bot.user.id)
             try {
-                await m.awaitReactions((r, u) => r.me && u.id === mention.id, { time: 15E3, errors: ['time'] })
+                await m.awaitReactions((r, u) => r.me && u.id === mention.id, { max: 1, time: 15E3, errors: ['time'] })
             } catch (e) {
-                reaction.remove()
+                reaction.users.remove()
                 delete games[msg.author.id]
             }
         else
-            reaction.remove()
+            reaction.users.remove()
 
         game.started = true
 
-        let message = await msg.send('Preparando jogo...')
+        let message = await msg.channel.send('Preparando jogo...')
 
         for (let i = 1; i <= 7; i++)
             await message.react(i + '\u20E3')
 
-        message.edit(`${game.player.label} ${game.player}\n\n${game.render()}`)
+        message.edit(`${game.player.label} ${game.player.user}\n\n${game.render()}`)
 
         msg.collector = message.createReactionCollector((r, u) => r.me && game.players.hasOwnProperty(u.id))
 
         msg.collector.on('collect', async function (r, u) {
             if (game && game.player.id === u.id) {
-                let supported = game.freeCols
+                let supported = game.holes.freeCols
                 let number = parseInt(r.emoji.name, 10)
 
-                if (supported.includes(number)) {
-                    game.play(number)
-                    if (game.checkWin()) {
+                if (supported.includes(--number)) {
+                    let win = game.play(number)
+                    if (win) {
                         message.edit(`${game.player.label}:crown: ${game.player.user}\n\n${game.render()}`)
                         delete games[msg.author.id]
                         return this.stop()
-                    } else if (game.full) {
+                    } else if (game.holes.full) {
                         message.edit(`:skull:\n\n${game.render()}`)
                         delete games[msg.author.id]
                         return this.stop()
@@ -78,12 +78,12 @@ export async function run (msg, suffix) {
 
                     await game.next()
 
-                    message.edit(`${game.player.label} ${game.player.user.mention}\n\n${game.render()}`)
+                    message.edit(`${game.player.label} ${game.player.user}\n\n${game.render()}`)
 
                     if (message.channel.guild)
                         r.users.remove(u.id)
 
-                    if (!game.freeCols.includes(number))
+                    if (!game.holes.freeCols.includes(number))
                         r.users.remove()
                 }
             }

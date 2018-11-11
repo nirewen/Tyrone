@@ -46,7 +46,7 @@ export async function run (msg, suffix) {
 
         if (mention.id !== this.bot.user.id)
             try {
-                await m.awaitReactions((r, u) => r.me && u.id === mention.id, { time: 15E3, errors: ['time'] })
+                await m.awaitReactions((r, u) => r.me && u.id === mention.id, { max: 1, time: 15E3, errors: ['time'] })
             } catch (e) {
                 reaction.users.remove()
                 delete games[msg.author.id]
@@ -93,8 +93,6 @@ export async function run (msg, suffix) {
                 let supported = game.matrix.freeSpots.map(k => k.position)
                 let number = parseInt(r.emoji.name, 10)
 
-                console.log(supported)
-
                 if (supported.includes(number)) {
                     game.play(number)
                     if (game.isGameWon()) {
@@ -133,7 +131,7 @@ export async function run (msg, suffix) {
                             if (message.guild)
                                 message.reactions.removeAll()
                             else
-                                message.reactions.get(position + '\u20E3').remove()
+                                message.reactions.get(position + '\u20E3').users.remove()
 
                             message.edit(`:hash:${game.player.label}:crown:\n\n${game.render()}`)
                             return this.stop()
@@ -141,14 +139,14 @@ export async function run (msg, suffix) {
                             if (message.guild)
                                 message.reactions.removeAll()
                             else
-                                message.reactions.get(position + '\u20E3').remove()
+                                message.reactions.get(position + '\u20E3').users.remove()
 
                             message.edit(`:hash::older_woman:\n\n${game.render()}`)
                             return this.stop()
                         }
                         await game.next()
                         message.edit(`:hash:${game.player.label}\n\n${game.render()}`)
-                        message.reactions.get(position + '\u20E3').remove()
+                        message.reactions.get(position + '\u20E3').users.remove()
                     }
                 }
             }
