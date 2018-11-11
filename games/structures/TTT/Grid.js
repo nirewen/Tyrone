@@ -11,14 +11,13 @@ export class Grid extends Matrix {
     constructor (rows, cols) {
         super(rows, cols)
 
-        for (let i = 0; i < this.rows; i++)
-            for (let j = 0; j < this.cols; j++)
-                this[i][j] = new Cell(i, j)
+        this.populate((i, j) => new Cell(i, j))
     }
 
     get freeSpots () {
         return this.reduce((arr, r) => {
             arr.push(...r.filter(c => !c.occupied))
+            return arr
         }, [])
     }
 
