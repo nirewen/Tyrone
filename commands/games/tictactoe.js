@@ -29,7 +29,7 @@ export async function run (msg, suffix) {
 
         if (jogoUser && jogoUser.started)
             return msg.send('Você já está em jogo')
-            
+
         if (jogoOponente)
             if (jogoOponente.started)
                 return msg.send('Esse usuário já está em jogo')
@@ -48,19 +48,19 @@ export async function run (msg, suffix) {
             try {
                 await m.awaitReactions((r, u) => r.me && u.id === mention.id, { time: 15E3, errors: ['time'] })
             } catch (e) {
-                reaction.remove()
+                reaction.users.remove()
                 delete games[msg.author.id]
             }
         else
-            reaction.remove()
+            reaction.users.remove()
 
         game.started = true
         let [opponent, challenger] = game.queue
 
         let canvas = Canvas.createCanvas(104, 50)
         let ctx = canvas.getContext('2d')
-        let challengerAvatar = await CanvasUtils.getPolygonImage(challenger.user.avatarURL, 45, 0)
-        let opponentAvatar = await CanvasUtils.getPolygonImage(opponent.user.avatarURL, 45, 0)
+        let challengerAvatar = await CanvasUtils.getPolygonImage(challenger.user.avatarURL({ format: 'png', size: 2048 }), 45, 0)
+        let opponentAvatar = await CanvasUtils.getPolygonImage(opponent.user.avatarURL({ format: 'png', size: 2048 }), 45, 0)
 
         ctx.drawImage(opponentAvatar, 3, 3)
         ctx.drawImage(challengerAvatar, 56, 3)
@@ -79,7 +79,7 @@ export async function run (msg, suffix) {
         ctx.drawImage(types[opponent.type], 30, 30)
         ctx.drawImage(types[challenger.type], 58, 30)
 
-        let message = await msg.send('Preparando jogo...', new MessageAttachment(canvas.toBuffer(), 'players.png'))
+        let message = await msg.channel.send('Preparando jogo...', new MessageAttachment(canvas.toBuffer(), 'players.png'))
 
         for (let i = 1; i <= 9; i++)
             await message.react(i + '\u20E3')
@@ -93,7 +93,9 @@ export async function run (msg, suffix) {
                 let supported = game.matrix.freeSpots.map(k => k.position)
                 let number = parseInt(r.emoji.name, 10)
 
-                if (supported.includes(number) && r.emoji.name === number + '\u20E3') {
+                console.log(supported)
+
+                if (supported.includes(number)) {
                     game.play(number)
                     if (game.isGameWon()) {
                         if (message.guild)
@@ -116,7 +118,7 @@ export async function run (msg, suffix) {
                     await game.next()
 
                     message.edit(`:hash:${game.player.label}\n\n${game.render()}`)
-                    
+
                     if (message.guild)
                         r.users.remove(u)
 
@@ -124,7 +126,7 @@ export async function run (msg, suffix) {
 
                     if (game.player.user.bot) {
                         await sleep(1E3)
-                        
+
                         let { position } = game.playBot()
 
                         if (game.isGameWon()) {
