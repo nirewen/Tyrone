@@ -30,7 +30,7 @@ export async function run (msg, suffix) {
             return msg.send('Você já está em jogo')
 
         let scheme = msg.flags.has('scheme') && schemes[msg.flags.get('scheme')] ? msg.flags.get('scheme') : 'emerald'
-        let game = games[msg.author.id] = new Chess(msg.author.id)
+        let game = games[msg.author.id] = new Chess(msg.author.id, scheme)
         game.addPlayer(msg.author)
         game.addPlayer(mention)
 
@@ -44,6 +44,7 @@ export async function run (msg, suffix) {
             } catch (e) {
                 reaction.users.remove()
                 delete games[msg.author.id]
+                return
             }
         else
             reaction.users.remove()
@@ -107,6 +108,7 @@ export const subcommands = {
 
                     return msg.channel.send(new MessageEmbed()
                         .setAuthor('Xadrez', 'https://png.icons8.com/windows/100/d5d5d5/queen-uk.png')
+                        .setDescription(`É o turno de ${game.player.user}`)
                         .setColor(schemes[game.scheme][2])
                         .setFooter('Use ty.chess move A1 A2 para mover A1 para A2, por exemplo')
                         .setImage('attachment://board.png')

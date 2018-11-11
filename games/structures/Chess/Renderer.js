@@ -4,7 +4,7 @@ import { schemes } from './schemes'
 export class Renderer {
     static async render (game, check = {}) {
         let w = 40
-        let canvas = Canvas.createBoard(8 * w + 20, 8 * w + 20)
+        let canvas = Canvas.createCanvas(8 * w + 20, 8 * w + 20)
         let ctx = canvas.getContext('2d')
 
         let { status, scheme } = game
@@ -27,7 +27,7 @@ export class Renderer {
             ctx.fillRect(col * w, row * w, w, w)
 
             if (square.piece) {
-                let image = await Canvas.loadImage(`img/chess/${square.piece.side.name}_${square.piece.type}.png`)
+                let image = await Canvas.loadImage(`src/img/chess/${square.piece.side.name}_${square.piece.type}.png`)
                 ctx.drawImage(image, col * w, row * w, w, w)
             }
 

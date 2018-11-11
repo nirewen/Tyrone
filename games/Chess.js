@@ -9,26 +9,26 @@ export class Chess extends Game {
 
         this.opponent = opponent
         this.game = chess.createSimple()
-        this.game.scheme = scheme
+        this.scheme = scheme
     }
-    
+
     get player () {
         return this.queue[0]
     }
-    
+
     get status () {
         return this.game.getStatus()
     }
-    
+
     get checkInfos () {
         return this.game.game.board
     }
-    
+
     next () {
         this.queue.push(this.queue.shift())
         return this.player.username
     }
-    
+
     addPlayer (member) {
         if (!this.players[member.id]) {
             let player = this.players[member.id] = new Player(member, this)
@@ -37,12 +37,12 @@ export class Chess extends Game {
         } else
             return null
     }
-    
+
     play (src, dest) {
         return this.game.move(src, dest, true)
     }
 
     render (attacker) {
-        return Renderer.render(this.game, attacker)
+        return Renderer.render(this, attacker)
     }
 }
