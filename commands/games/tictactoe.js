@@ -28,18 +28,19 @@ export async function run (msg, suffix) {
         let jogoOponente = getGame(mention.id)
 
         if (jogoUser && jogoUser.started)
-            return ['Você já está em jogo']
+            return msg.send('Você já está em jogo')
+            
         if (jogoOponente)
             if (jogoOponente.started)
-                return msg.channel.send('Esse usuário já está em jogo')
+                return msg.send('Esse usuário já está em jogo')
             else
-                return msg.channel.send('Esse usuário já tem um pedido pendente')
+                return msg.send('Esse usuário já tem um pedido pendente')
 
         let game = games[msg.author.id] = new TicTacToe(msg.author.id, mode)
         game.addPlayer(msg.author, type)
         game.addPlayer(mention, type === 'o' ? 'x' : 'o')
 
-        let m = await msg.channel.send(`Você convidou ${Util.escapeMarkdown(mention.username)} para jogar Tic-Tac-Toe!\nPara aceitar, clique na reação abaixo.`)
+        let m = await msg.send(`Você convidou ${Util.escapeMarkdown(mention.username)} para jogar Tic-Tac-Toe!\nPara aceitar, clique na reação abaixo.`)
 
         let reaction = await m.react('✅')
 
@@ -78,16 +79,16 @@ export async function run (msg, suffix) {
         ctx.drawImage(types[opponent.type], 30, 30)
         ctx.drawImage(types[challenger.type], 58, 30)
 
-        let message = await msg.channel.send('Preparando jogo...', new MessageAttachment(canvas.toBuffer(), 'players.png'))
+        let message = await msg.send('Preparando jogo...', new MessageAttachment(canvas.toBuffer(), 'players.png'))
 
         for (let i = 1; i <= 9; i++)
             await message.react(i + '\u20E3')
 
         message.edit(`:hash:${game.player.label}\n\n${game.render()}`)
 
-        let col = message.createReactionCollector((r, u) => r.me && game.players.hasOwnProperty(u.id))
+        msg.collector = message.createReactionCollector((r, u) => r.me && game.players.hasOwnProperty(u.id))
 
-        col.on('collect', async function (r, u) {
+        msg.collector.on('collect', async function (r, u) {
             if (game && game.player.id === u.id) {
                 let supported = game.matrix.freeSpots.map(k => k.position)
                 let number = parseInt(r.emoji.name, 10)
