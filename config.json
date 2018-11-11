@@ -2,7 +2,8 @@
     "commandSets": {
         "ty!": {"name": "Normal", "dir": "commands/normal/"},
         "ty@": {"name": "Moderação", "dir": "commands/mod/", "color": "blue"},
-        "ty-": {"name": "Memes", "dir": "commands/memes/", "color": "green"}
+        "ty-": {"name": "Memes", "dir": "commands/memes/", "color": "green"},
+        "ty.": {"name": "Jogos", "dir": "commands/games/", "color": "yellow"}
     },
     "adminIds": [],
     "inviteLink": "https://discordapp.com/oauth2/authorize?client_id=199921449006268416&scope=bot&permissions=8",
