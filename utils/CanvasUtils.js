@@ -50,7 +50,7 @@ export const CanvasUtils = {
     },
 
     square: function (ctx, x, y, r, style) {
-        if (style) 
+        if (style)
             ctx.fillStyle = style
 
         ctx.fillRect(x, y, r, r)
@@ -75,20 +75,20 @@ export const CanvasUtils = {
             ctx.strokeStyle = style
             ctx.fillStyle = style
         }
-        
+
         ctx.beginPath()
         ctx.arc(x, y, r, 0, 2 * Math.PI)
-        
+
         if (opts.stroke)
             ctx.stroke()
-            
+
         if (opts.fill)
             ctx.fill()
     },
 
     getPolygonImage: async function (url, x, sides, startAngle, style) {
         if (url) {
-            let img = Canvas.loadImage(url)
+            let img = await Canvas.loadImage(url)
 
             let canvas = Canvas.createCanvas(x, x)
             let ctx = canvas.getContext('2d')
@@ -102,7 +102,7 @@ export const CanvasUtils = {
 
             if (style) ctx.fillStyle = style
             ctx.fillRect(0, 0, x, x)
-            
+
             return this.polygon(canvas, x, sides, startAngle)
         }
     },
@@ -110,7 +110,7 @@ export const CanvasUtils = {
     polygon: function (img, x, sides, startAngle, counterClockwise) {
         let canvas = Canvas.createCanvas(x, x)
         let ctx = canvas.getContext('2d')
-            
+
         // > implying a zero-sided polygon is a circle | DON'T @ ME
 
         if (sides === 0) {
@@ -128,7 +128,7 @@ export const CanvasUtils = {
 
             return canvas
         } else {
-            if (sides < 3 || sides > 1000) 
+            if (sides < 3 || sides > 1000)
                 return canvas
 
             var a = (Math.PI * 2) / sides
@@ -141,12 +141,12 @@ export const CanvasUtils = {
 
             ctx.fillStyle = '#fff'
             ctx.globalCompositeOperation = 'destination-in'
-            
+
             ctx.translate(x / 2, x / 2)
             ctx.rotate(startAngle || 0)
             ctx.moveTo(x / 2, 0)
             ctx.beginPath()
-            
+
             for (var i = 1; i <= sides; i++)
                 ctx.lineTo(x / 2 * Math.cos(a * i), x / 2 * Math.sin(a * i))
 
@@ -159,7 +159,7 @@ export const CanvasUtils = {
     compress: function (canvas, quality) {
         if (isNaN(quality))
             quality = 100
-            
+
         return new Promise(resolve => {
             let buffered = []
             canvas.jpegStream({ quality })
@@ -172,7 +172,7 @@ export const CanvasUtils = {
 
     brightness: function (canvas, adjust) {
         adjust = Math.floor(255 * (adjust / 100))
-        
+
         let d      = 4 * canvas.width * canvas.height
         let ctx    = canvas.getContext('2d')
         let data   = ctx.getImageData(0, 0, canvas.width, canvas.height)
@@ -199,7 +199,7 @@ export const CanvasUtils = {
 
     saturation: function (canvas, factor) {
         factor *= -0.01
-        
+
         let d      = 4 * canvas.width * canvas.height
         let ctx    = canvas.getContext('2d')
         let data   = ctx.getImageData(0, 0, canvas.width, canvas.height)
@@ -253,7 +253,7 @@ export const CanvasUtils = {
 
     contrast: function (canvas, adjust = 2) {
         adjust = Math.pow((adjust + 100) / 100, 2)
-        
+
         let d      = 4 * canvas.width * canvas.height
         let ctx    = canvas.getContext('2d')
         let data   = ctx.getImageData(0, 0, canvas.width, canvas.height)
@@ -261,9 +261,9 @@ export const CanvasUtils = {
 
         for (let i = 0; i < d; i += 4) {
             let r = pixels[  i  ]
-                
+
             let g = pixels[i + 1]
-                
+
             let b = pixels[i + 2]
 
             r /= 255
@@ -297,19 +297,19 @@ export const CanvasUtils = {
         let ctx = canvas.getContext('2d')
         let w = canvas.width
         let h = canvas.height
-        let x 
-        let sx 
-        let sy 
-        let r 
-        let g 
-        let b 
+        let x
+        let sx
+        let sy
+        let r
+        let g
+        let b
         let a
-        let dstOff 
-        let srcOff 
-        let wt 
-        let cx 
-        let cy 
-        let scy 
+        let dstOff
+        let srcOff
+        let wt
+        let cx
+        let cy
+        let scy
         let scx
         let weights = [0, -1, 0, -1, 5, -1, 0, -1, 0]
         let katet = Math.round(Math.sqrt(weights.length))
