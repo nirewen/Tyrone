@@ -8,8 +8,6 @@ export class Connect4 extends Game {
 
         this.opponent = opponent
         this.holes = new Grid(6, 7)
-        this.queue = []
-        this.players = {}
     }
 
     addPlayer (member, type) {
