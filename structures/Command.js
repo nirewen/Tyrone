@@ -68,8 +68,10 @@ export class Command {
         let result
         try {
             let cmd = this
-            if (this.subcommands[suffix.split(/\s+/)[0].toLowerCase()])
+            if (this.subcommands[suffix.split(/\s+/)[0].toLowerCase()]) {
                 cmd = this.subcommands[suffix.split(/\s+/)[0].toLowerCase()]
+                suffix = suffix.split(/\s+/).slice(1).join(' ')
+            }
             result = await cmd.run(msg, suffix)
         } catch (err) {
             logger.error(`${err}\n${err.stack}`, 'ERRO DE EXECUÇÃO DE COMANDO')

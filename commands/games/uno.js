@@ -98,8 +98,9 @@ export const subcommands = {
     },
     play: {
         aliases: ['p'],
-        run: async function (msg, words) {
+        run: async function (msg, suffix) {
             let game = games[msg.channel.id]
+            let words = suffix.split(' ')
             if (game) {
                 if (!game.started)
                     return msg.channel.send('Desculpa, mas o jogo ainda não começou!')
