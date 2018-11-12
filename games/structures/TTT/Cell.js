@@ -22,7 +22,7 @@ export class Cell {
             8: 2
         }[this.position]
     }
-        
+
     get adjacents () {
         return {
             // borders
@@ -37,7 +37,7 @@ export class Cell {
             9: [3, 7]
         }[this.position]
     }
-        
+
     get closestBorders () {
         return {
             1: [2, 4],
@@ -46,11 +46,15 @@ export class Cell {
             9: [8, 6]
         }[this.position]
     }
-    
+
     claim (player) {
         this.type = player.type
         this.occupied = true
         this.owner = player
         return this
+    }
+
+    toString () {
+        return this.type
     }
 }

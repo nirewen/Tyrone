@@ -6,12 +6,16 @@ export class Player extends AbstractPlayer {
 
         this.type = type
     }
-    
+
     play (position) {
         this.game.play(position, this)
     }
-    
+
     get label () {
         return `:${this.type}:`
+    }
+
+    toString () {
+        return this.label
     }
 }

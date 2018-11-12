@@ -12,4 +12,8 @@ export class Player extends AbstractPlayer {
     play (src, dest) {
         return this.game.play(src, dest)
     }
+
+    toString () {
+        return this.user
+    }
 }

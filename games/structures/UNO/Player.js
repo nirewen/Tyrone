@@ -7,7 +7,7 @@ const s = n => n === 1 ? '' : 's'
 export class Player extends AbstractPlayer {
     constructor (user, game) {
         super(user, game)
-        
+
         this.hand = []
         this.called = false
         this.finished = false
@@ -87,7 +87,7 @@ export class Player extends AbstractPlayer {
         let len = (this.hand.length * 112) + 130
         let canvas = Canvas.createCanvas(len, 362)
         let ctx = canvas.getContext('2d')
-                
+
         for (let i in this.hand) {
             let card = this.hand[i]
             let image = Canvas.loadImage(card.URL)
@@ -100,5 +100,9 @@ export class Player extends AbstractPlayer {
             .setThumbnail('attachment://cards.png')
             .setColor('#E67E22')
             .attachFile(new MessageAttachment(canvas.toBuffer(), 'cards.png')))
+    }
+
+    toString () {
+        return this.user
     }
 }
