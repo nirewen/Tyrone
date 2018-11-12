@@ -2,7 +2,6 @@ import Discord from 'discord.js'
 import { Logger } from './Logger'
 import config from '../config.json'
 
-const logger = new Logger()
 const getMatches = (string, regex) => {
     var matches = []
     var match
@@ -69,7 +68,7 @@ export class Command {
         try {
             result = await this.run(msg, suffix)
         } catch (err) {
-            logger.error(`${err}\n${err.stack}`, 'ERRO DE EXECUÇÃO DE COMANDO')
+            this.logger.error(`${err}\n${err.stack}`, 'ERRO DE EXECUÇÃO DE COMANDO')
             if (config.errorMessage) {
                 try {
                     msg.channel.send(config.errorMessage)
@@ -96,6 +95,15 @@ export class Command {
     }
 
     find (name) {
-        return Object.keys(this.subcommands).find(cmd => name === cmd || this.subcommands[cmd].aliases.includes(name))
+        for (let subcommand in this.subcommands) {
+            if (name === subcommand || this.subcommands[subcommand].aliases.includes(name))
+                return this.subcommands[subcommand]
+        }
+
+        return null
+    }
+
+    get logger () {
+        return new Logger()
     }
 }

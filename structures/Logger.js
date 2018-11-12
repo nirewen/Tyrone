@@ -1,4 +1,6 @@
 import chalk from 'chalk'
+import Table from 'cli-table2'
+import util from 'util'
 
 export class Logger {
     constructor (commandColor) {
@@ -37,5 +39,48 @@ export class Logger {
 
     debug (text, dText = 'DEBUG') {
         return console.log(this.timestamp + `${chalk.bgBlue.white(` ${dText} `)} ${text}`)
+    }
+
+    table (array) {
+        let head = []
+
+        array.forEach((e) => {
+            if (e instanceof Array)
+                e.forEach((_e, i) => {
+                    if (head.indexOf(i) === -1)
+                        head.push(i)
+                })
+            else if (head.indexOf('Values') === -1)
+                head.push('Values')
+        })
+
+        let table = new Table({
+            style: { head: [], border: [] },
+            head
+        })
+
+        array.forEach((e, i) => {
+            let val = []
+
+            if (e instanceof Array)
+                for (let ix = 0; ix < e.length; ix++) {
+                    let tempi = ix
+
+                    if (ix >= head.indexOf('Values') && head.indexOf('Values') !== -1)
+                        tempi++
+
+                    val[tempi] = `${e[ix]}`
+                }
+            else
+                val[head.indexOf('Values')] = `${e}`
+
+            table.push([i, ...val])
+        })
+
+        table.options.head.unshift('')
+
+        console.log(table.toString())
+
+        return table.toString()
     }
 }

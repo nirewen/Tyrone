@@ -20,6 +20,7 @@
     "canvas": "^2.0.1",
     "chalk": "^2.4.1",
     "chess": "^0.3.3",
+    "cli-table2": "^0.2.0",
     "discord.js": "github:discordjs/discord.js#master",
     "mathjs": "^5.2.3",
     "request": "^2.88.0",
