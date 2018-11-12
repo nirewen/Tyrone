@@ -32,7 +32,7 @@ export async function run (msg, suffix) {
 export const subcommands = {
     help: {
         aliases: ['h'],
-        run: async (msg) => {
+        run: async function (msg) {
             return msg.channel.send(this.helpMessage)
         }
     },
@@ -172,7 +172,7 @@ export const subcommands = {
                         }, 3000)
                     }
                     await game.next()
-                    
+
                     return msg.channel.send(new MessageEmbed()
                         .setAuthor('UNO', 'https://i.imgur.com/Zzs9X74.png')
                         .setDescription(`${Util.escapeMarkdown(msg.author.username)} jogou **${game.flipped}**. ${extra}\n\nAgora é a vez de ${Util.escapeMarkdown(game.player.member.user.username)}!`)
@@ -227,7 +227,7 @@ export const subcommands = {
                 let extra = ''
                 if (['WILD', 'WILD+4'].includes(game.flipped.id))
                     extra += '\n\nVocê pode jogar qualquer carta.'
-                    
+
                 return msg.channel.send(new MessageEmbed()
                     .setAuthor('UNO', 'https://i.imgur.com/Zzs9X74.png')
                     .setDescription(`O jogo começou com ${game.queue.length} jogadores! A carta à mesa é **${game.flipped}**. \n\nAgora é o turno de ${Util.escapeMarkdown(game.player.member.user.username)}!${extra}`)
@@ -283,11 +283,11 @@ export const subcommands = {
             let game = games[msg.channel.id]
             if (game && game.started && game.players[msg.author.id]) {
                 let baddies = game.queue.filter(player => player.hand.length === 1 && !player.called && !player.immune)
-                
+
                 baddies.forEach(player => {
                     player.called = true
                 })
-                
+
                 game.dealAll(2, baddies)
                 if (baddies.length > 0)
                     return msg.channel.send(`Uh oh! ${baddies.map(p => `**${Util.escapeMarkdown(p.member.user.username)}**`).join(', ')}, você não disse UNO! Pegue 2 cartas!`)
