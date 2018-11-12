@@ -1,4 +1,5 @@
-import { MessageEmbed } from 'discord.js'
+// eslint-disable-next-line no-unused-vars
+import Discord from 'discord.js'
 import util from 'util'
 
 export const hidden = true
@@ -6,14 +7,9 @@ export const ownerOnly = true
 export async function run (msg, suffix) {
     let code = suffix.replace(/^```(js|javascript ?\n)?|```$/g, '')
 
-    let ins  = e => util.inspect(e, { depth: 0 })
+    let ins  = e => typeof e === 'string' ? e : util.inspect(e, { depth: 1 })
 
-    let getEmbed = (arg, color) => {
-        return new MessageEmbed()
-            .setAuthor(msg.author.username + ' - Eval de código JavaScript', msg.author.avatarURL({ size: 2048 }))
-            .addField('resultado', `\`\`\`js\n${arg}\n\`\`\``)
-            .setColor(color)
-    }
+    let getEmbed = (arg, color) => `\`\`\`js\n${arg}\n\`\`\``
 
     try {
         let result = async (temp) => {
@@ -27,11 +23,14 @@ export async function run (msg, suffix) {
 
         let message = ins(await result(eval(code)))
 
+        this.logger.debug('\n' + message, 'EVAL')
+
         if (message.length > 2000)
             message = 'Mensagem muito longa, veja o console'
 
         msg.send(getEmbed(message, '#2ecc71'))
     } catch (error) {
+        this.logger.error(error)
         msg.send(getEmbed(error, '#ff2626')).catch(err => console.log(err.message))
     }
 }
