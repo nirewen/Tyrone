@@ -20,7 +20,7 @@ export async function run (msg) {
 
     message.edit(`:1234:${emojify(game.score)}\n\n${game.grid.render()}`)
 
-    msg.collector = message.createReactionCollector((r, u) => r.me && u.id === game.player.user.id, { idle: 15E3 })
+    msg.collector = message.createReactionCollector((r, u) => r.me && u.id === game.player.user.id, { idle: 18E4 })
 
     msg.collector.on('collect', async function (r, u) {
         game.move(r.emoji.name)
