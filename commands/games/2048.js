@@ -7,7 +7,7 @@ export const help = 'Use as reações para jogar!'
 export const guildOnly = true
 export async function run (msg) {
     let game = new G2048()
-    let message = await msg.send(`:1234:${emojify(game.score)}\n\n${game.grid.render()}`)
+    let message = await msg.channel.send(`:1234:${emojify(game.score)}\n\n${game.grid.render()}`)
     let moves = ['⬅', '⬆', '⬇', '➡']
 
     game.addPlayer(msg.author)

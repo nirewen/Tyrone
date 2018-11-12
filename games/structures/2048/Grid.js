@@ -13,7 +13,8 @@ export class Grid extends Matrix {
 
         for (let i = 0; i < this.rows; i++)
             for (let j = 0; j < this.cols; j++)
-                options.push({ i, j })
+                if (this[i][j] === 0)
+                    options.push({ i, j })
 
         if (options.length > 0) {
             let { i, j } = options[Math.floor(options.length * Math.random())]
