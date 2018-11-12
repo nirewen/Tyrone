@@ -67,10 +67,7 @@ export class Command {
 
         let result
         try {
-            let cmd = this
-            if (this.subcommands[suffix.split(/\s+/)[0].toLowerCase()])
-                cmd = this.subcommands[suffix.split(/\s+/)[0].toLowerCase()]
-            result = await cmd.run(msg, suffix)
+            result = await this.run(msg, suffix)
         } catch (err) {
             logger.error(`${err}\n${err.stack}`, 'ERRO DE EXECUÇÃO DE COMANDO')
             if (config.errorMessage) {
@@ -96,5 +93,9 @@ export class Command {
         }
 
         msg.command = true
+    }
+
+    find (name) {
+        return Object.keys(this.subcommands).find(cmd => name === cmd || this.subcommands[cmd].aliases.includes(name))
     }
 }
