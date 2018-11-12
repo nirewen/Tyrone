@@ -42,42 +42,37 @@ export class Logger {
     }
 
     table (array) {
+        let table = new Table({ style: { head: [], border: [] } })
         let head = []
 
-        array.forEach((e) => {
-            if (e instanceof Array)
-                e.forEach((_e, i) => {
-                    if (head.indexOf(i) === -1)
-                        head.push(i)
-                })
-            else if (head.indexOf('Values') === -1)
-                head.push('Values')
-        })
-
-        let table = new Table({
-            style: { head: [], border: [] },
-            head
-        })
-
-        array.forEach((e, i) => {
+        array.forEach((element, index) => {
             let val = []
 
-            if (e instanceof Array)
-                for (let ix = 0; ix < e.length; ix++) {
-                    let tempi = ix
+            if (element instanceof Array)
+                for (let i in element) {
+                    if (head.indexOf(i) === -1)
+                        head.push(i)
 
-                    if (ix >= head.indexOf('Values') && head.indexOf('Values') !== -1)
-                        tempi++
+                    let ti = i
 
-                    val[tempi] = `${e[ix]}`
+                    if (i >= head.indexOf('Values') &&
+                        head.indexOf('Values') !== -1)
+                        ti++
+
+                    val[ti] = element[i]
                 }
-            else
-                val[head.indexOf('Values')] = `${e}`
+            else {
+                if (head.indexOf('Values') === -1)
+                    head.push('Values')
 
-            table.push([i, ...val])
+                val[head.indexOf('Values')] = element
+            }
+
+            table.push([index, ...val])
         })
 
-        table.options.head.unshift('')
+        head.unshift('')
+        table.options.head = head
 
         console.log(table.toString())
 
