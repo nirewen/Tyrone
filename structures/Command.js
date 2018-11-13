@@ -68,7 +68,7 @@ export class Command {
         try {
             result = await this.run(msg, suffix)
         } catch (err) {
-            this.logger.error(`${err}\n${err.stack}`, 'ERRO DE EXECUÇÃO DE COMANDO')
+            this.bot.logger.error(`${err}\n${err.stack}`, 'ERRO DE EXECUÇÃO DE COMANDO')
             if (config.errorMessage) {
                 try {
                     msg.channel.send(config.errorMessage)
