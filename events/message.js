@@ -1,7 +1,7 @@
 export default function (msg) {
-    for (let i = 0; i < this.categories.length; i++) {
-        if (msg.content.toLowerCase().startsWith(this.categories[i].prefix))
-            return this.categories[i].process(msg)
+    for (let category of this.categories) {
+        if (msg.content.toLowerCase().startsWith(category.prefix))
+            return category.process(msg)
     }
 
     if (msg.command) {
