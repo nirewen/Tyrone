@@ -1,4 +1,4 @@
-import { Logger } from '../structures/Logger'
+import { Logger } from '../utils/Logger'
 import { Structures, MessageEmbed } from 'discord.js'
 
 let logger = new Logger()

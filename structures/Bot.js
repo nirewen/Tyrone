@@ -2,7 +2,7 @@ import fs from 'fs'
 import config from '../config.json'
 import { Client } from 'discord.js'
 import { Category } from './Category'
-import { Logger } from './Logger'
+import { Logger } from '../utils/Logger'
 import { TOKEN, OWNER_ID } from '@env'
 
 export class Bot extends Client {

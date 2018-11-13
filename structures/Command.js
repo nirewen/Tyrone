@@ -1,5 +1,5 @@
 import Discord from 'discord.js'
-import { Logger } from './Logger'
+import { Logger } from '../utils/Logger'
 import config from '../config.json'
 
 const getMatches = (string, regex) => {
