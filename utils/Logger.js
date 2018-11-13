@@ -48,7 +48,16 @@ export class Logger {
         array.forEach((element, index) => {
             let val = []
 
-            if (element instanceof Array)
+            if (element instanceof Object) {
+                for (let key in element) {
+                    if (key === 'head')
+                        return head.push(...element[key])
+
+                    index = key
+                    val.push(...element[key])
+                }
+            }
+            else if (element instanceof Array)
                 for (let i in element) {
                     if (head.indexOf(i) === -1)
                         head.push(i)
@@ -71,7 +80,8 @@ export class Logger {
             table.push([index, ...val])
         })
 
-        head.unshift('')
+        if (Number(head[0]))
+            head.unshift('')
         table.options.head = head
 
         console.log(table.toString())
