@@ -23,6 +23,7 @@
     "cli-table2": "^0.2.0",
     "discord.js": "github:discordjs/discord.js#master",
     "mathjs": "^5.2.3",
+    "random-puppy": "^1.1.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5"
   }
