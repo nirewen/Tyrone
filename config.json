@@ -5,7 +5,7 @@
         "ty-": {"name": "Memes", "dir": "commands/memes/", "color": "green"},
         "ty.": {"name": "Jogos", "dir": "commands/games/", "color": "yellow"}
     },
-    "adminIds": [],
+    "admins": ["106915215592923136", "140578835434307585"],
     "inviteLink": "https://discordapp.com/oauth2/authorize?client_id=199921449006268416&scope=bot&permissions=8",
     "errorMessage": "sla algum erro"
 }

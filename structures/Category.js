@@ -1,7 +1,7 @@
 import fs from 'fs'
 import Discord from 'discord.js'
 import { Command } from './Command'
-import { Logger } from '../utils/Logger'
+import { Logger } from './Logger'
 
 export class Category {
     constructor (name, prefix, dir, color) {

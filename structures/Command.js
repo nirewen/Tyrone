@@ -1,5 +1,5 @@
 import Discord from 'discord.js'
-import { Logger } from '../utils/Logger'
+import { Logger } from './Logger'
 import config from '../config.json'
 
 const getMatches = (string, regex) => {
@@ -50,7 +50,7 @@ export class Command {
         if (msg.author.bot)
             return
 
-        if (this.ownerOnly && msg.author.id !== this.bot.ownerId)
+        if (this.ownerOnly && !config.admins.includes(msg.author.id))
             return msg.channel.send('Este comando é só para o dono do bot')
         if (!msg.guild && this.guildOnly)
             return msg.channel.send('Este comando só está disponível em servidores')
@@ -84,7 +84,7 @@ export class Command {
 
             setTimeout(() => m.delete(), 3E3)
         }
-        else if (!config.adminIds.includes(msg.author.id)) {
+        else if (!config.admins.includes(msg.author.id)) {
             this.usersOnCooldown.add(msg.author.id)
             setTimeout(() => {
                 this.usersOnCooldown.delete(msg.author.id)
@@ -96,7 +96,7 @@ export class Command {
 
     find (name) {
         for (let subcommand in this.subcommands) {
-            if (name === subcommand || this.subcommands[subcommand].aliases.includes(name))
+            if (name === subcommand || (this.subcommands[subcommand].aliases || []).includes(name))
                 return this.subcommands[subcommand]
         }
 
