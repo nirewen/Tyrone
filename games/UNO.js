@@ -74,7 +74,7 @@ export class UNO extends Game {
                 let len = (cards[player.id].length * 112) + 130
                 let canvas = Canvas.createCanvas(len, 362)
                 let ctx = canvas.getContext('2d')
-                    
+
                 for (let i in cards[player.id]) {
                     let card = cards[player.id][i]
                     let image = await Canvas.loadImage(card.URL)
@@ -86,7 +86,7 @@ export class UNO extends Game {
                     .setDescription(`Você recebeu a${s(cards[player.id].length)} seguinte${s(cards[player.id].length)} carta${s(cards[player.id].length)}:\n${cards[player.id].map(c => `**${c}**`).join(' | ')}`)
                     .setImage('attachment://cards.png')
                     .setColor('#E67E22')
-                    .attachFile(new MessageAttachment(canvas.toBuffer(), 'cards.png')))
+                    .attachFiles([new MessageAttachment(canvas.toBuffer(), 'cards.png')]))
             }
         }
     }
@@ -111,7 +111,7 @@ export class UNO extends Game {
             for (let i in cards) {
                 let card = cards[i]
                 let image = Canvas.loadImage(card.URL)
-                
+
                 ctx.drawImage(image, i * 112, 0, 242, 362)
             }
             await player.send(new MessageEmbed()
@@ -119,7 +119,7 @@ export class UNO extends Game {
                 .setDescription(`Você recebeu a${s(cards.length)} seguinte${s(cards.length)} carta${s(cards.length)}:\n${cards.map(c => `**${c}**`).join(' | ')}`)
                 .setThumbnail('attachment://cards.png')
                 .setColor('#E67E22')
-                .attachFile(new MessageAttachment(canvas.toBuffer(), 'cards.png')))
+                .attachFiles([new MessageAttachment(canvas.toBuffer(), 'cards.png')]))
         }
     }
 
