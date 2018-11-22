@@ -1,5 +1,5 @@
 import { osu } from '../../utils/utils.js'
-import { Attachment } from 'discord.js'
+import { MessageAttachment } from 'discord.js'
 
 const modes = ['', 'taiko', 'catch', 'mania']
 const colors = {
@@ -34,5 +34,5 @@ export async function run (msg, suffix) {
 
     let img = await osu(user, mode, encodeURIComponent(color))
 
-    msg.send(new Attachment(img, `${suffix}.png`))
+    msg.send(new MessageAttachment(img, `${suffix}.png`))
 }
