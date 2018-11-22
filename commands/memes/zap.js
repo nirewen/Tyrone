@@ -1,4 +1,4 @@
-import { Zapifier } from '../../structures/Zapifier'
+import { Zapifier } from '../../utils/Zapifier'
 
 export const desc = 'Transforma sua mensagem em uma mensagem vem de zap'
 export const help = `\`\`\`
