@@ -6,7 +6,9 @@ export default function (msg) {
 
     if (msg.command) {
         msg.command = false
-        if (msg.response)
+        if (msg.response) {
             msg.response.delete()
+            delete msg.response
+        }
     }
 }
