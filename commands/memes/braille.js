@@ -8,7 +8,7 @@ export async function run (msg) {
     let { file } = await searchImage(msg)
     let image = await Canvas.loadImage(file)
     let inverted = msg.flags.has('inverted')
-    let maxWidth = parseInt(msg.flags.get('max'))
+    let maxWidth = parseInt(msg.flags.get('max')) || 50
 
     let brailled = new Brailler({ image, inverted, maxWidth }).convert()
 
