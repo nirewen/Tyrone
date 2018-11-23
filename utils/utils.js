@@ -1,5 +1,6 @@
+/* eslint-disable no-mixed-operators */
+
 import request from 'request-promise-native'
-import { MessageAttachment } from 'discord.js'
 
 export async function osu (user, mode, color) {
     let url = `https://lemmmy.pw/osusig/sig.php?colour=${color}&uname=${user}&pp=1&darktriangles&mode=${mode}&xpbar&xpbarhex`
@@ -166,11 +167,11 @@ export async function searchImage (msg, defaultToAvatar = true) {
         }).then(c => c.array())
 
         for (let message of messages)
-            if (message.author.id !== msg.client.user.id
-            && (message.attachments.size > 0 && regex.test(message.attachments.first().url)
-            && message.attachments.first().size > 128) || (message.embeds.length > 0
-            && message.embeds[0].image
-            && regex.test(message.embeds[0].image.url)))
+            if (message.author.id !== msg.client.user.id && 
+                (message.attachments.size > 0 && regex.test(message.attachments.first().url) && message.attachments.first().size > 128) || 
+                (message.embeds.length > 0 &&
+                message.embeds[0].image &&
+                regex.test(message.embeds[0].image.url)))
                 return searchImage(message, defaultToAvatar)
 
         if (defaultToAvatar)
