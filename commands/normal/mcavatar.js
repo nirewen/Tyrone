@@ -5,7 +5,7 @@ import { Visage } from '../../utils/Visage'
 const MOJANG = 'https://api.mojang.com/users/profiles/minecraft/'
 
 export const desc = 'Veja seu avatar do Minecraft!'
-export const usage = '<nick>[ h]'
+export const usage = '<username>'
 export const aliases = ['mca']
 export async function run (msg, suffix) {
     if (!suffix)
