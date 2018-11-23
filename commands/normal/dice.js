@@ -13,7 +13,7 @@ const rolar = async (dados, lados, soma) => {
 }
 
 export const desc = 'Rola 1 dado de 6 lados ou x dados de x lados'
-export const details = 'A sintaxe padrão é DdL +S, sendo D o número de Dados, L o número de Lados e S a Soma ao resultado final. Por padrão, 1 dado de 6 lados é rolado se não for especificado'
+export const help = 'A sintaxe padrão é DdL +S, sendo D o número de Dados, L o número de Lados e S a Soma ao resultado final. Por padrão, 1 dado de 6 lados é rolado se não for especificado'
 export const aliases = ['dado']
 export const usage = '[D[dL] [+S]]'
 export const cooldown = 3

@@ -5,7 +5,7 @@ const s = n => n === 1 ? '' : 's'
 const games = {}
 
 export const desc = 'Jogue UNO com seus amigos'
-export const details = `\`\`\`
+export const help = `\`\`\`
 join       | Cria um jogo ou entra em um já criado
 quit       | Sai de um jogo
 play       | Joga uma carta na mesa

@@ -7,7 +7,7 @@ const RESPONSES = [
 ]
 
 export const desc = 'Faz uma escolha pra você.'
-export const details = 'Escolhe uma das opções aleatoriamente. 2 escolhas, no mínimo.'
+export const help = 'Escolhe uma das opções aleatoriamente. 2 escolhas, no mínimo.'
 export const usage = '<escolha> | <escolha> [| escolhas...]'
 export const aliases = ['c', 'pick', 'decide']
 export async function run (msg, suffix) {

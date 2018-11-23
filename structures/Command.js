@@ -18,7 +18,7 @@ export class Command {
         this.bot = bot
         this.usage = cmd.usage || ''
         this.desc = cmd.desc || 'Sem descrição'
-        this.details = cmd.details || this.desc
+        this.details = cmd.help || this.desc
         this.aliases = cmd.aliases || []
         this.cooldown = cmd.cooldown || 0
         this.hidden = cmd.hidden || false
