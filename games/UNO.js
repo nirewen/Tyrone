@@ -105,7 +105,7 @@ export class UNO extends Game {
         player.called = false
         if (cards.length > 0) {
             let len = (cards.length * 112) + 130
-            let canvas = new Canvas(len, 362)
+            let canvas = Canvas.createCanvas(len, 362)
             let ctx = canvas.getContext('2d')
 
             for (let i in cards) {
