@@ -44,6 +44,7 @@ export async function run (msg, suffix) {
             } catch (e) {
                 reaction.users.remove()
                 delete games[msg.author.id]
+                return
             }
         else
             reaction.users.remove()

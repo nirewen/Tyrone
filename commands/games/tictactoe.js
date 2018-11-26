@@ -49,9 +49,10 @@ export async function run (msg, suffix) {
         } catch (e) {
             reaction.users.remove()
             delete games[msg.author.id]
+            return
         }
     else
-        return reaction.users.remove()
+        reaction.users.remove()
 
     game.started = true
     let [opponent, challenger] = game.queue
