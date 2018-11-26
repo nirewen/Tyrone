@@ -90,7 +90,7 @@ export class Player extends AbstractPlayer {
 
         for (let i in this.hand) {
             let card = this.hand[i]
-            let image = Canvas.loadImage(card.URL)
+            let image = await Canvas.loadImage(card.URL)
 
             ctx.drawImage(image, i * 112, 0, 242, 362)
         }

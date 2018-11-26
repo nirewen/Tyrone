@@ -200,7 +200,7 @@ export const subcommands = {
                 await game.next()
                 return msg.channel.send(new MessageEmbed()
                     .setAuthor('UNO', 'https://i.imgur.com/Zzs9X74.png')
-                    .setDescription(`${Util.escapeMarkdown(player.member.user.username)} comprou uma carta.\n\n**${game.flipped}** foi jogada por último. \n\nAgora é o turno de ${Util.escapeMarkdown(game.player.user.username)}!`)
+                    .setDescription(`${Util.escapeMarkdown(player.user.username)} comprou uma carta.\n\n**${game.flipped}** foi jogada por último. \n\nAgora é o turno de ${Util.escapeMarkdown(game.player.user.username)}!`)
                     .setThumbnail('attachment://card.png')
                     .setColor(game.flipped.colorCode)
                     .attachFiles([new MessageAttachment(game.flipped.URL, 'card.png')]))
