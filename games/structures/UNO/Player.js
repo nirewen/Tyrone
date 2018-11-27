@@ -97,7 +97,7 @@ export class Player extends AbstractPlayer {
         await this.send(new MessageEmbed()
             .setAuthor('UNO', 'https://i.imgur.com/Zzs9X74.png')
             .setDescription(`${turn ? 'É seu turno! ' : ''}Aqui está sua mão:\n\n${this.hand.map(h => `**${h}**`).join(' | ')}\n\nVocê tem ${this.hand.length} carta${s(this.hand.length)}.`)
-            .setThumbnail('attachment://cards.png')
+            .setImage('attachment://cards.png')
             .setColor('#E67E22')
             .attachFiles([new MessageAttachment(canvas.toBuffer(), 'cards.png')]))
     }
