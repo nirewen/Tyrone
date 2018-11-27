@@ -17,10 +17,10 @@ export async function run (msg, suffix) {
     if (!mojang)
         return msg.send(new MessageEmbed()
             .setDescription('Este usuário não existe')
-            .setcolor('RED'))
+            .setColor('RED'))
 
     let image = await request({ url: Visage.full(mojang.id), encoding: null })
-    
+
     if (image)
         return msg.send(new MessageAttachment(image, `${username}.png`))
 }
