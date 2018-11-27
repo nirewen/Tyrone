@@ -14,7 +14,7 @@ export const usage = '<@usuário>'
 export const aliases = ['jogodavelha', 'ttt', 'nac', 'noughtsandcrosses']
 export async function run (msg, suffix) {
     let mention = msg.mentions.users.first()
-    
+
     if (!suffix || mention.id === msg.author.id)
         return 'wrong usage'
 
@@ -34,6 +34,9 @@ export async function run (msg, suffix) {
             return msg.send('Esse usuário já está em jogo')
         else
             return msg.send('Esse usuário já tem um pedido pendente')
+
+    if (msg.guild && !msg.guild.me.permissions.has('MANAGE_MESSAGES'))
+        return msg.send('Não tenho permissão de remover reações aqui...')
 
     let game = games[msg.author.id] = new TicTacToe(msg.author.id, mode)
     game.addPlayer(msg.author, type)

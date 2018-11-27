@@ -5,7 +5,7 @@ const games = {}
 const getGame = id => Object.values(games).find(game => game.players && game.players.hasOwnProperty(id)) || null
 
 export const desc = 'Jogue Connect 4 pelo Discord'
-export const usage = '<@usuário> | aceitar | cancelar | recusar'
+export const usage = '<@usuário>'
 export const aliases = ['c4']
 export async function run (msg, suffix) {
     if (!suffix)
@@ -14,7 +14,7 @@ export async function run (msg, suffix) {
     let mention = msg.mentions.users.first()
 
     if (mention && mention.id !== msg.author.id) {
-        if (mention.bot && mention.id !== this.bot.user.id)
+        if (mention.bot || mention.id !== this.bot.user.id)
             return 'wrong usage'
 
         let type = msg.flags.get('type') || '1'
@@ -29,6 +29,9 @@ export async function run (msg, suffix) {
                 return msg.send('Esse usuário já está em jogo')
             else
                 return msg.send('Esse usuário já tem um pedido pendente')
+
+        if (msg.guild && !msg.guild.me.permissions.has('MANAGE_MESSAGES'))
+            return msg.send('Não tenho permissão de remover reações aqui...')
 
         let game = games[msg.author.id] = new Connect4(msg.author.id)
         game.addPlayer(msg.author, type)
@@ -58,7 +61,7 @@ export async function run (msg, suffix) {
 
         message.edit(`${game.player.label} ${game.player.user}\n\n${game.render()}`)
 
-        msg.collector = message.createReactionCollector((r, u) => r.me && game.players.hasOwnProperty(u.id))
+        msg.collector = message.createReactionCollector((r, u) => r.me && game.players.hasOwnProperty(u.id), { idle: 180000 })
 
         msg.collector.on('collect', async function (r, u) {
             if (game && game.player.id === u.id) {
