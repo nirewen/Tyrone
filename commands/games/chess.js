@@ -84,9 +84,8 @@ export async function run (msg, suffix) {
 
 export const subcommands = {
     move: {
-        run: async function (msg, suffix) {
+        run: async function (msg, words) {
             let game = getGame(msg.author.id)
-            let args = suffix.split(' ')
             if (game) {
                 if (game.player.id === msg.author.id) {
                     try {
