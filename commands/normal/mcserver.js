@@ -12,8 +12,8 @@ export async function run (msg, suffix) {
 
     let server = await MCServerStatus.get(suffix)
     let embed = new MessageEmbed()
-        .setAuthor(server.hostname || suffix, 'attachment://icon.png')
-        .setThumbnail('attachment://icon.png')
+        .setAuthor(server.hostname || suffix, server.icon)
+        .setThumbnail(server.icon)
         .setColor('RED')
 
     if (!server.offline) {
@@ -28,8 +28,6 @@ export async function run (msg, suffix) {
         embed.addField('Versão', server.version, true)
     } else
         embed.setDescription('O servidor está offline')
-
-    embed.attachFiles([new MessageAttachment(server.icon, 'icon.png')])
 
     await msg.send(embed)
 

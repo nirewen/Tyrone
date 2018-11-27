@@ -10,10 +10,7 @@ export class MCServerStatus {
         if (!server.hostname)
             server.hostname = ip
 
-        if (!server.icon)
-            server.icon = await Sharp(`${__dirname}/../src/img/default_icon.png`).toBuffer()
-        else
-            server.icon = Buffer.from(server.icon.split(';base64,')[1], 'base64')
+        server.icon = `https://mcservericon.now.sh/?server=${server.hostname}`
 
         if (server.offline)
             server.icon = await Sharp(server.icon).greyscale().toBuffer()
