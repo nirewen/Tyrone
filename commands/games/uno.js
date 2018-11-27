@@ -125,8 +125,8 @@ export const subcommands = {
                                 pref += `${i + 1}. **${Util.escapeMarkdown(game.finished[i].user.username)}**\n`
                             }
                             delete games[game.channel.id]
-                            return msg.channel.send(pref)
                         }
+                        msg.channel.send(pref)
                     }
                     let extra = ''
                     switch (card.id) {
