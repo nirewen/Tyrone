@@ -110,7 +110,7 @@ export class UNO extends Game {
 
             for (let i in cards) {
                 let card = cards[i]
-                let image = Canvas.loadImage(card.URL)
+                let image = await Canvas.loadImage(card.URL)
 
                 ctx.drawImage(image, i * 112, 0, 242, 362)
             }

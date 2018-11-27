@@ -122,7 +122,7 @@ export const subcommands = {
                             game.finished.push(game.queue[1])
                             pref += 'O jogo acabou. Obrigado por jogar! Aqui está o placar:\n'
                             for (let i = 0; i < game.finished.length; i++) {
-                                pref += `${i + 1}. **${Util.escapeMarkdown(game.finished[i].member.user.username)}**\n`
+                                pref += `${i + 1}. **${Util.escapeMarkdown(game.finished[i].user.username)}**\n`
                             }
                             delete games[game.channel.id]
                             return msg.channel.send(pref)
@@ -145,7 +145,7 @@ export const subcommands = {
                         case '+2':
                             let amount = 2
                             game.deal(game.queue[1], amount)
-                            extra = `${Util.escapeMarkdown(game.queue[1].member.user.username)} compra ${amount} cartas! `
+                            extra = `${Util.escapeMarkdown(game.queue[1].user.username)} compra ${amount} cartas! `
                             if (game.rules.drawSkip.value === true) {
                                 extra += ' Ah, e pula a vez!'
                                 game.queue.push(game.queue.shift())
@@ -156,7 +156,7 @@ export const subcommands = {
                             break
                         case 'WILD+4': {
                             await game.deal(game.queue[1], 4)
-                            extra = `${Util.escapeMarkdown(game.queue[1].member.user.username)} compra 4! A cor atual é **${card.colorName}**! `
+                            extra = `${Util.escapeMarkdown(game.queue[1].user.username)} compra 4! A cor atual é **${card.colorName}**! `
                             if (game.rules.drawSkip.value === true) {
                                 extra += ' Ah, e pula a vez!'
                                 game.queue.push(game.queue.shift())
@@ -289,7 +289,7 @@ export const subcommands = {
 
                 game.dealAll(2, baddies)
                 if (baddies.length > 0)
-                    return msg.channel.send(`Uh oh! ${baddies.map(p => `**${Util.escapeMarkdown(p.member.user.username)}**`).join(', ')}, você não disse UNO! Pegue 2 cartas!`)
+                    return msg.channel.send(`Uh oh! ${baddies.map(p => `**${Util.escapeMarkdown(p.user.username)}**`).join(', ')}, você não disse UNO! Pegue 2 cartas!`)
                 else
                     return msg.channel.send('Não tem ninguém pra dedurar!')
             }

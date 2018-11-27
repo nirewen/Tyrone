@@ -99,7 +99,7 @@ export class Player extends AbstractPlayer {
             .setDescription(`${turn ? 'É seu turno! ' : ''}Aqui está sua mão:\n\n${this.hand.map(h => `**${h}**`).join(' | ')}\n\nVocê tem ${this.hand.length} carta${s(this.hand.length)}.`)
             .setThumbnail('attachment://cards.png')
             .setColor('#E67E22')
-            .attachFile(new MessageAttachment(canvas.toBuffer(), 'cards.png')))
+            .attachFiles([new MessageAttachment(canvas.toBuffer(), 'cards.png')]))
     }
 
     toString () {
