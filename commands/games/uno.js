@@ -250,12 +250,12 @@ export const subcommands = {
             }
             else if (!game.started) {
                 return msg.channel.send(embed
-                    .addField('Jogadores à mesa', game.queue.map(p => `**${Util.escapeMarkdown(p.member.user.username)}**`).join('\n'))
+                    .addField('Jogadores à mesa', game.queue.map(p => `**${Util.escapeMarkdown(p.user.username)}**`).join('\n'))
                     .setColor('ORANGE'))
             }
             else {
                 return msg.channel.send(embed
-                    .addField('Jogadores à mesa', game.queue.map(p => `${p.id === game.player.id ? '• ' : '↓ '}**${Util.escapeMarkdown(p.member.user.username)}** | ${p.hand.length} carta${s(p.hand.length)}`).join('\n'))
+                    .addField('Jogadores à mesa', game.queue.map(p => `${p.id === game.player.id ? '• ' : '↓ '}**${Util.escapeMarkdown(p.user.username)}** | ${p.hand.length} carta${s(p.hand.length)}`).join('\n'))
                     .addField('Última carta jogada', `${game.flipped}`)
                     .setThumbnail('attachment://card.png')
                     .setColor(game.flipped.colorCode)
@@ -270,7 +270,7 @@ export const subcommands = {
                 let p = game.players[msg.author.id]
                 if (!p.called) {
                     p.called = true
-                    return msg.channel.send(`**UNO!!** ${Util.escapeMarkdown(p.member.user.username)} tem só uma carta!`)
+                    return msg.channel.send(`**UNO!!** ${Util.escapeMarkdown(p.user.username)} tem só uma carta!`)
                 }
                 else
                     return msg.channel.send(`Cê já disse UNO!`)
