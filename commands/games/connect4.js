@@ -14,7 +14,7 @@ export async function run (msg, suffix) {
     let mention = msg.mentions.users.first()
 
     if (mention && mention.id !== msg.author.id) {
-        if (mention.bot || mention.id !== this.bot.user.id)
+        if (mention.bot)
             return 'wrong usage'
 
         let type = msg.flags.get('type') || '1'
