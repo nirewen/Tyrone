@@ -30,7 +30,7 @@ export async function run (msg, suffix) {
             else
                 return msg.send('Esse usuário já tem um pedido pendente')
 
-        if (msg.guild && !msg.guild.me.permissions.has('MANAGE_MESSAGES'))
+        if (msg.guild && !msg.channel.permissionsFor(msg.guild.me).has('MANAGE_MESSAGES'))
             return msg.send('Não tenho permissão de remover reações aqui...')
 
         let game = games[msg.author.id] = new Connect4(msg.author.id)
