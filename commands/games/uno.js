@@ -73,7 +73,7 @@ export const subcommands = {
                     for (let i = 0; i < game.finished.length; i++) {
                         out += `#${i + 1} **${Util.escapeMarkdown(game.finished[i].user.username)}**\n`
                     }
-                    delete this.bot.games.get('uno')[game.channel.id]
+                    this.bot.games.get('uno').delete(game.channel.id)
                     return msg.channel.send(out)
                 }
                 if (game.started && game.player.user.id === id) {
