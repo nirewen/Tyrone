@@ -1,8 +1,9 @@
 export class Card {
     constructor (id, color) {
         this.id = id
-        this.wild = !!this.color
         this.color = color
+        this.wild = !this.color
+        this.angle = Math.PI * Math.random()
     }
 
     get colorName () {

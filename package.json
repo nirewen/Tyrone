@@ -26,6 +26,7 @@
     "random-puppy": "^1.1.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
-    "sharp": "^0.21.0"
+    "sharp": "^0.21.0",
+    "simple-youtube-api": "^5.1.1"
   }
 }

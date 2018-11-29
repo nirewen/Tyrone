@@ -1,4 +1,5 @@
 import { Card } from './structures/UNO/Card'
+import { Table } from './structures/UNO/Table'
 import { Game } from './structures/Game'
 import { Player } from './structures/UNO/Player'
 import { MessageEmbed, MessageAttachment } from 'discord.js'
@@ -12,7 +13,7 @@ export class UNO extends Game {
 
         this.channel = channel
         this.deck = []
-        this.discard = []
+        this.table = new Table(this)
         this.finished = []
         this.confirm = false
         this.rules = {
@@ -27,10 +28,6 @@ export class UNO extends Game {
                 name: 'Cartas iniciais'
             }
         }
-    }
-
-    get flipped () {
-        return this.discard[this.discard.length - 1]
     }
 
     async next () {
@@ -57,7 +54,7 @@ export class UNO extends Game {
         for (let i = 0; i < number; i++)
             for (const player of players) {
                 if (this.deck.length === 0) {
-                    if (this.discard.length === 1)
+                    if (this.table.discard.length === 1)
                         break
                     this.shuffleDeck()
                 }
@@ -95,7 +92,7 @@ export class UNO extends Game {
         let cards = []
         for (let i = 0; i < number; i++) {
             if (this.deck.length === 0) {
-                if (this.discard.length === 1) break
+                if (this.table.discard.length === 1) break
                 this.shuffleDeck()
             }
             let c = this.deck.pop()
@@ -124,7 +121,7 @@ export class UNO extends Game {
     }
 
     generateDeck () {
-        for (const color of ['R', 'Y', 'G', 'B']) {
+        for (let color of ['R', 'Y', 'G', 'B']) {
             this.deck.push(new Card('0', color))
             for (let i = 1; i < 10; i++)
                 for (let j = 0; j < 2; j++)
@@ -145,7 +142,7 @@ export class UNO extends Game {
     }
 
     shuffleDeck () {
-        var j; var x; var i; var a = [...this.deck, ...this.discard]
+        let j, x, i, a = [...this.deck, ...this.table.discard]
         for (i = a.length - 1; i > 0; i--) {
             j = Math.floor(Math.random() * (i + 1))
             x = a[i]
@@ -155,6 +152,6 @@ export class UNO extends Game {
         this.deck = a
         for (const card of this.deck.filter(c => c.wild))
             card.color = undefined
-        this.send('O baralho foi embaralhado.')
+        this.send('As cartas foram embaralhadas.')
     }
 }
