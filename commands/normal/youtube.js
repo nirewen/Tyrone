@@ -19,7 +19,7 @@ export async function run (msg, suffix) {
 
     await sentMsg.edit(`:mag: ${suffix}\n:hash: \`${i + 1}/${res.length}\`\n:link: ${res[i].url}`)
 
-    if (msg.guild && msg.guild.me.permissions.has('MANAGE_MESSAGES'))
+    if (msg.guild && msg.channel.permissionsFor(msg.guild.me).has('MANAGE_MESSAGES'))
         for (let reaction of ['◀', '▶', '⏹'])
             await sentMsg.react(reaction)
 
