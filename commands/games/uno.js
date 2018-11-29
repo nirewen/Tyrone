@@ -44,7 +44,7 @@ export const subcommands = {
                 game.generateDeck()
             }
             if (game.started) {
-                return msg.channel.send('Desculpa, esse jogo já começou!')
+                return msg.send('Desculpa, esse jogo já começou!')
             }
             let res = game.addPlayer(msg.author)
             if (res === null)
@@ -92,7 +92,7 @@ export const subcommands = {
                 return msg.channel.send(out)
             }
             else
-                return msg.channel.send('Cê nem entrou!')
+                return msg.send('Você não entrou no jogo ainda...')
         }
     },
     play: {
@@ -179,10 +179,10 @@ export const subcommands = {
                         .attachFiles([new MessageAttachment(game.table.flipped.URL, 'card.png')]))
                 }
                 else
-                    return msg.channel.send('Desculpa, você não pode jogar esta carta aqui!')
+                    return msg.send('Desculpa, você não pode jogar esta carta aqui!')
             }
             else
-                return msg.channel.send('Desculpa, mas um jogo não foi criado ainda! Você pode criar um com `ty.uno join`')
+                return msg.send('Desculpa, mas um jogo não foi criado ainda! Você pode criar um com `ty.uno join`')
         }
     },
     pickup: {
@@ -205,7 +205,7 @@ export const subcommands = {
                     .attachFiles([new MessageAttachment(game.table.flipped.URL, 'card.png')]))
             }
             else
-                return msg.channel.send('Desculpa, mas um jogo não foi criado ainda! Você pode criar um com `ty.uno join`')
+                return msg.send('Desculpa, mas um jogo não foi criado ainda! Você pode criar um com `ty.uno join`')
         }
     },
     start: {
@@ -213,11 +213,14 @@ export const subcommands = {
         run: async function (msg) {
             let game = this.bot.games.get('uno').get(msg.channel.id)
             if (!game)
-                return msg.channel.send('Nenhum jogo foi registrado nesse canal.')
+                return msg.send('Nenhum jogo foi registrado nesse canal.')
+
+            if (game.started)
+                return msg.send('O jogo já começou')
 
             if (game.queue.length > 1) {
                 if (game.player.id !== msg.author.id)
-                    return msg.channel.send('Você não pode iniciar um jogo que não criou!')
+                    return msg.send('Você não pode iniciar um jogo que não criou!')
 
                 await game.dealAll(game.rules.initialCards.value)
                 game.table.discard.push(game.deck.pop())
@@ -234,7 +237,7 @@ export const subcommands = {
                     .attachFiles([new MessageAttachment(game.table.flipped.URL, 'card.png')]))
             }
             else {
-                return 'Não há pessoas suficientes pra jogar!'
+                return msg.send('Não há pessoas suficientes pra jogar!')
             }
         }
     },
@@ -270,7 +273,7 @@ export const subcommands = {
                     return msg.channel.send(`**UNO!!** ${Util.escapeMarkdown(p.user.username)} tem só uma carta!`)
                 }
                 else
-                    return msg.channel.send(`Cê já disse UNO!`)
+                    return msg.send(`Você já disse UNO!`)
             }
         }
     },
@@ -288,10 +291,10 @@ export const subcommands = {
                 if (baddies.length > 0)
                     return msg.channel.send(`Uh oh! ${baddies.map(p => `**${Util.escapeMarkdown(p.user.username)}**`).join(', ')}, você não disse UNO! Pegue 2 cartas!`)
                 else
-                    return msg.channel.send('Não tem ninguém pra dedurar!')
+                    return msg.send('Não tem ninguém pra dedurar!')
             }
             else
-                return msg.channel.send('Cê não tá nem no jogo!')
+                return msg.send('Você nem tá nem no jogo')
         }
     }
 }
