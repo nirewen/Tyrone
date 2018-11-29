@@ -32,7 +32,7 @@ export class Bot extends Client {
 
                         this.on(name, function () {
                             this.events.get(name).run.call(this, ...arguments)
-                            this.events.get(name).runtime++
+                            this.events.get(name).ran++
                         })
                         resolve()
                     } catch (e) {
@@ -71,7 +71,7 @@ export class Bot extends Client {
 
     login (token) {
         this.logger.logBold('Logando...', 'green')
-        
+
         super.login(token).catch(error => {
             this.logger.error(error, 'LOGIN ERROR')
         })
