@@ -106,11 +106,10 @@ export const subcommands = {
                 if (game.player.id !== msg.author.id)
                     return msg.channel.send(`Não é seu turno ainda! É a vez de ${Util.escapeMarkdown(game.player.user.username)}.`)
                 let card = game.player.getCard(words)
-                console.log(words, card)
                 if (card === null)
                     return
                 if (!card)
-                    return msg.channel.send('CÊ É CEGO??? TU N TEM ESSA CARTA BURRO. Tente de novo c:')
+                    return msg.channel.send('Você não tem essa carta... Tente novamente.')
                 if (!game.table.flipped.color || card.wild || card.id === game.table.flipped.id || card.color === game.table.flipped.color) {
                     game.table.discard.push(card)
                     game.player.hand.splice(game.player.hand.indexOf(card), 1)
