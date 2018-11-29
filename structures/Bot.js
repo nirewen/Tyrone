@@ -43,7 +43,7 @@ export class Bot extends Client {
         })
     }
 
-    loadCommandSets () {
+    loadCommandSets (Category) {
         return new Promise(resolve => {
             for (let prefix in this.config.commandSets) {
                 let { name, dir, color } = this.config.commandSets[prefix]
@@ -79,7 +79,7 @@ export class Bot extends Client {
 
     async start () {
         try {
-            await this.loadCommandSets()
+            await this.loadCommandSets(Category)
             await this.initCategories()
             await this.loadEvents()
             this.login(this.token)

@@ -41,7 +41,7 @@ export class Category {
     help (msg, command) {
         this.logger.logCommand(msg.guild ? msg.guild.name : null, msg.author.username, this.prefix + 'help', command)
         if (!command) {
-            let comandos = this.commands.filter(c => !c.hidden).array()
+            let comandos = this.commands.filter(c => !c.hidden).array().map(c => c.name)
             return new MessageEmbed()
                 .setTitle(`Aqui tem uma lista dos comandos para o prefixo \`${this.prefix}\`:`)
                 .setDescription(`\`${comandos.join('` `')}\``)

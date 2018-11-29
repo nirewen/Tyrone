@@ -28,12 +28,16 @@ export default class ReloadEvent extends Event {
 
         if (folder === 'config.json')
             this.config = reload(['..', ...path].join('/'))
-        
+
         if (folder === 'structures') {
             let [structure] = path.slice(1).map(s => s.split('.')[0])
 
-            if (structure === 'Category')
+            if (structure === 'Category') {
+                let { Category } = reload(['..', ...path].join('/'))
+
+                this.loadCommandSets(Category)
                 this.initCategories()
+            }
 
             if (structure === 'Logger') {
                 let { Logger } = reload(['..', ...path].join('/'))
