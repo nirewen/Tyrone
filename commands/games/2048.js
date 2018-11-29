@@ -6,6 +6,9 @@ export const desc = 'Jogue 2048 pelo Discord'
 export const help = 'Use as reações para jogar!'
 export const guildOnly = true
 export async function run (msg) {
+    if (msg.guild && !msg.channel.permissionsFor(msg.guild.me).has('MANAGE_MESSAGES'))
+        return msg.send('Não tenho permissão de remover reações aqui...')
+
     let game = this.bot.games.get('2048').set(msg.id, new G2048())
     let message = await msg.channel.send(`:1234:${emojify(game.score)}\n\n${game.grid.render()}`)
     let moves = ['⬅', '⬆', '⬇', '➡']
