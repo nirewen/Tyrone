@@ -6,7 +6,7 @@ export const desc = 'Jogue 2048 pelo Discord'
 export const help = 'Use as reações para jogar!'
 export const guildOnly = true
 export async function run (msg) {
-    let game = new G2048()
+    let game = this.bot.games.get('2048').set(msg.id, new G2048())
     let message = await msg.channel.send(`:1234:${emojify(game.score)}\n\n${game.grid.render()}`)
     let moves = ['⬅', '⬆', '⬇', '➡']
 
@@ -40,5 +40,8 @@ export async function run (msg) {
             return this.stop()
     })
 
-    msg.collector.on('end', () => message.reactions.removeAll())
+    msg.collector.on('end', () => {
+        this.bot.games.get('2048').delete(msg.id)
+        message.reactions.removeAll()
+    })
 }

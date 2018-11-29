@@ -4,10 +4,8 @@ import { Util, MessageAttachment } from 'discord.js'
 import { CanvasUtils } from '../../utils/CanvasUtils'
 import { TicTacToe } from '../../games/TicTacToe'
 
-const games = {}
 const modes = ['easy', 'medium', 'hard']
 const sleep = util.promisify(setTimeout)
-const getGame = id => Object.values(games).find(game => game.players && game.players.hasOwnProperty(id)) || null
 
 export const desc = 'Jogue jogo da velha pelo Discord'
 export const usage = '<@usuário>'
@@ -15,16 +13,13 @@ export const aliases = ['jogodavelha', 'ttt', 'nac', 'noughtsandcrosses']
 export async function run (msg, suffix) {
     let mention = msg.mentions.users.first()
 
-    if (!suffix || mention.id === msg.author.id)
-        return 'wrong usage'
-
-    if (mention.bot && mention.id !== this.bot.user.id)
+    if (!suffix || !mention || mention.id === msg.author.id || mention.bot && mention.id !== this.bot.user.id)
         return 'wrong usage'
 
     let mode = modes.indexOf(msg.flags.get('mode')) > -1 ? msg.flags.get('mode') : 'hard'
     let type = msg.flags.get('type') || 'x'
-    let jogoUser = getGame(msg.author.id)
-    let jogoOponente = getGame(mention.id)
+    let jogoUser = this.bot.games.findGame('tictactoe', msg.author.id)
+    let jogoOponente = this.bot.games.findGame('tictactoe', mention.id)
 
     if (jogoUser && jogoUser.started)
         return msg.send('Você já está em jogo')
@@ -38,7 +33,7 @@ export async function run (msg, suffix) {
     if (msg.guild && !msg.channel.permissionsFor(msg.guild.me).has('MANAGE_MESSAGES'))
         return msg.send('Não tenho permissão de remover reações aqui...')
 
-    let game = games[msg.author.id] = new TicTacToe(msg.author.id, mode)
+    let game = this.bot.games.get('tictactoe').set(msg.author.id, new TicTacToe(msg.author.id, mode))
     game.addPlayer(msg.author, type)
     game.addPlayer(mention, type === 'o' ? 'x' : 'o')
 
@@ -51,8 +46,7 @@ export async function run (msg, suffix) {
             await m.awaitReactions((r, u) => r.me && u.id === mention.id, { max: 1, time: 15E3, errors: ['time'] })
         } catch (e) {
             reaction.users.remove()
-            delete games[msg.author.id]
-            return
+            return this.bot.games.get('tictactoe').delete(msg.author.id)
         }
     else
         reaction.users.remove()
@@ -156,6 +150,6 @@ export async function run (msg, suffix) {
     })
 
     msg.collector.on('end', () => {
-        delete games[msg.author.id]
+        this.bot.games.get('tictactoe').delete(msg.author.id)
     })
 }

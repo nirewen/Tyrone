@@ -2,6 +2,7 @@ import fs from 'fs'
 import config from '../config.json'
 import { Client } from 'discord.js'
 import { Category } from './Category'
+import { GameManager } from './GameManager'
 import { Logger } from './Logger'
 import { TOKEN, OWNER_ID } from '@env'
 
@@ -12,6 +13,7 @@ export class Bot extends Client {
         this.token = TOKEN
         this.logger = new Logger()
         this.categories = []
+        this.games = new GameManager(...fs.readdirSync('./commands/games').map(c => c.substr(0, c.indexOf('.js'))))
         this.ownerId = OWNER_ID
         this.config = config
     }

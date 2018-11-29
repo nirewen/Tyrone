@@ -2,7 +2,6 @@ import { UNO } from '../../games/UNO'
 import { MessageEmbed, Util, MessageAttachment } from 'discord.js'
 
 const s = n => n === 1 ? '' : 's'
-const games = {}
 
 export const desc = 'Jogue UNO com seus amigos'
 export const help = `\`\`\`
@@ -39,9 +38,9 @@ export const subcommands = {
     join: {
         aliases: ['enter'],
         run: async function (msg) {
-            let game = games[msg.channel.id]
+            let game = this.bot.games.get('uno').get(msg.channel.id)
             if (!game) {
-                game = games[msg.channel.id] = new UNO(msg.channel)
+                game = this.bot.games.get('uno').set(msg.channel.id, new UNO(msg.channel))
                 game.generateDeck()
             }
             if (game.started) {
@@ -63,7 +62,7 @@ export const subcommands = {
     quit: {
         run: async function (msg) {
             let { id } = msg.author
-            let game = games[msg.channel.id]
+            let game = this.bot.games.get('uno').get(msg.channel.id)
 
             if (game && game.players.hasOwnProperty(id)) {
                 let out = 'Você não está mais participando do jogo.\n\n'
@@ -74,7 +73,7 @@ export const subcommands = {
                     for (let i = 0; i < game.finished.length; i++) {
                         out += `#${i + 1} **${Util.escapeMarkdown(game.finished[i].user.username)}**\n`
                     }
-                    delete games[game.channel.id]
+                    delete this.bot.games.get('uno')[game.channel.id]
                     return msg.channel.send(out)
                 }
                 if (game.started && game.player.user.id === id) {
@@ -89,7 +88,7 @@ export const subcommands = {
                 delete game.players[id]
                 game.queue = game.queue.filter(p => p.id !== id)
                 if (game.players.length === 0)
-                    delete games[msg.channel.id]
+                    delete this.bot.games.get('uno').get(msg.channel.id)
                 return msg.channel.send(out)
             }
             else
@@ -99,7 +98,7 @@ export const subcommands = {
     play: {
         aliases: ['p'],
         run: async function (msg, words) {
-            let game = games[msg.channel.id]
+            let game = this.bot.games.get('uno').get(msg.channel.id)
             if (game) {
                 if (!game.started)
                     return msg.channel.send('Desculpa, mas o jogo ainda não começou!')
@@ -124,7 +123,7 @@ export const subcommands = {
                             for (let i = 0; i < game.finished.length; i++) {
                                 pref += `${i + 1}. **${Util.escapeMarkdown(game.finished[i].user.username)}**\n`
                             }
-                            delete games[game.channel.id]
+                            delete this.bot.games.get('uno')[game.channel.id]
                         }
                         msg.channel.send(pref)
                     }
@@ -189,14 +188,14 @@ export const subcommands = {
     pickup: {
         aliases: ['d', 'draw', 'c', 'comprar'],
         run: async function (msg) {
-            let game = games[msg.channel.id]
+            let game = this.bot.games.get('uno').get(msg.channel.id)
             if (game) {
                 if (!game.started)
                     return 'Desculpa, mas o jogo ainda não começou!'
                 if (game.player.id !== msg.author.id)
                     return `Não é seu turno ainda! É a vez de ${Util.escapeMarkdown(game.player.user.username)}.`
                 game.deal(game.player, 1)
-                let player = game.player
+                let { player } = game
                 await game.next()
                 return msg.channel.send(new MessageEmbed()
                     .setAuthor('UNO', 'https://i.imgur.com/Zzs9X74.png')
@@ -212,7 +211,7 @@ export const subcommands = {
     start: {
         aliases: ['s'],
         run: async function (msg) {
-            let game = games[msg.channel.id]
+            let game = this.bot.games.get('uno').get(msg.channel.id)
             if (!game)
                 return msg.channel.send('Nenhum jogo foi registrado nesse canal.')
 
@@ -242,7 +241,7 @@ export const subcommands = {
     table: {
         aliases: ['mesa'],
         run: async function (msg) {
-            let game = games[msg.channel.id]
+            let game = this.bot.games.get('uno').get(msg.channel.id)
             let embed = new MessageEmbed()
                 .setAuthor('UNO', 'https://i.imgur.com/Zzs9X74.png')
 
@@ -263,7 +262,7 @@ export const subcommands = {
     },
     '!': {
         run: async function (msg) {
-            let game = games[msg.channel.id]
+            let game = this.bot.games.get('uno').get(msg.channel.id)
             if (game && game.started && game.players[msg.author.id] && game.players[msg.author.id].hand.length === 1) {
                 let p = game.players[msg.author.id]
                 if (!p.called) {
@@ -277,7 +276,7 @@ export const subcommands = {
     },
     'contra-uno': {
         run: async function (msg) {
-            let game = games[msg.channel.id]
+            let game = this.bot.games.get('uno').get(msg.channel.id)
             if (game && game.started && game.players[msg.author.id]) {
                 let baddies = game.queue.filter(player => player.hand.length === 1 && !player.called && !player.immune)
 

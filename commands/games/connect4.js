@@ -1,9 +1,6 @@
 import { Util } from 'discord.js'
 import { Connect4 } from '../../games/Connect4'
 
-const games = {}
-const getGame = id => Object.values(games).find(game => game.players && game.players.hasOwnProperty(id)) || null
-
 export const desc = 'Jogue Connect 4 pelo Discord'
 export const usage = '<@usuário>'
 export const aliases = ['c4']
@@ -18,8 +15,8 @@ export async function run (msg, suffix) {
             return 'wrong usage'
 
         let type = msg.flags.get('type') || '1'
-        let jogoUser = getGame(msg.author.id)
-        let jogoOponente = getGame(mention.id)
+        let jogoUser = this.bot.games.findGame('connect4', msg.author.id)
+        let jogoOponente = this.bot.games.findGame('connect4', mention.id)
 
         if (jogoUser && jogoUser.started)
             return msg.send('Você já está em jogo')
@@ -33,7 +30,7 @@ export async function run (msg, suffix) {
         if (msg.guild && !msg.channel.permissionsFor(msg.guild.me).has('MANAGE_MESSAGES'))
             return msg.send('Não tenho permissão de remover reações aqui...')
 
-        let game = games[msg.author.id] = new Connect4(msg.author.id)
+        let game = this.bot.games.get('connect4').set(msg.author.id, new Connect4(msg.author.id))
         game.addPlayer(msg.author, type)
         game.addPlayer(mention, type === '1' ? '2' : '1')
 
@@ -46,8 +43,7 @@ export async function run (msg, suffix) {
                 await m.awaitReactions((r, u) => r.me && u.id === mention.id, { max: 1, time: 15E3, errors: ['time'] })
             } catch (e) {
                 reaction.users.remove()
-                delete games[msg.author.id]
-                return
+                return this.bot.games.get('connect4').delete(msg.author.id)
             }
         else
             reaction.users.remove()
@@ -72,11 +68,9 @@ export async function run (msg, suffix) {
                     let win = game.play(number)
                     if (win) {
                         message.edit(`${game.player.label}:crown: ${game.player.user}\n\n${game.render()}`)
-                        delete games[msg.author.id]
                         return this.stop()
                     } else if (game.holes.full) {
                         message.edit(`:skull:\n\n${game.render()}`)
-                        delete games[msg.author.id]
                         return this.stop()
                     }
 
@@ -93,6 +87,9 @@ export async function run (msg, suffix) {
             }
         })
 
-        msg.collector.on('end', () => message.reactions.removeAll())
+        msg.collector.on('end', () => {
+            this.bot.games.get('connect4').delete(msg.author.id)
+            message.reactions.removeAll()
+        })
     }
 }

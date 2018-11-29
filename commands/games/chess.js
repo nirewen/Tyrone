@@ -2,9 +2,6 @@ import { Chess } from '../../games/Chess'
 import { schemes } from '../../games/structures/Chess/schemes'
 import { MessageEmbed, Util, MessageAttachment } from 'discord.js'
 
-const games = {}
-const getGame = id => Object.values(games).find(game => game.players && game.players.hasOwnProperty(id)) || null
-
 export const desc = 'Jogue Xadrez com seus amigos'
 export const usage = '<@usuário | move a1 b2>'
 export async function run (msg, suffix) {
@@ -17,8 +14,8 @@ export async function run (msg, suffix) {
         if (mention.bot)
             return 'wrong usage'
 
-        let jogoOponente = getGame(mention.id)
-        let jogoUser = getGame(msg.author.id)
+        let jogoOponente = this.bot.games.findGame('chess', mention.id)
+        let jogoUser = this.bot.games.findGame('chess', msg.author.id)
 
         if (jogoOponente)
             if (jogoOponente.started)
@@ -30,7 +27,7 @@ export async function run (msg, suffix) {
             return msg.send('Você já está em jogo')
 
         let scheme = msg.flags.has('scheme') && schemes[msg.flags.get('scheme')] ? msg.flags.get('scheme') : 'emerald'
-        let game = games[msg.author.id] = new Chess(msg.author.id, scheme)
+        let game = this.bot.games.get('chess').set(msg.author.id, new Chess(msg.author.id, scheme))
         game.addPlayer(msg.author)
         game.addPlayer(mention)
 
@@ -43,8 +40,7 @@ export async function run (msg, suffix) {
                 await m.awaitReactions((r, u) => r.me && u.id === mention.id, { max: 1, time: 15E3, errors: ['time'] })
             } catch (e) {
                 reaction.users.remove()
-                delete games[msg.author.id]
-                return
+                return this.bot.games.get('chess').delete(msg.author.id)
             }
         else
             reaction.users.remove()
@@ -85,7 +81,7 @@ export async function run (msg, suffix) {
 export const subcommands = {
     move: {
         run: async function (msg, args) {
-            let game = getGame(msg.author.id)
+            let game = this.bot.games.findGame('chess', msg.author.id)
             if (game) {
                 if (game.player.id === msg.author.id) {
                     try {
@@ -97,7 +93,7 @@ export const subcommands = {
                     game.next()
 
                     if (game.game.isCheckmate || game.game.validMoves.length === 0) {
-                        delete games[Object.keys(games).find(k => games[k].players.hasOwnProperty(msg.author.id))]
+                        delete this.bot.games.get('chess')[Object.keys(this.bot.games.get('chess')).find(k => this.bot.games.get('chess')[k].players.hasOwnProperty(msg.author.id))]
                         return msg.channel.send('Check mate!')
                     }
                     if (game.game.isCheck)
@@ -121,7 +117,7 @@ export const subcommands = {
     table: {
         aliases: ['mesa'],
         run: async function (msg, args) {
-            let game = getGame(msg.author.id)
+            let game = this.bot.games.findGame('chess', msg.author.id)
             if (game) {
                 let canvas = await game.render()
 
