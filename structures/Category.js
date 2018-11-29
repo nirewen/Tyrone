@@ -1,5 +1,6 @@
 import fs from 'fs'
-import Discord from 'discord.js'
+import reload from 'require-reload'
+import { MessageEmbed, Collection } from 'discord.js'
 import { Command } from './Command'
 import { Logger } from './Logger'
 
@@ -8,8 +9,9 @@ export class Category {
         this.prefix = prefix
         this.name = name
         this.dir = dir
+        this.color = color
         this.directory = `${__dirname}/../${dir}`
-        this.commands = {}
+        this.commands = new Collection()
         this.logger = new Logger(color)
     }
 
@@ -23,10 +25,10 @@ export class Category {
                         if (name.endsWith('.js') && !name.startsWith('-')) {
                             try {
                                 name = name.split(/\.js$/)[0]
-                                this.commands[name] = new Command(name, this.prefix, require(this.directory + name + '.js'), bot)
-                                resolve()
+                                this.commands.set(name, new Command(name, this.prefix, reload(this.directory + name + '.js'), bot))
+                                resolve(this)
                             } catch (e) {
-                                console.error(e)
+                                reject(e)
                             }
                         } else
                             continue
@@ -39,16 +41,16 @@ export class Category {
     help (msg, command) {
         this.logger.logCommand(msg.guild ? msg.guild.name : null, msg.author.username, this.prefix + 'help', command)
         if (!command) {
-            let comandos = Object.keys(this.commands).filter(c => !this.commands[c].hidden)
-            return new Discord.MessageEmbed()
+            let comandos = this.commands.filter(c => !c.hidden)
+            return new MessageEmbed()
                 .setTitle(`Aqui tem uma lista dos comandos para o prefixo \`${this.prefix}\`:`)
                 .setDescription(`\`${comandos.join('` `')}\``)
                 .setFooter(`Para mais informações, digite ${this.prefix}help ‹comando›`)
                 .setColor('#e67e22')
         } else {
             let cmd = this.find(command)
-            if (cmd === null) {
-                return new Discord.MessageEmbed()
+            if (!cmd) {
+                return new MessageEmbed()
                     .setDescription(`:interrobang: Comando \`${this.prefix}${command}\` não encontrado`)
                     .setColor('RED')
             } else
@@ -75,11 +77,6 @@ export class Category {
     }
 
     find (name) {
-        for (let command in this.commands) {
-            if (name === command || this.commands[command].aliases.includes(name))
-                return this.commands[command]
-        }
-
-        return null
+        return this.commands.find(c => c.name === name || c.aliases.includes(name))
     }
 }

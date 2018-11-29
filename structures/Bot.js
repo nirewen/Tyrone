@@ -1,6 +1,7 @@
 import fs from 'fs'
+import reload from 'require-reload'
 import config from '../config.json'
-import { Client } from 'discord.js'
+import { Client, Collection } from 'discord.js'
 import { Category } from './Category'
 import { GameManager } from './GameManager'
 import { Logger } from './Logger'
@@ -12,19 +13,27 @@ export class Bot extends Client {
 
         this.token = TOKEN
         this.logger = new Logger()
-        this.categories = []
+        this.categories = new Collection()
+        this.events = new Collection()
         this.games = new GameManager(...fs.readdirSync('./commands/games').map(c => c.substr(0, c.indexOf('.js'))))
         this.ownerId = OWNER_ID
         this.config = config
     }
 
-    initEvents () {
+    loadEvents () {
         return new Promise((resolve, reject) => {
             fs.readdirSync('./events').forEach(file => {
                 if (file.endsWith('.js')) {
                     try {
                         let [name] = file.split(/\.js$/)
-                        this.on(name, require(`../events/${file}`).default)
+                        let { default: Event } = reload(`../events/${file}`)
+
+                        this.events.set(name, new Event(name))
+
+                        this.on(name, function () {
+                            this.events.get(name).run.call(this, ...arguments)
+                            this.events.get(name).runtime++
+                        })
                         resolve()
                     } catch (e) {
                         reject(e)
@@ -32,13 +41,13 @@ export class Bot extends Client {
                 }
             })
         })
-    };
+    }
 
     loadCommandSets () {
         return new Promise(resolve => {
             for (let prefix in this.config.commandSets) {
                 let { name, dir, color } = this.config.commandSets[prefix]
-                this.categories.push(new Category(name, prefix, dir, color))
+                this.categories.set(name, new Category(name, prefix, dir, color))
             }
             resolve()
         })
@@ -46,11 +55,11 @@ export class Bot extends Client {
 
     initCategories (index = 0) {
         return new Promise((resolve, reject) => {
-            this.categories[index].initialize(this)
-                .then(() => {
-                    this.logger.debug(`Carregado categoria ${this.categories[index].name}`, 'CATEG')
+            this.categories.array()[index].initialize(this)
+                .then(c => {
+                    this.logger.debug(`Carregado categoria ${c.name}`, 'CATEG')
                     index++
-                    if (this.categories.length > index) {
+                    if (this.categories.size > index) {
                         this.initCategories(index)
                             .then(resolve)
                             .catch(reject)
@@ -60,14 +69,20 @@ export class Bot extends Client {
         })
     }
 
+    login (token) {
+        this.logger.logBold('Logando...', 'green')
+        
+        super.login(token).catch(error => {
+            this.logger.error(error, 'LOGIN ERROR')
+        })
+    }
+
     async start () {
         try {
             await this.loadCommandSets()
             await this.initCategories()
-            await this.initEvents()
-            this.login(this.token).catch(error => {
-                this.logger.error(error, 'LOGIN ERROR')
-            })
+            await this.loadEvents()
+            this.login(this.token)
         } catch (e) {
             this.logger.error(e, 'START ERROR')
         }

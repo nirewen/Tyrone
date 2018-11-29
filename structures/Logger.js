@@ -1,6 +1,5 @@
 import chalk from 'chalk'
 import Table from 'cli-table2'
-import util from 'util'
 
 export class Logger {
     constructor (commandColor) {
@@ -17,6 +16,18 @@ export class Logger {
 
     log (text, color) {
         return console.log(this.timestamp + (color ? chalk[color](text) : text))
+    }
+
+    logWithBackground (text, background, color) {
+        return console.log(this.timestamp + (color ? chalk[background][color](text) : chalk[background](text)))
+    }
+
+    logBold (text, color) {
+        return console.log(this.timestamp + (color ? chalk.bold[color](text) : chalk.bold(text)))
+    }
+
+    logWithUnderline (text, color) {
+        return console.log(this.timestamp + (color ? chalk.underline[color](text) : chalk.underline(text)))
     }
 
     logWithHeader (headerText, headerBackground, headerColor, text, color) {
