@@ -14,6 +14,7 @@ start      | Inicia o jogo que você criou
 contra-uno | Penaliza um jogador com uma carta na mão,
            | mas que não disse UNO!\`\`\``
 export const usage = 'help'
+export const aliases = ['u']
 export async function run (msg, suffix) {
     if (!suffix)
         return 'wrong usage'
@@ -163,10 +164,11 @@ export const subcommands = {
                             break
                         }
                     }
-                    if (game.player.hand.length === 1) {
-                        game.player.immune = true
+                    let { player } = game
+                    if (player.hand.length === 1) {
+                        player.immune = true
                         setTimeout(() => {
-                            game.player.immune = false
+                            player.immune = false
                         }, 3000)
                     }
                     await game.next()
