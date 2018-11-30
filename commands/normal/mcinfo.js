@@ -19,7 +19,7 @@ export async function run (msg, suffix) {
     if (!mojang) {
         let users = await NameMC.search(username)
 
-        if (users) {
+        if (users.length > 0) {
             let embed = new MessageEmbed()
                 .setTitle('Usuário não encontrado')
                 .setDescription('Você quis dizer um desses?')
