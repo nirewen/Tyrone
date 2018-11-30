@@ -12,13 +12,13 @@ export const aliases = ['mci']
 export async function run (msg, suffix) {
     if (!suffix)
         return 'wrong usage'
-    
+
     let [username] = suffix.split(' ')
     let mojang = await request({ url: `https://api.mojang.com/users/profiles/minecraft/${username}`, json: true })
-    
+
     if (!mojang) {
         let users = await NameMC.search(username)
-        
+
         if (users) {
             let embed = new MessageEmbed()
                 .setTitle('Usuário não encontrado')
@@ -34,22 +34,15 @@ export async function run (msg, suffix) {
             for (let [i] of users.entries())
                 await message.react(i + 1 + '\u20E3')
 
-            msg.collector = message.createReactionCollector((r, u) => r.me && u.id === msg.author.id, { max: 1, time: 15E3 })
+            try {
+                let reactions = await message.awaitReactions((r, u) => r.me && u.id === msg.author.id, { max: 1, time: 15E3, errors: ['time'] })
+                let n = parseInt(reactions.first().emoji.name)
 
-            msg.collector.on('collect', (r, u) => {
-                let n = parseInt(r.emoji.name)
-
-                this.process(msg, users[n - 1].name)
-                return msg.collector.stop()
-            })
-
-            msg.collector.on('end', (_collected, reason) => {
-                if (reason === 'time')
-                    return message.delete()
-                else
-                    return message.reactions.removeAll()
-            })
-            return
+                mojang = { id: users[n - 1].uuid }
+                message.reactions.removeAll()
+            } catch (e) {
+                return message.delete()
+            }
         } else
             return msg.send(new MessageEmbed()
                 .setDescription('Usuário não encontrado')
@@ -59,20 +52,20 @@ export async function run (msg, suffix) {
     let { id } = mojang
     let nicknames = await NameMC.getNicknames(id)
     let embed = new MessageEmbed()
-        .setAuthor(username, Visage.avatar(id))
+        .setAuthor(await NameMC.validate(username), Visage.avatar(id))
         .setThumbnail(Visage.avatar(id))
         .setImage(Visage.full(id))
-        .addField('Nickname', username, true)
+        .addField('Nickname', await NameMC.validate(username), true)
         .addField('UUID', id, true)
         .setColor('BLUE')
 
     if (nicknames) {
         embed.addField('Histórico de nomes', nicknames.map(n => Util.escapeMarkdown(n.username)), true)
-        if (nicknames.filter(n => n.date))
+        if (nicknames.filter(n => n.date).length > 0)
             embed.addField('\u200b', nicknames.map(n => n.date && moment(n.date).format('DD/MM/YYYY [-] HH:mm')), true)
     }
 
     embed.addField('Skin', `[Baixar](${Visage.skin(id)} "Clique para baixar a skin") | [Aplicar](${MINECRAFT}?url=${Visage.skin(id)} "Clique para aplicar a skin à sua conta")`)
-    
+
     msg.send(embed)
 }
