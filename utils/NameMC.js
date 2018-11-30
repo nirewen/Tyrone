@@ -5,11 +5,11 @@ const headers = {
     'accept-language': 'en-US,en;q=0.9',
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.102 Safari/537.36 Vivaldi/2.0.1309.37'
 }
-const BASE = 'https://mine.ly'
+const BASE = 'https://namemc.com'
 
 export class NameMC {
     static async getNicknames (uuid) {
-        let $ = await request({ url: `${BASE}/${uuid}`, headers, transform: cheerio.load })
+        let $ = await this.get(`${BASE}/profile/${uuid}`)
 
         return $('.card.mb-3').eq(1).find('.list-group').children().map((_i, e) => {
             let index = $(e).find('.row .order-md-1').text()
@@ -21,5 +21,21 @@ export class NameMC {
                 
             return { index, username, date }
         }).get()
+    }
+
+    static async search (name) {
+        let $ = await this.get(`${BASE}/search?q=${name}`)
+
+        return Promise.all($('.card.mb-3').map(async (_i, e) => {
+            let name = $(e).find('.mb-0').text()
+            let uuid = $(e).find('samp').text()
+            let nicknames = await this.getNicknames(uuid)
+        
+            return { name, nicknames, uuid }
+        }).get())
+    }
+
+    static get (url) {
+        return request({ url, headers, transform: cheerio.load })
     }
 }

@@ -16,10 +16,40 @@ export async function run (msg, suffix) {
     let [username] = suffix.split(' ')
     let mojang = await request({ url: `https://api.mojang.com/users/profiles/minecraft/${username}`, json: true })
     
-    if (!mojang)
-        return msg.send(new MessageEmbed()
-            .setDescription('Usuário não encontrado')
-            .setColor('RED'))
+    if (!mojang) {
+        let users = await NameMC.search(username)
+        
+        if (users) {
+            let embed = new MessageEmbed()
+                .setTitle('Usuário não encontrado')
+                .setDescription('Você quis dizer um desses?')
+                .setFooter('Use as reactions para escolher')
+                .setColor('BLUE')
+
+            for (let [i, user] of users.entries())
+                embed.addField(i + 1 + '\u20E3 ' + user.name, user.nicknames.map(n => Util.escapeMarkdown(n.username)), true)
+
+            let message = await msg.send(embed)
+
+            for (let [i] of users.entries())
+                await message.react(i + 1 + '\u20E3')
+
+            msg.collector = message.createReactionCollector((r, u) => r.me && u.id === msg.author.id, { max: 1, time: 15E3 })
+
+            msg.collector.on('collect', (r, u) => {
+                let n = parseInt(r.emoji.name)
+
+                this.process(msg, users[n - 1].name)
+                return msg.collector.stop()
+            })
+
+            msg.collector.on('end', () => message.delete())
+            return
+        } else
+            return msg.send(new MessageEmbed()
+                .setDescription('Usuário não encontrado')
+                .setColor('RED'))
+    }
 
     let { id } = mojang
     let nicknames = await NameMC.getNicknames(id)
@@ -31,9 +61,9 @@ export async function run (msg, suffix) {
         .addField('UUID', id, true)
         .setColor('BLUE')
 
-    if (nicknames.length > 0) {
+    if (nicknames) {
         embed.addField('Histórico de nomes', nicknames.map(n => Util.escapeMarkdown(n.username)), true)
-        if (nicknames.filter(n => n.date).length > 0)
+        if (nicknames.filter(n => n.date))
             embed.addField('\u200b', nicknames.map(n => n.date && moment(n.date).format('DD/MM/YYYY [-] HH:mm')), true)
     }
 
