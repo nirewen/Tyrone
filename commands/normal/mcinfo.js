@@ -1,6 +1,8 @@
-import { MessageEmbed } from 'discord.js'
+import moment from 'moment'
 import request from 'request-promise-native'
+import { MessageEmbed, Util } from 'discord.js'
 import { Visage } from '../../utils/Visage'
+import { NameMC } from '../../utils/NameMC'
 
 const MINECRAFT = 'https://minecraft.net/en-us/profile/skin/remote'
 
@@ -20,13 +22,21 @@ export async function run (msg, suffix) {
             .setColor('RED'))
 
     let { id } = mojang
-    
-    msg.send(new MessageEmbed()
+    let nicknames = await NameMC.getNicknames(id)
+    let embed = new MessageEmbed()
         .setAuthor(username, Visage.avatar(id))
         .setThumbnail(Visage.avatar(id))
         .setImage(Visage.full(id))
         .addField('Nickname', username, true)
         .addField('UUID', id, true)
-        .addField('Skin', `[Baixar](${Visage.skin(id)} "Clique para baixar a skin") | [Aplicar](${MINECRAFT}?url=${Visage.skin(id)} "Clique para aplicar a skin à sua conta")`)
-        .setColor('BLUE'))
+        .setColor('BLUE')
+
+    if (nicknames.length > 0) {
+        embed.addField('Histórico de nomes', nicknames.map(n => Util.escapeMarkdown(n.username)), true)
+        embed.addField('\u200b', nicknames.map(n => n.date && moment(n.date).format('DD/MM/YYYY [-] HH:mm')), true)
+    }
+
+    embed.addField('Skin', `[Baixar](${Visage.skin(id)} "Clique para baixar a skin") | [Aplicar](${MINECRAFT}?url=${Visage.skin(id)} "Clique para aplicar a skin à sua conta")`)
+    
+    msg.send(embed)
 }
