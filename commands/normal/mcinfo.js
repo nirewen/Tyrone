@@ -43,7 +43,12 @@ export async function run (msg, suffix) {
                 return msg.collector.stop()
             })
 
-            msg.collector.on('end', () => message.delete())
+            msg.collector.on('end', (_collected, reason) => {
+                if (reason === 'time')
+                    return message.delete()
+                else
+                    return message.reactions.removeAll()
+            })
             return
         } else
             return msg.send(new MessageEmbed()
