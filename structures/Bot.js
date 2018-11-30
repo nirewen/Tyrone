@@ -3,9 +3,11 @@ import reload from 'require-reload'
 import config from '../config.json'
 import { Client, Collection } from 'discord.js'
 import { Category } from './Category'
+import { Firebase } from '../database/Firebase'
 import { GameManager } from './GameManager'
 import { Logger } from './Logger'
-import { TOKEN, OWNER_ID } from '@env'
+import { credentials as serviceAccount } from '../firebase-credentials'
+import { TOKEN, OWNER_ID, FIREBASE_URL as databaseURL } from '@env'
 
 export class Bot extends Client {
     constructor (clientOptions) {
@@ -13,6 +15,7 @@ export class Bot extends Client {
 
         this.token = TOKEN
         this.logger = new Logger()
+        this.database = new Firebase({ serviceAccount, databaseURL })
         this.categories = new Collection()
         this.events = new Collection()
         this.games = new GameManager(...fs.readdirSync('./commands/games').map(c => c.substr(0, c.indexOf('.js'))))
