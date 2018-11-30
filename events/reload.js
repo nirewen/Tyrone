@@ -11,8 +11,10 @@ export default class ReloadEvent extends Event {
 
             category = this.categories.find(c => path.join('/').startsWith(c.dir))
 
-            if (category.commands.has(name))
-                category.commands.set(name, new Command(name, category.prefix, reload(['..', ...path].join('/')), this))
+            let command = reload(['..', ...path].join('/'))
+
+            if (category.commands.has(name) && command.run)
+                category.commands.set(name, new Command(name, category.prefix, command, this))
             else return
         }
 
