@@ -33,7 +33,7 @@ export async function run (msg, suffix) {
 
     if (nicknames.length > 0) {
         embed.addField('Histórico de nomes', nicknames.map(n => Util.escapeMarkdown(n.username)), true)
-        if (nicknames.map(n => n.date).length > 0)
+        if (nicknames.filter(n => n.date).length > 0)
             embed.addField('\u200b', nicknames.map(n => n.date && moment(n.date).format('DD/MM/YYYY [-] HH:mm')), true)
     }
 
