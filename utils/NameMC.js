@@ -23,7 +23,7 @@ export class NameMC {
         }).get()
     }
 
-    static async validate (uuid) {
+    static async getName (uuid) {
         let $ = await this.get(`${BASE}/profile/${uuid}`)
 
         return $('.container h1').text()

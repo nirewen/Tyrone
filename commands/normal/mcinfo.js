@@ -52,10 +52,10 @@ export async function run (msg, suffix) {
     let { id } = mojang
     let nicknames = await NameMC.getNicknames(id)
     let embed = new MessageEmbed()
-        .setAuthor(await NameMC.validate(username), Visage.avatar(id))
+        .setAuthor(await NameMC.getName(id), Visage.avatar(id))
         .setThumbnail(Visage.avatar(id))
         .setImage(Visage.full(id))
-        .addField('Nickname', await NameMC.validate(username), true)
+        .addField('Nickname', await NameMC.getName(id), true)
         .addField('UUID', id, true)
         .setColor('BLUE')
 
