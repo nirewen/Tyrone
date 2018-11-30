@@ -2,14 +2,26 @@
 import Discord from 'discord.js'
 import util from 'util'
 
+util.inspect.colors.light_blue = [94, 39]
+util.inspect.colors.orange = ['38;5;214', 39]
+util.inspect.styles = {
+    name: 'orange',
+    string: 'green',
+    number: 'cyan',
+    date: 'magenta',
+    regexp: 'red',
+    boolean: 'light_blue',
+    null: 'bold',
+    undefined: 'grey',
+    special: 'cyan'
+}
+
 export const hidden = true
 export const ownerOnly = true
 export async function run (msg, suffix) {
     let code = suffix.replace(/^```(js|javascript ?\n)?|```$/g, '')
-
-    let ins  = e => typeof e === 'string' ? e : util.inspect(e, { depth: 1 })
-
-    let getEmbed = (arg, color) => `\`\`\`js\n${arg}\n\`\`\``
+    let inspect  = (e, colors) => typeof e === 'string' ? e : util.inspect(e, { depth: 1, colors })
+    let codeblock = arg => `\`\`\`js\n${arg}\n\`\`\``
 
     try {
         let result = async (temp) => {
@@ -21,16 +33,18 @@ export async function run (msg, suffix) {
             return temp
         }
 
-        let message = ins(await result(eval(code)))
+        let message = await result(eval(code))
 
-        this.logger.debug('\n' + message, 'EVAL')
+        this.logger.debug(inspect(message, true).split('\n').length > 1
+            ? '\n' + inspect(message, true)
+            : inspect(message, true), 'EVAL')
 
         if (message.length > 2000)
             message = 'Mensagem muito longa, veja o console'
 
-        msg.send(getEmbed(message, '#2ecc71'))
+        msg.send(codeblock(inspect(message), '#2ecc71'))
     } catch (error) {
         this.logger.error(error)
-        msg.send(getEmbed(error, '#ff2626')).catch(err => console.log(err.message))
+        msg.send(codeblock(error, '#ff2626')).catch(err => console.log(err.message))
     }
 }
