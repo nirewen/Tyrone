@@ -3,6 +3,9 @@ import { MessageEmbed } from 'discord.js'
 
 export const desc = 'Jogue Akinator pelo Discord'
 export async function run (msg) {
+    if (msg.guild && !msg.channel.permissionsFor(msg.guild.me).has('MANAGE_MESSAGES'))
+        return msg.send('Não tenho permissão de remover reações aqui...')
+        
     let game = this.bot.games.get('akinator').set(msg.author.id, new Akinator())
     let question = await game.create()
     let answers = ['Sim', 'Não', 'Não sei', 'Provavelmente sim', 'Provavelmente não']
