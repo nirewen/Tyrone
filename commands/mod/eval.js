@@ -39,12 +39,12 @@ export async function run (msg, suffix) {
             ? '\n' + inspect(message, true)
             : inspect(message, true), 'EVAL')
 
-        if (message.length > 2000)
+        if (message && message.length > 2000)
             message = 'Mensagem muito longa, veja o console'
 
-        msg.send(codeblock(inspect(message), '#2ecc71'))
+        msg.send(codeblock(inspect(message)))
     } catch (error) {
         this.logger.error(error)
-        msg.send(codeblock(error, '#ff2626')).catch(err => console.log(err.message))
+        msg.send(codeblock(error)).catch(err => console.log(err.message))
     }
 }
