@@ -33,12 +33,17 @@ export class Akinator extends Game {
 
     async answer (answer) {
         let { step: currentStep } = this
-        let { result: { completion, parameters: { progression, question, step } } } = await this.get('answer.php', { step: currentStep, answer })
+        let { result: { completion, ...result } } = await this.get('answer.php', { step: currentStep, answer })
+
+        if (completion === 'KO - TIMEOUT')
+            return this.end()
+
+        let { parameters: { progression, question, step } } = result
 
         this.progression = progression
         this.step = step
 
-        if (progression >= 95 || completion === 'KO - TIMEOUT')
+        if (progression >= 95)
             return this.end()
 
         return question
@@ -46,12 +51,17 @@ export class Akinator extends Game {
 
     async cancel () {
         let { step: currentStep } = this
-        let { result: { completion, parameters: { progression, question, step } } } = await this.get('cancel_answer.php', { step: currentStep })
+        let { result: { completion, ...result } } = await this.get('cancel_answer.php', { step: currentStep })
+
+        if (completion === 'KO - TIMEOUT')
+            return this.end()
+
+        let { parameters: { progression, question, step } } = result
 
         this.progression = progression
         this.step = step
 
-        if (progression >= 95 || completion === 'KO - TIMEOUT')
+        if (progression >= 95)
             return this.end()
 
         return question
@@ -59,10 +69,12 @@ export class Akinator extends Game {
 
     async end () {
         let { step } = this
-        let { result: { completion, parameters: { elements: { element: { absolute_picture_path: image, description, ranking, name } } } } } = await this.get('list.php', { step, size: 1 })
+        let { result: { completion, ...result } } = await this.get('list.php', { step, size: 1 })
 
         if (completion === 'KO - ELEM LIST IS EMPTY')
             return { expired: true }
+
+        let { parameters: { elements: { element: { absolute_picture_path: image, description, ranking, name } } } } = result
 
         return { finished: true, image, description, ranking, name }
     }
@@ -80,10 +92,10 @@ export class Akinator extends Game {
         qs.session = this.session
         qs.signature = this.signature
 
-        return request({ 
-            url: BASE + path, 
-            qs, 
-            transform: body => convert(body, { 
+        return request({
+            url: BASE + path,
+            qs,
+            transform: body => convert(body, {
                 compact: true,
                 trim: true,
                 ignoreDeclaration: true,
@@ -91,8 +103,8 @@ export class Akinator extends Game {
                 ignoreAttributes: true,
                 ignoreComment: true,
                 ignoreCdata: true,
-                ignoreDoctype: true, 
-                elementNameFn: val => val.toLowerCase(), 
+                ignoreDoctype: true,
+                elementNameFn: val => val.toLowerCase(),
                 textFn: (value, parentElement) => {
                     try {
                         let keyNo = Object.keys(parentElement._parent).length
@@ -100,7 +112,7 @@ export class Akinator extends Game {
                         parentElement._parent[keyName] = this.nativeType(value)
                     } catch (e) {}
                 }
-            }) 
+            })
         })
     }
 
@@ -109,14 +121,14 @@ export class Akinator extends Game {
 
         if (!isNaN(nValue))
             return nValue
-            
+
         let bValue = value.toLowerCase()
 
         if (bValue === 'true')
             return true
         else if (bValue === 'false')
             return false
-        
+
         return value
     }
 }

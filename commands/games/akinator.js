@@ -32,7 +32,7 @@ export async function run (msg) {
             embed
                 .setTitle('')
                 .setDescription('O jogo expirou...')
-            
+
             this.stop()
         }
 
@@ -43,7 +43,7 @@ export async function run (msg) {
                 .setImage(question.image)
                 .setThumbnail()
                 .setFooter(`Ranking: ${question.ranking} • Resposta alcançada em ${game.step} jogadas`)
-            
+
             this.stop()
         } else
             embed
@@ -56,7 +56,7 @@ export async function run (msg) {
 
     msg.collector.on('end', () => {
         this.bot.games.get('akinator').delete(msg.author.id)
-        
+
         message.reactions.removeAll()
     })
 

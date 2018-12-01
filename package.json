@@ -16,6 +16,7 @@
     "dotenv": "^6.0.0"
   },
   "dependencies": {
+    "babel-preset-stage-2": "^6.24.1",
     "canvas": "^2.1.0",
     "chalk": "^2.4.1",
     "cheerio": "^1.0.0-rc.2",
