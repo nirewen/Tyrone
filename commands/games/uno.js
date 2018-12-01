@@ -121,12 +121,13 @@ export const subcommands = {
                         if (game.queue.length === 2) {
                             game.finished.push(game.queue[1])
                             pref += 'O jogo acabou. Obrigado por jogar! Aqui está o placar:\n'
-                            for (let i = 0; i < game.finished.length; i++) {
+
+                            for (let [i] of game.finished.entries())
                                 pref += `${i + 1}. **${Util.escapeMarkdown(game.finished[i].user.username)}**\n`
-                            }
-                            delete this.bot.games.get('uno')[game.channel.id]
+
+                            this.bot.games.get('uno').delete(game.channel.id)
                         }
-                        msg.channel.send(pref)
+                        return msg.channel.send(pref)
                     }
                     let extra = ''
                     switch (card.id) {
