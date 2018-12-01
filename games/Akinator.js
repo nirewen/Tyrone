@@ -23,6 +23,8 @@ export class Akinator extends Game {
 
     async create () {
         let { result: { parameters: { identification: { session, signature }, step_information: { step, question } } } } = await this.get('new_session.php')
+        
+        this.started = true
         this.session = session
         this.signature = signature
         this.step = step
