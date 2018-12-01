@@ -5,7 +5,7 @@ export const desc = 'Jogue Akinator pelo Discord'
 export async function run (msg) {
     if (msg.guild && !msg.channel.permissionsFor(msg.guild.me).has('MANAGE_MESSAGES'))
         return msg.send('Não tenho permissão de remover reações aqui...')
-        
+
     let game = this.bot.games.get('akinator').set(msg.author.id, new Akinator())
     let question = await game.create()
     let answers = ['Sim', 'Não', 'Não sei', 'Provavelmente sim', 'Provavelmente não']
@@ -19,7 +19,7 @@ export async function run (msg) {
 
     let message = await msg.send(embed)
 
-    msg.collector = message.createReactionCollector((r, u) => r.me && u.id === msg.author.id, { idle: 6E5 })
+    msg.collector = message.createReactionCollector((r, u) => r.me && u.id === msg.author.id, { idle: 18E4 })
 
     msg.collector.on('collect', async function (r, u) {
         let answer = parseInt(r.emoji.name) - 1
