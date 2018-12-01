@@ -31,6 +31,7 @@
     "request-promise-native": "^1.0.5",
     "require-reload": "^0.2.2",
     "sharp": "^0.21.0",
-    "simple-youtube-api": "^5.1.1"
+    "simple-youtube-api": "^5.1.1",
+    "xml-js": "^1.6.8"
   }
 }
