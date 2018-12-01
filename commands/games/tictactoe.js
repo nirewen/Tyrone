@@ -13,7 +13,7 @@ export const aliases = ['jogodavelha', 'ttt', 'nac', 'noughtsandcrosses']
 export async function run (msg, suffix) {
     let mention = msg.mentions.users.first()
 
-    if (!suffix || !mention || mention.id === msg.author.id || mention.bot && mention.id !== this.bot.user.id)
+    if (!suffix || !mention || mention.id === msg.author.id || (mention.bot && mention.id !== this.bot.user.id))
         return 'wrong usage'
 
     let mode = modes.indexOf(msg.flags.get('mode')) > -1 ? msg.flags.get('mode') : 'hard'
