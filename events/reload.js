@@ -1,4 +1,5 @@
 import reload from 'require-reload'
+import { join } from 'path'
 import { Command } from '../structures/Command'
 
 export async function run (path) {
@@ -9,7 +10,7 @@ export async function run (path) {
 
         category = this.categories.find(c => path.join('/').startsWith(c.dir))
 
-        let command = reload(['..', ...path].join('/'))
+        let command = reload(join(...['..', ...path]))
 
         if (category.commands.has(name) && command.run)
             category.commands.set(name, new Command(name, category.prefix, command, this))
@@ -19,7 +20,7 @@ export async function run (path) {
     if (folder === 'events') {
         let [name] = subfolders.map(e => e.split('.')[0])
 
-        let { default: Event } = reload(['..', ...path].join('/'))
+        let { default: Event } = reload(join(...['..', ...path]))
 
         if (Event)
             this.events.set(name, new Event(name))
@@ -27,20 +28,20 @@ export async function run (path) {
     }
 
     if (folder === 'config.json')
-        this.config = reload(['..', ...path].join('/'))
+        this.config = reload(join(...['..', ...path]))
 
     if (folder === 'structures') {
         let [structure] = subfolders.map(s => s.split('.')[0])
 
         if (structure === 'Category') {
-            let { Category } = reload(['..', ...path].join('/'))
+            let { Category } = reload(join(...['..', ...path]))
 
             this.loadCommandSets(Category)
             this.initCategories()
         }
 
         if (structure === 'Logger') {
-            let { Logger } = reload(['..', ...path].join('/'))
+            let { Logger } = reload(join(...['..', ...path]))
 
             this.logger = new Logger()
             this.categories.each(c => {
