@@ -89,13 +89,14 @@ export class Command {
     }
 
     fetchSubcommands () {
+        let { prefix, directory } = this.category
         try {
-            let subcommands = fs.readdirSync(path.join(this.category.directory, `${this.name}.subcommands`))
+            let subcommands = fs.readdirSync(path.join(directory, `${this.name}.subcommands`))
             if (subcommands)
                 for (let name of subcommands)
                     if (name.endsWith('.js') && !name.startsWith('-')) {
                         ([name] = name.split(/\.js$/))
-                        this.subcommands.set(name, new Command(name, this.category.prefix, reload(path.join(this.category.directory, `${this.name}.subcommands`, name + '.js')), this.category, this.bot))
+                        this.subcommands.set(name, new Command(name, prefix, reload(path.join(directory, `${this.name}.subcommands`, name + '.js')), this.category, this.bot))
                     } else
                         continue
         } catch (e) {}
