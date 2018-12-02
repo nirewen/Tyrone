@@ -88,7 +88,7 @@ export const subcommands = {
                 }
                 game.players.delete(id)
                 game.queue = game.queue.filter(p => p.id !== id)
-                if (game.players.length === 0)
+                if (game.players.size === 0)
                     this.bot.games.get('uno').delete(msg.channel.id)
                 return msg.channel.send(out)
             }

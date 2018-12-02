@@ -235,7 +235,7 @@ export const subcommands = {
                     if (won) {
                         embed
                             .setDescription(`Parabéns ${game.player.user.username}! Você acertou a última letra\n\n${game.word}`)
-                            .addField('Placar', Object.values(game.players).sort((p, n) => p.score > n.score).map((p, i) => `#${i + 1} - ${p.score} pontos - ${p.user}`))
+                            .addField('Placar', game.players.sort((p, n) => p.score > n.score).map((p, i) => `#${i + 1} - ${p.score} pontos - ${p.user}`))
 
                         this.bot.games.get('hangman').delete(msg.channel.id)
                     } else {

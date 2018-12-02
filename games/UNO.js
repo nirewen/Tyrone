@@ -54,35 +54,35 @@ export class UNO extends Game {
     async dealAll (number, players = this.queue) {
         let cards = {}
         for (let i = 0; i < number; i++)
-            for (const player of players) {
+            for (const [id, player] of players.entries()) {
                 if (this.deck.length === 0) {
                     if (this.table.discard.length === 1)
                         break
                     this.shuffleDeck()
                 }
                 let c = this.deck.pop()
-                if (!cards[player.id])
-                    cards[player.id] = []
+                if (!cards[id])
+                    cards[id] = []
 
-                cards[player.id].push(c)
+                cards[id].push(c)
                 player.hand.push(c)
             }
-        for (const player of players) {
+        for (const [id, player] of players.entries()) {
             player.called = false
-            if (cards[player.id].length > 0) {
-                let len = (cards[player.id].length * 112) + 130
+            if (cards[id].length > 0) {
+                let len = (cards[id].length * 112) + 130
                 let canvas = Canvas.createCanvas(len, 362)
                 let ctx = canvas.getContext('2d')
 
-                for (let i in cards[player.id]) {
-                    let card = cards[player.id][i]
+                for (let i in cards[id]) {
+                    let card = cards[id][i]
                     let image = await Canvas.loadImage(card.URL)
 
                     ctx.drawImage(image, i * 112, 0, 242, 362)
                 }
                 await player.send(new MessageEmbed()
                     .setAuthor('UNO', 'https://i.imgur.com/Zzs9X74.png')
-                    .setDescription(`Você recebeu a${s(cards[player.id].length)} seguinte${s(cards[player.id].length)} carta${s(cards[player.id].length)}:\n${cards[player.id].map(c => `**${c}**`).join(' | ')}`)
+                    .setDescription(`Você recebeu a${s(cards[id].length)} seguinte${s(cards[id].length)} carta${s(cards[id].length)}:\n${cards[id].map(c => `**${c}**`).join(' | ')}`)
                     .setImage('attachment://cards.png')
                     .setColor('#E67E22')
                     .attachFiles([new MessageAttachment(canvas.toBuffer(), 'cards.png')]))

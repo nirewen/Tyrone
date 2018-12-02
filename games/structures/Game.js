@@ -1,6 +1,8 @@
+import { Collection } from 'discord.js'
+
 export class Game {
     constructor () {
-        this.players = new Map()
+        this.players = new Collection()
         this.queue = []
         this.started = false
     }

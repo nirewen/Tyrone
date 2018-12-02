@@ -93,7 +93,7 @@ export const subcommands = {
                     game.next()
 
                     if (game.game.isCheckmate || game.game.validMoves.length === 0) {
-                        delete this.bot.games.get('chess')[Object.keys(this.bot.games.get('chess')).find(k => this.bot.games.get('chess')[k].players.hasOwnProperty(msg.author.id))]
+                        this.bot.games.get('chess').delete(this.bot.games.findGameKey('chess', msg.author.id))
                         return msg.channel.send('Check mate!')
                     }
                     if (game.game.isCheck)
