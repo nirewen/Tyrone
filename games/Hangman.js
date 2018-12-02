@@ -15,8 +15,9 @@ export class Hangman extends Game {
     }
 
     addPlayer (member) {
-        if (!this.players[member.id]) {
-            let player = this.players[member.id] = new Player(member, this)
+        if (!this.players.has(member.id)) {
+            let player = new Player(member, this)
+            this.players.set(member.id, player)
 
             this.queue.push(player)
             return player

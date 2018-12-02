@@ -1,6 +1,6 @@
 export class Game {
     constructor () {
-        this.players = {}
+        this.players = new Map()
         this.queue = []
         this.started = false
     }

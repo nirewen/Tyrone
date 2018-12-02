@@ -40,13 +40,15 @@ export class UNO extends Game {
         this.channel.send(content)
     }
 
-    addPlayer (user) {
-        if (!this.players[user.id]) {
-            let player = this.players[user.id] = new Player(user, this)
+    addPlayer (member) {
+        if (!this.players.has(member.id)) {
+            let player = new Player(member, this)
+            this.players.set(member.id, player)
+
             this.queue.push(player)
             return player
-        }
-        else return null
+        } else
+            return null
     }
 
     async dealAll (number, players = this.queue) {

@@ -12,8 +12,15 @@ export class Chess extends Game {
         this.scheme = scheme
     }
 
-    get player () {
-        return this.queue[0]
+    addPlayer (member) {
+        if (!this.players.has(member.id)) {
+            let player = new Player(member, this)
+            this.players.set(member.id, player)
+
+            this.queue.push(player)
+            return player
+        } else
+            return null
     }
 
     get status () {
@@ -27,15 +34,6 @@ export class Chess extends Game {
     next () {
         this.queue.push(this.queue.shift())
         return this.player.username
-    }
-
-    addPlayer (member) {
-        if (!this.players[member.id]) {
-            let player = this.players[member.id] = new Player(member, this)
-            this.queue.push(player)
-            return player
-        } else
-            return null
     }
 
     play (src, dest) {

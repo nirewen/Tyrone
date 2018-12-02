@@ -107,7 +107,7 @@ export const subcommands = {
                 if (game.started)
                     return msg.send('Esse jogo já começou')
 
-                if (game.players.hasOwnProperty(msg.author.id))
+                if (game.players.has(msg.author.id))
                     return msg.send('Você já entrou no jogo')
                 
                 if (game.author.id === msg.author.id)
@@ -149,7 +149,7 @@ export const subcommands = {
                     return msg.send('Jogo deletado pelo autor')
                 }
                     
-                if (game.players.hasOwnProperty(id)) {
+                if (game.players.has(id)) {
                     let out = 'Você não está mais participando do jogo.\n\n'
                     if (game.started && game.queue.length <= 2) {
                         game.queue = game.queue.filter(p => p.id !== id)
@@ -166,7 +166,7 @@ export const subcommands = {
                             .setDescription(`${out}\n${game.word}`)
                             .setColor('BLUE')
                     }
-                    delete game.players[id]
+                    game.players.delete(id)
                     game.queue = game.queue.filter(p => p.id !== id)
 
                     if (Object.keys(game.players).length === 0)
@@ -194,7 +194,7 @@ export const subcommands = {
                 if (game.author.id !== msg.author.id)
                     return msg.send('Você não pode começar um jogo que não é seu!')
 
-                if (!game.players.hasOwnProperty(msg.author.id) && game.queue.length < 2)
+                if (!game.players.has(msg.author.id) && game.queue.length < 2)
                     return msg.send('2 jogadores são necessários para jogar')
                 
                 game.started = true
@@ -216,7 +216,7 @@ export const subcommands = {
                 if (!game.started)
                     return msg.send('Esse jogo ainda não começou')
 
-                if (!game.players.hasOwnProperty(msg.author.id)) {
+                if (!game.players.has(msg.author.id)) {
                     if (game.author.id === msg.author.id)
                         return msg.send('Você não poge jogar. Você já sabe a palavra! Não vale...')
 
@@ -267,7 +267,7 @@ export const subcommands = {
                 if (!game.started)
                     return msg.send('Esse jogo ainda não começou')
 
-                if (!game.players.hasOwnProperty(msg.author.id))
+                if (!game.players.has(msg.author.id))
                     return msg.send('Você não tá participando desse jogo')
 
                 try {

@@ -1,6 +1,6 @@
 import { Game } from './structures/Game'
 import { Grid } from './structures/2048/Grid'
-import { AbstractPlayer } from './structures/AbstractPlayer'
+import { AbstractPlayer as Player } from './structures/AbstractPlayer'
 
 export class G2048 extends Game {
     constructor (score = 0, grid) {
@@ -10,13 +10,10 @@ export class G2048 extends Game {
         this.grid = grid || this.blankGrid
     }
 
-    get player () {
-        return this.queue[0]
-    }
-
     addPlayer (member) {
-        if (!this.players[member.id]) {
-            let player = this.players[member.id] = new AbstractPlayer(member, this)
+        if (!this.players.has(member.id)) {
+            let player = new Player(member, this)
+            this.players.set(member.id, player)
 
             this.queue.push(player)
             return player

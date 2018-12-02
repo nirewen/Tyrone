@@ -11,11 +11,11 @@ export class Connect4 extends Game {
     }
 
     addPlayer (member, type) {
-        if (!this.players[member.id]) {
-            let player = this.players[member.id] = new Player(member, this, type)
+        if (!this.players.has(member.id)) {
+            let player = new Player(member, this, type)
+            this.players.set(member.id, player)
 
             this.queue.push(player)
-
             return player
         } else
             return null

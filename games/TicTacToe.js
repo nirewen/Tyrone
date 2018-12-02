@@ -13,17 +13,15 @@ export class TicTacToe extends Game {
         this.mode = mode
     }
 
-    addPlayer (user, type) {
-        if (!this.players[user.id]) {
-            let player = new Player(user, this, type)
-            
-            this.players[user.id] = player
+    addPlayer (member, type) {
+        if (!this.players.has(member.id)) {
+            let player = new Player(member, this, type)
+            this.players.set(member.id, player)
+
             this.queue.push(player)
-
             return player
-        }
-
-        return null
+        } else
+            return null
     }
 
     play (position, player = this.player) {

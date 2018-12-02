@@ -83,7 +83,7 @@ export async function run (msg, suffix) {
 
     message.edit(`:hash:${game.player.label}\n\n${game.render()}`)
 
-    msg.collector = message.createReactionCollector((r, u) => r.me && game.players.hasOwnProperty(u.id), { idle: 12E4 })
+    msg.collector = message.createReactionCollector((r, u) => r.me && game.players.has(u.id), { idle: 12E4 })
 
     msg.collector.on('collect', async function (r, u) {
         if (game && game.player.id === u.id) {

@@ -9,7 +9,7 @@ export class GameManager extends Collection {
     }
 
     findGame (type, id) {
-        return this.get(type).find(game => game.players && game.players.hasOwnProperty(id))
+        return this.get(type).find(game => game.players && game.players.has(id))
     }
 
     set (key, game) {

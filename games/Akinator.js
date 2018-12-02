@@ -4,16 +4,13 @@ import { xml2js as convert } from 'xml-js'
 const BASE = 'http://62.4.22.192:8166/ws/'
 
 import { Game } from './structures/Game'
-import { AbstractPlayer } from './structures/AbstractPlayer'
+import { AbstractPlayer as Player } from './structures/AbstractPlayer'
 
 export class Akinator extends Game {
-    get player () {
-        return this.queue[0]
-    }
-
     addPlayer (member) {
-        if (!this.players[member.id]) {
-            let player = this.players[member.id] = new AbstractPlayer(member, this)
+        if (!this.players.has(member.id)) {
+            let player = new Player(member, this)
+            this.players.set(member.id, player)
 
             this.queue.push(player)
             return player

@@ -65,7 +65,7 @@ export const subcommands = {
             let { id } = msg.author
             let game = this.bot.games.get('uno').get(msg.channel.id)
 
-            if (game && game.players.hasOwnProperty(id)) {
+            if (game && game.players.has(id)) {
                 let out = 'Você não está mais participando do jogo.\n\n'
                 if (game.started && game.queue.length <= 2) {
                     game.queue = game.queue.filter(p => p.id !== id)
@@ -86,7 +86,7 @@ export const subcommands = {
                         .setColor(game.table.flipped.colorCode)
                         .attachFiles([new MessageAttachment(game.table.flipped.URL, 'card.png')])
                 }
-                delete game.players[id]
+                game.players.delete(id)
                 game.queue = game.queue.filter(p => p.id !== id)
                 if (game.players.length === 0)
                     this.bot.games.get('uno').delete(msg.channel.id)
@@ -269,8 +269,8 @@ export const subcommands = {
     '!': {
         run: async function (msg) {
             let game = this.bot.games.get('uno').get(msg.channel.id)
-            if (game && game.started && game.players[msg.author.id] && game.players[msg.author.id].hand.length === 1) {
-                let p = game.players[msg.author.id]
+            if (game && game.started && game.players.has(msg.author.id) && game.players.get(msg.author.id).hand.length === 1) {
+                let p = game.players.get(msg.author.id)
                 if (!p.called) {
                     p.called = true
                     return msg.channel.send(`**UNO!!** ${Util.escapeMarkdown(p.user.username)} tem só uma carta!`)
@@ -283,7 +283,7 @@ export const subcommands = {
     'contra-uno': {
         run: async function (msg) {
             let game = this.bot.games.get('uno').get(msg.channel.id)
-            if (game && game.started && game.players[msg.author.id]) {
+            if (game && game.started && game.players.has(msg.author.id)) {
                 let baddies = game.queue.filter(player => player.hand.length === 1 && !player.called && !player.immune)
 
                 baddies.forEach(player => {
