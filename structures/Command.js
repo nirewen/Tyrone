@@ -1,15 +1,4 @@
-import Discord from 'discord.js'
-import { Logger } from './Logger'
-import config from '../config.json'
-
-const getMatches = (string, regex) => {
-    var matches = []
-    var match
-    while (match = regex.exec(string)) {
-        matches.push([match[1], match[2]])
-    }
-    return matches
-}
+import { MessageEmbed, Collection } from 'discord.js'
 
 export class Command {
     constructor (name, prefix, cmd, bot) {
@@ -23,7 +12,8 @@ export class Command {
         this.cooldown = cmd.cooldown || 0
         this.hidden = cmd.hidden || false
         this.ownerOnly = cmd.ownerOnly || false
-        this.subcommands = cmd.subcommands || {}
+        this.flags = cmd.flags || true
+        this.subcommands = new Collection()
         this.run = cmd.run
         this.usersOnCooldown = new Set()
     }
@@ -37,7 +27,7 @@ export class Command {
     }
 
     get helpMessage () {
-        return new Discord.MessageEmbed()
+        return new MessageEmbed()
             .addField('Comando', `\`${this.correctUsage}\``, true)
             .addField('Detalhes', this.details)
             .addField('Descrição', this.desc)
@@ -50,41 +40,39 @@ export class Command {
         if (msg.author.bot)
             return
 
-        if (this.ownerOnly && !config.admins.includes(msg.author.id))
+        if (this.ownerOnly && !this.bot.config.admins.includes(msg.author.id))
             return msg.channel.send('Este comando é só para o dono do bot')
         if (!msg.guild && this.guildOnly)
             return msg.channel.send('Este comando só está disponível em servidores')
 
-        let regex = /--(\w+)\s??(.+?(?=--|$))?/g
-        let flags = new Map()
-        getMatches(suffix, regex).forEach(k =>
-            flags.set(k[0], k[1] && k[1].trim())
-        )
-        suffix = suffix.replace(regex, '').trim()
-
-        msg.flags = flags
+        if (this.flags)
+            suffix = suffix.replace(msg.flags.regex, '').trim()
 
         let result
         try {
-            result = await this.run(msg, suffix)
+            let [sub, ...args] = suffix.split(/\s/)
+            if (this.find(sub))
+                result = await this.find(sub).process(msg, args.join(' '))
+            else
+                result = await this.run(msg, suffix)
         } catch (err) {
             this.bot.logger.error(`${err}\n${err.stack}`, 'ERRO DE EXECUÇÃO DE COMANDO')
-            if (config.errorMessage) {
+            if (this.bot.config.errorMessage) {
                 try {
-                    msg.channel.send(config.errorMessage)
+                    msg.channel.send(this.bot.config.errorMessage)
                 } catch (e) {} // se der erro de perm cai no nada pq eu n quero dar handle nisso
             }
         }
 
         if (result === 'wrong usage') {
-            let m = await msg.channel.send(new Discord.MessageEmbed()
+            let m = await msg.channel.send(new MessageEmbed()
                 .setTitle(':interrobang: Uso incorreto')
                 .setDescription(`Tente de novo:\n${this.correctUsage}`)
                 .setColor('RED'))
 
-            setTimeout(() => m.delete(), 3E3)
+            m.delete(3E3)
         }
-        else if (!config.admins.includes(msg.author.id)) {
+        else if (!this.bot.config.admins.includes(msg.author.id)) {
             this.usersOnCooldown.add(msg.author.id)
             setTimeout(() => {
                 this.usersOnCooldown.delete(msg.author.id)
@@ -95,15 +83,10 @@ export class Command {
     }
 
     find (name) {
-        for (let subcommand in this.subcommands) {
-            if (name === subcommand || (this.subcommands[subcommand].aliases || []).includes(name))
-                return this.subcommands[subcommand]
-        }
-
-        return null
+        return this.subcommands.find(c => c.name === name || c.aliases.includes(name))
     }
 
     get logger () {
-        return new Logger()
+        return this.bot.logger
     }
 }

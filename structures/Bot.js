@@ -1,8 +1,9 @@
 import fs from 'fs'
 import reload from 'require-reload'
 import config from '../config.json'
-import { Client, Collection } from 'discord.js'
+import { Client, Collection, Structures } from 'discord.js'
 import { Category } from './Category'
+import * as DiscordStructures from './lib'
 import { Event } from './Event'
 import { Firebase } from '../database/Firebase'
 import { GameManager } from './GameManager'
@@ -51,8 +52,17 @@ export class Bot extends Client {
         return new Promise(resolve => {
             for (let prefix in this.config.commandSets) {
                 let { name, dir, color } = this.config.commandSets[prefix]
-                this.categories.set(name, new Category(name, prefix, dir, color))
+                this.categories.set(name.toLowerCase(), new Category(name, prefix, dir, color))
             }
+            resolve()
+        })
+    }
+
+    loadStructures () {
+        return new Promise(resolve => {
+            for (let [name, structure] of Object.entries(DiscordStructures))
+                Structures.extend(name, structure)
+
             resolve()
         })
     }
@@ -86,6 +96,7 @@ export class Bot extends Client {
             await this.loadCommandSets(Category)
             await this.initCategories()
             await this.loadEvents()
+            await this.loadStructures()
             this.login(this.token)
         } catch (e) {
             this.logger.error(e, 'START ERROR')

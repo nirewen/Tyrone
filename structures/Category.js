@@ -1,4 +1,5 @@
 import fs from 'fs'
+import path from 'path'
 import reload from 'require-reload'
 import { MessageEmbed, Collection } from 'discord.js'
 import { Command } from './Command'
@@ -10,31 +11,42 @@ export class Category {
         this.name = name
         this.dir = dir
         this.color = color
-        this.directory = `${__dirname}/../${dir}`
+        this.directory = path.join(__dirname, '..', dir)
         this.commands = new Collection()
         this.logger = new Logger(color)
     }
 
+    register (files, collection, dir, bot) {
+        files = files.sort(a => a.endsWith('.subcommands') ? 1 : -1)
+        for (let name of files) {
+            if (name.endsWith('.subcommands')) {
+                let [command] = name.split('.')
+                let subcommands = fs.readdirSync(path.join(this.directory, name))
+                if (!subcommands)
+                    continue
+                if (collection.has(command))
+                    this.register(subcommands, collection.get(command).subcommands, path.join(this.directory, name), bot)
+            }
+            if (name.endsWith('.js') && !name.startsWith('-')) {
+                ([name] = name.split(/\.js$/))
+                collection.set(name, new Command(name, this.prefix, reload(path.join(dir, name + '.js')), bot))
+            } else
+                continue
+        }
+    }
+
     initialize (bot) {
         return new Promise((resolve, reject) => {
-            fs.readdir(this.directory, (err, files) => {
-                if (err) return this.logger.error(err)
-                else if (!files) return this.logger.warn('Nenhum arquivo no diretório ' + this.dir)
-                else {
-                    for (let name of files) {
-                        if (name.endsWith('.js') && !name.startsWith('-')) {
-                            try {
-                                name = name.split(/\.js$/)[0]
-                                this.commands.set(name, new Command(name, this.prefix, reload(this.directory + name + '.js'), bot))
-                                resolve(this)
-                            } catch (e) {
-                                reject(e)
-                            }
-                        } else
-                            continue
-                    }
+            let files = fs.readdirSync(this.directory)
+            if (!files) 
+                return this.logger.warn('Nenhum arquivo no diretório ' + this.dir)
+            else
+                try {
+                    this.register(files, this.commands, this.directory, bot)
+                    resolve(this)
+                } catch (e) {
+                    reject(e)
                 }
-            })
         })
     }
 
