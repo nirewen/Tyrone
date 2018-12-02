@@ -16,37 +16,23 @@ export class Category {
         this.logger = new Logger(color)
     }
 
-    register (files, collection, dir, bot) {
-        files = files.sort(a => a.endsWith('.subcommands') ? 1 : -1)
-        for (let name of files) {
-            if (name.endsWith('.subcommands')) {
-                let [command] = name.split('.')
-                let subcommands = fs.readdirSync(path.join(this.directory, name))
-                if (!subcommands)
-                    continue
-                if (collection.has(command))
-                    this.register(subcommands, collection.get(command).subcommands, path.join(this.directory, name), bot)
-            }
-            if (name.endsWith('.js') && !name.startsWith('-')) {
-                ([name] = name.split(/\.js$/))
-                collection.set(name, new Command(name, this.prefix, reload(path.join(dir, name + '.js')), bot))
-            } else
-                continue
-        }
-    }
-
     initialize (bot) {
         return new Promise((resolve, reject) => {
-            let files = fs.readdirSync(this.directory)
-            if (!files) 
-                return this.logger.warn('Nenhum arquivo no diretório ' + this.dir)
-            else
-                try {
-                    this.register(files, this.commands, this.directory, bot)
-                    resolve(this)
-                } catch (e) {
-                    reject(e)
-                }
+            try {
+                let files = fs.readdirSync(this.directory)
+                if (!files) 
+                    return this.logger.warn('Nenhum arquivo no diretório ' + this.dir)
+
+                for (let name of files)
+                    if (name.endsWith('.js') && !name.startsWith('-')) {
+                        ([name] = name.split(/\.js$/))
+                        this.commands.set(name, new Command(name, this.prefix, reload(path.join(this.directory, name + '.js')), this, bot))
+                    } else
+                        continue
+                resolve(this)
+            } catch (e) {
+                reject(e)
+            }
         })
     }
 

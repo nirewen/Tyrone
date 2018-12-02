@@ -1,9 +1,13 @@
+import fs from 'fs'
+import path from 'path'
+import reload from 'require-reload'
 import { MessageEmbed, Collection } from 'discord.js'
 
 export class Command {
-    constructor (name, prefix, cmd, bot) {
+    constructor (name, prefix, cmd, category, bot) {
         this.name = name
         this.prefix = prefix
+        this.category = category
         this.bot = bot
         this.usage = cmd.usage || ''
         this.desc = cmd.desc || 'Sem descrição'
@@ -16,6 +20,8 @@ export class Command {
         this.subcommands = new Collection()
         this.run = cmd.run
         this.usersOnCooldown = new Set()
+
+        this.fetchSubcommands()
     }
 
     get correctUsage () {
@@ -80,6 +86,19 @@ export class Command {
         }
 
         msg.command = true
+    }
+
+    fetchSubcommands () {
+        try {
+            let subcommands = fs.readdirSync(path.join(this.category.directory, `${this.name}.subcommands`))
+            if (subcommands)
+                for (let name of subcommands)
+                    if (name.endsWith('.js') && !name.startsWith('-')) {
+                        ([name] = name.split(/\.js$/))
+                        this.subcommands.set(name, new Command(name, this.category.prefix, reload(path.join(this.category.directory, `${this.name}.subcommands`, name + '.js')), this.category, this.bot))
+                    } else
+                        continue
+        } catch (e) {}
     }
 
     find (name) {
