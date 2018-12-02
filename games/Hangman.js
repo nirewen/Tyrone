@@ -50,8 +50,10 @@ export class Hangman extends Game {
         } else
             this.misses.push(letter)
 
-        if (this.misses.length >= 6)
+        if (this.misses.length >= 6) {
+            this.word.letters.forEach(l => l.show())
             throw new Error('man hang')
+        }
 
         if (this.word.letters.filter(l => l.hidden).length < 1)
             return true

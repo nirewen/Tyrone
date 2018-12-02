@@ -248,7 +248,7 @@ export const subcommands = {
                     if (e.message === 'man hang') {
                         this.bot.games.get('hangman').delete(msg.channel.id)
                         return msg.channel.send(DefaultEmbed()
-                            .setDescription(`Muitas tentativas falhas... O homem foi enforcado... F`)
+                            .setDescription(`Muitas tentativas falhas... O homem foi enforcado... F\n\nA palavra era\n\n${game.word}`)
                             .setFooter(game.misses)
                             .setThumbnail(`https://raw.githubusercontent.com/nirewen/Tyrone/master/src/img/hangman/${game.misses.length}.png`))
                     }
