@@ -3,6 +3,7 @@ import reload from 'require-reload'
 import config from '../config.json'
 import { Client, Collection } from 'discord.js'
 import { Category } from './Category'
+import { Event } from './Event'
 import { Firebase } from '../database/Firebase'
 import { GameManager } from './GameManager'
 import { Logger } from './Logger'
@@ -29,9 +30,9 @@ export class Bot extends Client {
                 if (file.endsWith('.js')) {
                     try {
                         let [name] = file.split(/\.js$/)
-                        let { default: Event } = reload(`../events/${file}`)
+                        let { run } = reload(`../events/${file}`)
 
-                        this.events.set(name, new Event(name))
+                        this.events.set(name, new Event(name, run))
 
                         this.on(name, function () {
                             this.events.get(name).run.call(this, ...arguments)
