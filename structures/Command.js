@@ -76,7 +76,7 @@ export class Command {
                 .setDescription(`Tente de novo:\n${this.correctUsage}`)
                 .setColor('RED'))
 
-            m.delete(3E3)
+            m.delete({ timeout: 3E3 })
         }
         else if (!this.bot.config.admins.includes(msg.author.id)) {
             this.usersOnCooldown.add(msg.author.id)
