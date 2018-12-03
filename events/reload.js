@@ -36,17 +36,21 @@ export async function run (path) {
         if (structure === 'Category') {
             let { Category } = reload(join('..', ...path))
 
-            this.loadCommandSets(Category)
-            this.initCategories()
+            if (Category.constructor) {
+                this.loadCommandSets(Category)
+                this.initCategories()
+            } else return
         }
 
         if (structure === 'Logger') {
             let { Logger } = reload(join('..', ...path))
 
-            this.logger = new Logger()
-            this.categories.each(c => {
-                c.logger = new Logger(c.color)
-            })
+            if (Logger.constructor) {
+                this.logger = new Logger()
+                this.categories.each(c => {
+                    c.logger = new Logger(c.color)
+                })
+            } else return
         }
     }
 
