@@ -13,7 +13,7 @@ export async function run (path) {
         let command = reload(join('..', category.dir, name + '.js'))
 
         if (category.commands.has(name) && command.run)
-            category.commands.set(name, new Command(name, category.prefix, command, category, this))
+            category.commands.set(name, new Command(name, category, command, this))
         else return
     }
 
