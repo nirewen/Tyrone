@@ -13,17 +13,17 @@ export async function run (path) {
         let command = reload(join(...['..', ...path]))
 
         if (category.commands.has(name) && command.run)
-            category.commands.set(name, new Command(name, category.prefix, command, this))
+            category.commands.set(name, new Command(name, category.prefix, command, category, this))
         else return
     }
 
     if (folder === 'events') {
         let [name] = subfolders.map(e => e.split('.')[0])
 
-        let { default: Event } = reload(join(...['..', ...path]))
+        let Event = reload(join(...['..', ...path]))
 
-        if (Event)
-            this.events.set(name, new Event(name))
+        if (Event.run)
+            this.events.set(name, Event.run)
         else return
     }
 
