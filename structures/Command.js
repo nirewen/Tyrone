@@ -4,9 +4,10 @@ import reload from 'require-reload'
 import { MessageEmbed, Collection } from 'discord.js'
 
 export class Command {
-    constructor (name, category, cmd) {
+    constructor (name, category, cmd, bot) {
         this.name = name
         this.category = category
+        this.bot = bot
         this.usage = cmd.usage || ''
         this.desc = cmd.desc
         this.help = cmd.help
@@ -59,6 +60,8 @@ export class Command {
     }
 
     async process (msg, suffix) {
+        console.log(require('util').inspect(this.bot, { depth: 0 }))
+
         if (msg.author.bot)
             return
 
@@ -80,7 +83,7 @@ export class Command {
             else
                 result = await this.run(msg, suffix)
         } catch (err) {
-            this.bot.logger.error(`${err}\n${err.stack}`, 'ERRO DE EXECUÇÃO DE COMANDO')
+            this.bot.logger.error(`${this.fullName} | ${err}\n${err.stack}`, 'ERRO DE EXECUÇÃO DE COMANDO')
             if (this.bot.config.errorMessage) {
                 try {
                     msg.channel.send(this.bot.config.errorMessage)
@@ -115,9 +118,8 @@ export class Command {
                     if (name.endsWith('.js') && !name.startsWith('-')) {
                         ([name] = name.split(/\.js$/))
 
-                        let command = new Command(name, this.category, reload(path.join(directory, `${this.name}.subcommands`, name + '.js')))
+                        let command = new Command(name, this.category, reload(path.join(directory, `${this.name}.subcommands`, name + '.js')), this.bot)
 
-                        command.bot = this.bot
                         command.parent = this
 
                         this.subcommands.set(name, command)

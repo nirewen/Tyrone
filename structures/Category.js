@@ -20,18 +20,14 @@ export class Category {
         return new Promise((resolve, reject) => {
             try {
                 let files = fs.readdirSync(this.directory)
-                if (!files) 
+                if (!files)
                     return this.logger.warn('Nenhum arquivo no diretório ' + this.dir)
 
                 for (let name of files)
                     if (name.endsWith('.js') && !name.startsWith('-')) {
                         ([name] = name.split(/\.js$/))
 
-                        let command = new Command(name, this, reload(path.join(this.directory, name + '.js')))
-                        
-                        command.bot = bot
-
-                        this.commands.set(name, command)
+                        this.commands.set(name, new Command(name, this, reload(path.join(this.directory, name + '.js')), bot))
                     } else
                         continue
                 resolve(this)
@@ -54,7 +50,7 @@ export class Category {
                 .setColor('ORANGE')
         } else {
             let cmd = collection.find(command)
-            
+
             if (!cmd)
                 return new MessageEmbed()
                     .setDescription(`:interrobang: Comando \`${this.prefix}${command}\` não encontrado`)
