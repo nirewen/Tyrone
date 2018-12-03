@@ -21,7 +21,7 @@ export async function run (msg) {
         return msg.channel.send(new MessageEmbed()
             .setTitle('Jogo da Forca')
             .setDescription(`Agora é a vez de ${game.player.user}\n\n${game.word}`)
-            .setFooter(game.misses)
+            .setFooter(game.misses.join(' '))
             .setThumbnail(game.man)
             .setColor('BLUE'))
     } else

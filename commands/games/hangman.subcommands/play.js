@@ -21,7 +21,7 @@ export async function run (msg, letter) {
             let won = game.play(letter)
             let embed = new MessageEmbed()
                 .setTitle('Jogo da Forca')
-                .setFooter(game.misses)
+                .setFooter(game.misses.join(' '))
                 .setThumbnail(game.man)
                 .setColor('BLUE')
 
@@ -45,7 +45,7 @@ export async function run (msg, letter) {
                 return msg.channel.send(new MessageEmbed()
                     .setTitle('Jogo da Forca')
                     .setDescription(`Muitas tentativas falhas... O homem foi enforcado... F\n\nA palavra era\n\n${game.word}`)
-                    .setFooter(game.misses)
+                    .setFooter(game.misses.join(' '))
                     .setThumbnail(game.man)
                     .setColor('BLUE'))
             }

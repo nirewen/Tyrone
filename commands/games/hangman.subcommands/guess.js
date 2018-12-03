@@ -16,7 +16,7 @@ export async function run (msg, word) {
             let embed = new MessageEmbed()
                 .setTitle('Jogo da Forca')
                 .setDescription(game.word)
-                .setFooter(game.misses)
+                .setFooter(game.misses.join(' '))
 
             if (guessed) {
                 embed.setDescription(`Parabéns ${msg.author.username}! Você acertou a palavra!\n\n` + embed.description)
