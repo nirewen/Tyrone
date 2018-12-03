@@ -14,6 +14,10 @@ export class Hangman extends Game {
         this.guesses = []
     }
 
+    get man () {
+        return `https://raw.githubusercontent.com/nirewen/Tyrone/master/src/img/hangman/${this.misses.length}.png`
+    }
+
     addPlayer (member) {
         if (!this.players.has(member.id)) {
             let player = new Player(member, this)
