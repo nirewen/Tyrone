@@ -58,14 +58,12 @@ export class Command {
         try {
             let [sub, ...args] = suffix.split(/\s/)
 
-            result = await (sub
-                ? this.find(sub)
-                    ? this.find(sub).process(msg, args.join(' '))
-                    : 'wrong usage'
-                : this.run(msg, suffix))
+            if (this.find(sub))
+                result = await this.find(sub).process(msg, args.join(' '))
+            else
+                result = await this.run(msg, suffix)
         } catch (err) {
             this.bot.logger.error(`${err}\n${err.stack}`, 'ERRO DE EXECUÇÃO DE COMANDO')
-
             if (this.bot.config.errorMessage) {
                 try {
                     msg.channel.send(this.bot.config.errorMessage)
