@@ -12,7 +12,7 @@ export async function run (path) {
 
         if (category.commands.has(name))
             if (subcommand)
-                category.commands.set(name, new Command(name, category.prefix, reload(join('..', folder, category, name + 'js')), category, this))
+                category.commands.set(name, new Command(name, category.prefix, reload(join('..', category.dir, name + 'js')), category, this))
             else
                 category.commands.delete(name)
         else return

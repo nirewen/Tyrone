@@ -10,7 +10,7 @@ export async function run (path) {
 
         category = this.categories.find(c => path.join('/').startsWith(c.dir))
 
-        let command = reload(join('..', folder, category, name + '.js'))
+        let command = reload(join('..', category.dir, name + '.js'))
 
         if (category.commands.has(name) && command.run)
             category.commands.set(name, new Command(name, category.prefix, command, category, this))
@@ -23,7 +23,7 @@ export async function run (path) {
         let Event = reload(join('..', ...path))
 
         if (Event.run)
-            this.events.set(name, Event.run)
+            this.events.set(name, Event)
         else return
     }
 
