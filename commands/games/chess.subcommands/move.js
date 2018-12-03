@@ -35,5 +35,5 @@ export async function run (msg, suffix) {
                 .attachFiles([new MessageAttachment(canvas.toBuffer(), 'board.png')]))
         }
     } else
-        msg.send('Você não está em jogo!')
+        return msg.send('Você não está em jogo!')
 }
