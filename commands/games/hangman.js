@@ -9,11 +9,17 @@ export const guildOnly = true
 export const usage = '[join | quit | start | play | guess]'
 export async function run (msg, suffix) {
     const chooseWord = async (channel) => {
+        await channel.send('Escolha a palavra que você quer que acertem\n\nUse :arrows_counterclockwise: para uma palavra aleatória\n\n:warning: Se você escolher a palavra, você não vai poder jogar')
+
         let random = false
-        let palavra = await channel.awaitMessages(m => m.author.id === msg.author.id, { max: 1, idle: 1E4 })
+        let palavra = await channel.awaitMessages(m => m.author.id === msg.author.id, { max: 1, time: 15E3, errors: ['time'] })
             .then(m => {
                 if (m.first())
                     return Words.validate(m.first().content.split(/\s+/).join(' ').toUpperCase())
+            })
+            .catch(e => {
+                this.bot.games.get('hangman').delete(msg.channel.id)
+                channel.send('Você demorou demais para escolher a palavra...')
             })
 
         if (palavra) {
@@ -63,15 +69,19 @@ export async function run (msg, suffix) {
 
         try {
             game = this.bot.games.get('hangman').set(msg.channel.id, new Hangman(msg.author))
-            let palavra, random
+            let word
 
             if (!msg.flags.has('random')) {
-                let { channel } = await msg.author.send('Você criou um nogo Jogo da Forca!')
-                await channel.send('Escolha a palavra que você quer que acertem\n\nUse :arrows_counterclockwise: para uma palavra aleatória\n\n:warning: Se você escolher a palavra, você não vai poder jogar');
+                let { channel } = await msg.author.send('Você criou um novo Jogo da Forca!')
 
-                ({ palavra, random } = await chooseWord(channel))
+                word = await chooseWord(channel)
             } else
-                ({ palavra, random } = { palavra: Words.validate(Words.random().toUpperCase()), random: true })
+                word = { palavra: Words.validate(Words.random().toUpperCase()), random: true }
+
+            if (!word)
+                return this.bot.games.get('hangman').delete(msg.channel.id)
+
+            let { palavra, random } = word
 
             game.setWord(palavra)
 
