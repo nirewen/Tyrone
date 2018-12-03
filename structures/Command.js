@@ -60,8 +60,6 @@ export class Command {
     }
 
     async process (msg, suffix) {
-        console.log(require('util').inspect(this.bot, { depth: 0 }))
-
         if (msg.author.bot)
             return
 
