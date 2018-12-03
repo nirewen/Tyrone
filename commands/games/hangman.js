@@ -6,10 +6,11 @@ const [greenTick, redTick] = ['313905428121780225', '314240199406387201']
 export const desc = 'Jogue forca pelo Discord'
 export const aliases = ['forca']
 export const guildOnly = true
+export const usage = '[join | quit | start | play | guess]'
 export async function run (msg, suffix) {
     const chooseWord = async (channel) => {
         let random = false
-        let palavra = await channel.awaitMessages(m => m.author.id === msg.author.id, { max: 1 })
+        let palavra = await channel.awaitMessages(m => m.author.id === msg.author.id, { max: 1, idle: 1E4 })
             .then(m => {
                 if (m.first())
                     return Words.validate(m.first().content.split(/\s+/).join(' ').toUpperCase())
@@ -63,7 +64,7 @@ export async function run (msg, suffix) {
         try {
             game = this.bot.games.get('hangman').set(msg.channel.id, new Hangman(msg.author))
             let palavra, random
-            
+
             if (!msg.flags.has('random')) {
                 let { channel } = await msg.author.send('Você criou um nogo Jogo da Forca!')
                 await channel.send('Escolha a palavra que você quer que acertem\n\nUse :arrows_counterclockwise: para uma palavra aleatória\n\n:warning: Se você escolher a palavra, você não vai poder jogar');
