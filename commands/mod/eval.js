@@ -20,7 +20,7 @@ export const hidden = true
 export const ownerOnly = true
 export async function run (msg, suffix) {
     let code = suffix.replace(/^```(js|javascript ?\n)?|```$/g, '')
-    let inspect  = (e, colors) => typeof e === 'string' ? e : util.inspect(e, { depth: 1, colors })
+    let inspect  = (e, colors) => typeof e === 'string' ? e : util.inspect(e, { depth: 0, colors })
     let codeblock = arg => `\`\`\`js\n${arg}\n\`\`\``
 
     try {
