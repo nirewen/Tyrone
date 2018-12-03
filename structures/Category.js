@@ -26,7 +26,12 @@ export class Category {
                 for (let name of files)
                     if (name.endsWith('.js') && !name.startsWith('-')) {
                         ([name] = name.split(/\.js$/))
-                        this.commands.set(name, new Command(name, this.prefix, reload(path.join(this.directory, name + '.js')), this, bot))
+
+                        let command = new Command(name, this, reload(path.join(this.directory, name + '.js')))
+                        
+                        command.bot = bot
+
+                        this.commands.set(name, command)
                     } else
                         continue
                 resolve(this)
@@ -36,23 +41,32 @@ export class Category {
         })
     }
 
-    help (msg, command) {
-        this.logger.logCommand(msg.guild ? msg.guild.name : null, msg.author.username, this.prefix + 'help', command)
+    help (collection, msg, ...suffix) {
+        let [command, ...subcommands] = suffix
+
         if (!command) {
-            let comandos = this.commands.filter(c => !c.hidden).array().map(c => c.name)
+            let comandos = this.commands.filter(c => !c.hidden).map(c => c.name)
+
             return new MessageEmbed()
                 .setTitle(`Aqui tem uma lista dos comandos para o prefixo \`${this.prefix}\`:`)
                 .setDescription(`\`${comandos.join('` `')}\``)
                 .setFooter(`Para mais informações, digite ${this.prefix}help ‹comando›`)
-                .setColor('#e67e22')
+                .setColor('ORANGE')
         } else {
-            let cmd = this.find(command)
-            if (!cmd) {
+            let cmd = collection.find(command)
+            
+            if (!cmd)
                 return new MessageEmbed()
                     .setDescription(`:interrobang: Comando \`${this.prefix}${command}\` não encontrado`)
                     .setColor('RED')
-            } else
+            else {
+                if (subcommands.length > 0)
+                    return this.help(cmd, msg, ...subcommands)
+
+                this.logger.logCommand(msg.guild ? msg.guild.name : null, msg.author.username, this.prefix + 'help', cmd.fullName)
+
                 return cmd.helpMessage
+            }
         }
     }
 
@@ -64,7 +78,7 @@ export class Category {
         let command = this.find(name)
 
         if (name === 'help')
-            return msg.send(this.help(msg, suffix))
+            return msg.send(this.help(this, msg, ...suffix.split(/\s/)))
 
         if (command) {
             let cleanSuffix = msg.cleanContent.slice((this.prefix + name).length).trim()

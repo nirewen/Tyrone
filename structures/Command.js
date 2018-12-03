@@ -4,16 +4,14 @@ import reload from 'require-reload'
 import { MessageEmbed, Collection } from 'discord.js'
 
 export class Command {
-    constructor (name, prefix, cmd, category, bot) {
+    constructor (name, category, cmd) {
         this.name = name
-        this.prefix = prefix
         this.category = category
-        this.bot = bot
         this.usage = cmd.usage || ''
-        this.desc = cmd.desc || 'Sem descrição'
-        this.details = cmd.help || this.desc
+        this.desc = cmd.desc
+        this.help = cmd.help
         this.aliases = cmd.aliases || []
-        this.cooldown = cmd.cooldown || 0
+        this.cooldown = cmd.cooldown
         this.hidden = cmd.hidden || false
         this.ownerOnly = cmd.ownerOnly || false
         this.flags = cmd.flags || true
@@ -24,8 +22,16 @@ export class Command {
         this.fetchSubcommands()
     }
 
+    get prefix () {
+        return this.category.prefix
+    }
+
+    get fullName () {
+        return this.parent ? `${this.parent.fullName} ${this.name}` : this.name
+    }
+
     get correctUsage () {
-        return `${this.prefix}${this.name} ${this.usage}`
+        return `${this.prefix}${this.fullName} ${this.usage}`
     }
 
     get commandCooldown () {
@@ -33,13 +39,23 @@ export class Command {
     }
 
     get helpMessage () {
-        return new MessageEmbed()
+        let embed = new MessageEmbed()
             .addField('Comando', `\`${this.correctUsage}\``, true)
-            .addField('Detalhes', this.details)
-            .addField('Descrição', this.desc)
-            .addField('Cooldown', this.commandCooldown, true)
-            .addField('Aliases', `${this.aliases.join(', ') || 'Nenhuma'}`, true)
-            .setColor('#e67e22')
+            .setColor('ORANGE')
+
+        if (this.desc)
+            embed.addField('Descrição', this.desc)
+
+        if (this.help)
+            embed.addField('Ajuda', this.help)
+
+        if (this.cooldown)
+            embed.addField('Cooldown', this.commandCooldown, true)
+
+        if (this.aliases.length > 0)
+            embed.addField('Aliases', `${this.aliases.join(', ') || 'Nenhuma'}`, true)
+
+        return embed
     }
 
     async process (msg, suffix) {
@@ -48,6 +64,7 @@ export class Command {
 
         if (this.ownerOnly && !this.bot.config.admins.includes(msg.author.id))
             return msg.channel.send('Este comando é só para o dono do bot')
+
         if (!msg.guild && this.guildOnly)
             return msg.channel.send('Este comando só está disponível em servidores')
 
@@ -90,14 +107,20 @@ export class Command {
     }
 
     fetchSubcommands () {
-        let { prefix, directory } = this.category
+        let { directory } = this.category
         try {
             let subcommands = fs.readdirSync(path.join(directory, `${this.name}.subcommands`))
             if (subcommands)
                 for (let name of subcommands)
                     if (name.endsWith('.js') && !name.startsWith('-')) {
                         ([name] = name.split(/\.js$/))
-                        this.subcommands.set(name, new Command(name, prefix, reload(path.join(directory, `${this.name}.subcommands`, name + '.js')), this.category, this.bot))
+
+                        let command = new Command(name, this.category, reload(path.join(directory, `${this.name}.subcommands`, name + '.js')))
+
+                        command.bot = this.bot
+                        command.parent = this
+
+                        this.subcommands.set(name, command)
                     } else
                         continue
         } catch (e) {}
