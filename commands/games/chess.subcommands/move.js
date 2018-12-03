@@ -1,8 +1,10 @@
 import { MessageAttachment, MessageEmbed } from 'discord.js'
 import { schemes } from '../../../games/structures/Chess/schemes'
 
-export async function run (msg, args) {
+export async function run (msg, suffix) {
+    let args = suffix.split(/\s/)
     let game = this.bot.games.findGame('chess', msg.author.id)
+
     if (game) {
         if (game.player.id === msg.author.id) {
             try {
@@ -11,7 +13,7 @@ export async function run (msg, args) {
             catch (e) {
                 return msg.send(`Movimento inválido ${args[0]} -> ${args[1]}`)
             }
-            
+
             game.next()
 
             if (game.game.isCheckmate || game.game.validMoves.length === 0) {
