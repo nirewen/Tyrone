@@ -1,6 +1,7 @@
 import { MessageAttachment, MessageEmbed } from 'discord.js'
 import { schemes } from '../../../games/structures/Chess/schemes'
 
+export const desc = 'Mostra a mesa de um jogo de Xadrez'
 export const aliases = ['mesa']
 export async function run (msg, args) {
     let game = this.bot.games.findGame('chess', msg.author.id)

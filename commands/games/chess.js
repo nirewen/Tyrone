@@ -3,6 +3,7 @@ import { schemes } from '../../games/structures/Chess/schemes'
 import { MessageEmbed, Util, MessageAttachment } from 'discord.js'
 
 export const desc = 'Jogue Xadrez com seus amigos'
+export const help = 'Use `ty.chess move` para mover uma peça'
 export const usage = '<@usuário | move a1 b2>'
 export async function run (msg, suffix) {
     let mention = msg.mentions.users.first()

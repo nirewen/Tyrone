@@ -1,3 +1,4 @@
+export const desc = 'Sai de um jogo de Xadrez'
 export const aliases = ['q']
 export async function run (msg) {
     let game = this.bot.games.findGame('chess', msg.author.id)
