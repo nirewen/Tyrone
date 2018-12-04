@@ -67,14 +67,12 @@ export class Category {
     }
 
     process (msg) {
-        let name = msg.content.split(/\s+/)[0].replace(new RegExp(this.prefix, 'i'), '')
-
+        let name = msg.content.split(/\s+/)[0].replace(new RegExp(this.prefix, 'i'), '').toLowerCase()
         let suffix = msg.content.slice((this.prefix + name).length).trim()
-
         let command = this.find(name)
 
         if (name === 'help')
-            return msg.send(this.help(this, msg, ...suffix.split(/\s/)))
+            return msg.send(this.help(this, msg, ...suffix.toLowerCase().split(/\s/)))
 
         if (command) {
             let cleanSuffix = msg.cleanContent.slice((this.prefix + name).length).trim()
