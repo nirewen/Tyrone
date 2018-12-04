@@ -1,3 +1,4 @@
+export const desc = 'Entra em uma partida de Jogo da Forca'
 export const aliases = ['enter']
 export async function run (msg) {
     let game = this.bot.games.get('hangman').get(msg.channel.id)

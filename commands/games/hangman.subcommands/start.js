@@ -1,5 +1,7 @@
 import { MessageEmbed } from 'discord.js'
 
+export const des = 'Inicia a partida de Jogo da Forca'
+export const help = 'O mínimo de 2 jogadores é necessário para jogar, se uma palavra for escolhida. Se uma palavra aleatória for escolhida, o dono do jogo pode jogar sozinho.'
 export async function run (msg) {
     let game = this.bot.games.get('hangman').get(msg.channel.id)
     

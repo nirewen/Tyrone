@@ -1,5 +1,6 @@
 import { MessageEmbed } from 'discord.js'
 
+export const desc = 'Sai de uma partida de Jogo da Forca'
 export const aliases = ['q', 'leave']
 export async function run (msg) {
     let { id } = msg.author

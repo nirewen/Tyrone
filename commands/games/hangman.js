@@ -4,6 +4,15 @@ import { Words } from '../../games/structures/Hangman/Words'
 const [greenTick, redTick] = ['313905428121780225', '314240199406387201']
 
 export const desc = 'Jogue forca pelo Discord'
+export const help = [
+    'Como jogar:',
+    'Cada jogador deve jogar uma letra.',
+    'Se a letra tiver na palavra, ela é mostrada',
+    'Se não tiver, o homem na forca é penalizado',
+    'Se o número de letras erradas chegar a 6, o homem é morto',
+    '',
+    'Vence quem acertar a palavra'
+]
 export const aliases = ['forca']
 export const guildOnly = true
 export const usage = '[join | quit | start | play | guess]'

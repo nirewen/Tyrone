@@ -1,5 +1,7 @@
 import { MessageEmbed } from 'discord.js'
 
+export const desc = 'Faz uma tentativa de letra no Jogo da Forca'
+export const help = 'Só uma letra pode ser jogada por vez. Se a letra não tiver na palavra, é contado como erro e o homem é penalizado'
 export const aliases = ['p']
 export async function run (msg, letter) {
     let game = this.bot.games.get('hangman').get(msg.channel.id)
