@@ -2,6 +2,7 @@ import { Akinator } from '../../games/Akinator'
 import { MessageEmbed } from 'discord.js'
 
 export const desc = 'Jogue Akinator pelo Discord'
+export const help = 'Pense em algo e deixe o Akinator advinhar!\n\nResponda a pergunta do gênio usando as reações na mensagem'
 export async function run (msg) {
     if (msg.guild && !msg.channel.permissionsFor(msg.guild.me).has('MANAGE_MESSAGES'))
         return msg.send('Não tenho permissão de remover reações aqui...')
@@ -23,6 +24,7 @@ export async function run (msg) {
 
     msg.collector.on('collect', async function (r, u) {
         let answer = parseInt(r.emoji.name) - 1
+        
         if (r.emoji.name === '⏪')
             question = await game.cancel()
         else
