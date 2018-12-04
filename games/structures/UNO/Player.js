@@ -70,10 +70,12 @@ export class Player extends AbstractPlayer {
         color = _color
         if (['WILD', 'WILD+4'].includes(id.toUpperCase())) {
             let card = this.hand.find(c => c.id === id.toUpperCase())
-            console.log(card)
-            if (!card) return undefined
+            
+            if (!card) 
+                return
+
             card.color = color
-            console.log(card)
+            
             return card
         } else {
             return this.hand.find(c => c.id === id.toUpperCase() && c.color === color)
