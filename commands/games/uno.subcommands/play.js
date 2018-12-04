@@ -15,6 +15,9 @@ export const help = [
 export const aliases = ['p']
 export const usage = '<cor> <valor>'
 export async function run (msg, suffix) {
+    if (!suffix)
+        return 'wrong usage'
+        
     let words = suffix.split(/\s/)
     let game = this.bot.games.get('uno').get(msg.channel.id)
 

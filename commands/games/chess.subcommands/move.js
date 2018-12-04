@@ -3,6 +3,7 @@ import { schemes } from '../../../games/structures/Chess/schemes'
 
 export const desc = 'Move uma peça em um jogo de Xadrez'
 export const help = 'Use `ty.chess move A1 B1` para mover a peça `A1` para `B1`, no tabuleiro'
+export const usage = '<de> <para>'
 export async function run (msg, suffix) {
     if (!suffix)
         return msg.send(this.helpMessage)

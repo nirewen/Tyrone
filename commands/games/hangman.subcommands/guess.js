@@ -3,7 +3,11 @@ import { MessageEmbed } from 'discord.js'
 export const desc = 'Faz uma tentativa de acertar a palavra do jogo'
 export const help = 'Esse comando pode ser usado em qualquer rodada, mesmo se não for sua vez. Não é contado como penalidade se você errar'
 export const aliases = ['g']
+export const usage = '<palavra>'
 export async function run (msg, word) {
+    if (!word)
+        return 'wrong usage'
+        
     let game = this.bot.games.get('hangman').get(msg.channel.id)
 
     if (game) {
