@@ -2,6 +2,8 @@ import { MessageAttachment, MessageEmbed, Util } from 'discord.js'
 
 const s = n => n === 1 ? '' : 's'
 
+export const desc = 'Mostra a mesa de uma partida de UNO'
+export const help = 'No centro da mesa tem o deck de cartas descartadas, a mais do topo é a que foi jogada por último. O jogador atual fica em laranja, enquanto os outros, em verde'
 export const aliases = ['mesa']
 export async function run (msg) {
     let game = this.bot.games.get('uno').get(msg.channel.id)

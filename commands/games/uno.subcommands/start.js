@@ -1,5 +1,7 @@
 import { MessageAttachment, MessageEmbed, Util } from 'discord.js'
 
+export const desc = 'Inicia uma partida de UNO'
+export const help = 'Um mínimo de 2 jogadores são necessários para uma partida começar'
 export const aliases = ['s']
 export async function run (msg) {
     let game = this.bot.games.get('uno').get(msg.channel.id)

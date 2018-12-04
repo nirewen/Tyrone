@@ -3,7 +3,17 @@ import util from 'util'
 
 const sleep = util.promisify(setTimeout)
 
+export const desc = 'Joga uma carta na mesa'
+export const help = [
+    'Uma cor e um valor são necessários para identificar uma carta.',
+    'Exemplos:',
+    '> red 2',
+    '> vermelho wild',
+    '',
+    'Se uma carta coringa (WILD) for jogada junto de uma cor, essa cor se torna a cor que rege o jogo'
+]
 export const aliases = ['p']
+export const usage = '<cor> <valor>'
 export async function run (msg, suffix) {
     let words = suffix.split(/\s/)
     let game = this.bot.games.get('uno').get(msg.channel.id)

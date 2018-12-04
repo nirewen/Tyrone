@@ -1,5 +1,7 @@
 import { UNO } from '../../../games/UNO'
 
+export const desc = 'Entra em uma partida de UNO'
+export const help = 'Se nenhuma partida foi criada no canal, esse comando cria uma'
 export const aliases = ['enter']
 export async function run (msg) {
     let game = this.bot.games.get('uno').get(msg.channel.id)

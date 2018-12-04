@@ -1,5 +1,6 @@
 import { Util } from 'discord.js'
 
+export const desc = 'Fala a todos os jogadores que você só tem uma carta'
 export async function run (msg) {
     let game = this.bot.games.get('uno').get(msg.channel.id)
     if (game && game.started && game.players.has(msg.author.id) && game.players.get(msg.author.id).hand.length === 1) {

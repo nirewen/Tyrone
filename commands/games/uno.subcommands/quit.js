@@ -1,5 +1,6 @@
 import { MessageAttachment, MessageEmbed, Util } from 'discord.js'
 
+export const desc = 'Sai de uma partida de UNO'
 export const aliases = ['q']
 export async function run (msg) {
     let { id } = msg.author

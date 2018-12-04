@@ -1,5 +1,6 @@
 import { Util } from 'discord.js'
 
+export const desc = 'Dedura alguém que tem uma carta só, mas não disse UNO'
 export const aliases = ['contra-uno', 'dedurar']
 export async function run (msg) {
     let game = this.bot.games.get('uno').get(msg.channel.id)

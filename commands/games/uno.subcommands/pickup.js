@@ -1,5 +1,6 @@
 import { MessageAttachment, MessageEmbed, Util } from 'discord.js'
 
+export const desc = 'Compra uma carta do deck de cartas'
 export const aliases = ['pick', 'd', 'draw', 'c', 'comprar']
 export async function run (msg) {
     let game = this.bot.games.get('uno').get(msg.channel.id)
