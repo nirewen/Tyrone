@@ -2,19 +2,21 @@ import Filters from './purge.utils/filters'
 
 export const desc = 'Deleta mensagens em massa de um canal'
 export const help = [
+    'Para adicionar filtros ao comando, use --filtro valor',
     '```',
-    '┌─────────────────────┬────────────────────────┐',
-    '│ Filtros             │ Exemplos               │',
-    '├─────────────────────┼────────────────────────┤',
-    '│ text "texto"        │ ty@purge text "bolo"   │',
-    '│ user @user | "user" │ ty@purge user @Nirewen │',
-    '│ length num          │ ty@purge length 10     │',
-    '│ invites             │ ty@purge 10 invites    │',
-    '│ bots                │ ty@purge bots          │',
-    '│ uploads             │ ty@purge 100 uploads   │',
-    '│ links               │ ty@purge 5 links       │',
-    '└─────────────────────┴────────────────────────┘',
-    '```'
+    '┌───────────────┬──────────────────────────┐',
+    '│ Filtros       │ Exemplos                 │',
+    '├───────────────┼──────────────────────────┤',
+    '│ text texto    │ ty@purge --text bolo     │',
+    '│ user @user    │ ty@purge --user @Nirewen │',
+    '│ length num    │ ty@purge --length 10     │',
+    '│ invites       │ ty@purge 10 --invites    │',
+    '│ bots          │ ty@purge --bots          │',
+    '│ uploads       │ ty@purge 100 --uploads   │',
+    '│ links         │ ty@purge 5 --links       │',
+    '└───────────────┴──────────────────────────┘',
+    '```',
+    'Você também pode combinar filtros em uma mensagem só'
 ]
 export const usage = '[limite][ ...filtros]'
 export const requiredPermission = 'manageMessages'
