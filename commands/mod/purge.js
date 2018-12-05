@@ -23,9 +23,9 @@ export const requiredPermission = 'manageMessages'
 export const cooldown = 5
 export const guildOnly = true
 export const aliases = ['prune', 'deletemsgs']
-export async function run (msg, suffix = 50) {
+export async function run (msg, suffix) {
     const parsed = Number(suffix)
-    const limit = isNaN(suffix)
+    const limit = isNaN(parsed)
         ? 50
         : parsed
 
