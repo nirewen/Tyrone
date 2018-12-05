@@ -24,10 +24,10 @@ export const cooldown = 5
 export const guildOnly = true
 export const aliases = ['prune', 'deletemsgs']
 export async function run (msg, suffix) {
-    const parsed = Number(suffix)
-    const limit = isNaN(parsed)
-        ? 50
-        : parsed
+    const limit = Number(suffix)
+
+    if (!suffix || isNaN(limit) || limit > 100 || limit < 1)
+        return 'wrong usage'
 
     const filters = Array.from(msg.flags, ([name, value]) => value ? { filter: Filters.find(filter => filter.name === name), value } : null)
     const messages = await msg.channel.messages.fetch({ limit, before: msg.id })
