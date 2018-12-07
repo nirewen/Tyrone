@@ -25,7 +25,7 @@ export class Card {
     }
 
     get URL () {
-        return `https://raw.githubusercontent.com/nirewen/Tyrone/master/src/img/UNO/${this.color || ''}${this.id}.png`
+        return `src/img/UNO/${this.color || ''}${this.id}.png`
     }
 
     get value () {
