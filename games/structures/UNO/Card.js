@@ -25,7 +25,7 @@ export class Card {
     }
 
     get URL () {
-        return `src/img/UNO/${this.color || ''}${this.id}.png`
+        return `https://raw.githubusercontent.com/nirewen/Tyrone/master/src/img/UNO/${this.color || ''}${this.id}.png`
     }
 
     get value () {
@@ -51,7 +51,7 @@ export class Card {
     toString () {
         if (this.color)
             return this.colorName + ' ' + this.id
-            
+
         else return this.id
     }
 }
