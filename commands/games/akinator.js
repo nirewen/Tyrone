@@ -7,7 +7,7 @@ export async function run (msg) {
     if (msg.guild && !msg.channel.permissionsFor(msg.guild.me).has('MANAGE_MESSAGES'))
         return msg.send('Não tenho permissão de remover reações aqui...')
 
-    let game = this.bot.games.get('akinator').set(msg.author.id, new Akinator())
+    let game = this.bot.games.get('akinator').set(msg.id, new Akinator())
     let question = await game.create()
     let answers = ['Sim', 'Não', 'Não sei', 'Provavelmente sim', 'Provavelmente não']
     let embed = new MessageEmbed()
@@ -24,7 +24,7 @@ export async function run (msg) {
 
     msg.collector.on('collect', async function (r, u) {
         let answer = parseInt(r.emoji.name) - 1
-        
+
         if (r.emoji.name === '⏪')
             question = await game.cancel()
         else
