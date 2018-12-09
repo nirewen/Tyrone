@@ -1,5 +1,4 @@
 import request from 'request-promise-native'
-import Sharp from 'sharp'
 
 const BASE = 'https://api.mcsrvstat.us/1/'
 
@@ -11,9 +10,6 @@ export class MCServerStatus {
             server.hostname = ip
 
         server.icon = `https://mcservericon.now.sh/?server=${server.hostname}`
-
-        if (server.offline)
-            server.icon = await Sharp(server.icon).greyscale().toBuffer()
 
         if (server.motd)
             server.motd.raw = server.motd.raw.join('\n\u200b').replace(/§[a-z-0-9]/gi, '')
