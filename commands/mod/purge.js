@@ -40,7 +40,7 @@ export async function run (msg, suffix) {
     if (messages.size === 0)
         return msg.send(`Nenhuma mensagem que cumpre esses requisitos foi encontrada num raio de ${limit} mensagens`)
 
-    const count = await msg.channel.bulkDelete(messages).then(message => message.size)
+    const count = await msg.channel.bulkDelete(messages, true).then(message => message.size)
 
     return msg.send(`:wastebasket: Deletado ${count} mensage${count === 1 ? 'm' : 'ns'}`)
 }
