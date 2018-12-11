@@ -15,7 +15,7 @@ export class Command {
         this.cooldown = cmd.cooldown
         this.hidden = cmd.hidden || false
         this.ownerOnly = cmd.ownerOnly || false
-        this.flags = cmd.flags || true
+        this.flags = cmd.flags || false
         this.subcommands = new Collection()
         this.run = cmd.run
         this.usersOnCooldown = new Set()
