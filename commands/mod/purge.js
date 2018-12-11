@@ -23,6 +23,7 @@ export const requiredPermission = 'manageMessages'
 export const cooldown = 5
 export const guildOnly = true
 export const aliases = ['prune', 'deletemsgs']
+export const flags = true
 export async function run (msg, suffix) {
     const limit = Number(suffix)
 

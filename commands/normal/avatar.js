@@ -8,6 +8,7 @@ Canvas.registerFont('src/font/Whitney.otf', { family: 'Whitney' })
 export const desc = 'Mostra o seu avatar ou o de @alguém'
 export const aliases = ['foto', 'icon', 'pic', 'a']
 export const usage = '[[@]usuario] | --server'
+export const flags = true
 export function run (msg, suffix) {
     let build = async function (member, bool) {
         let embed = new MessageEmbed()

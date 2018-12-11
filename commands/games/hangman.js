@@ -16,6 +16,7 @@ export const help = [
 export const aliases = ['forca']
 export const guildOnly = true
 export const usage = '[join | quit | start | play | guess]'
+export const flags = true
 export async function run (msg, suffix) {
     const chooseWord = async (channel) => {
         await channel.send('Escolha a palavra que você quer que acertem\n\nUse :arrows_counterclockwise: para uma palavra aleatória\n\n:warning: Se você escolher a palavra, você não vai poder jogar')

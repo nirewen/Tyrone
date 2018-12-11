@@ -4,6 +4,7 @@ import { Connect4 } from '../../games/Connect4'
 export const desc = 'Jogue Connect 4 pelo Discord'
 export const usage = '<@usuário>'
 export const aliases = ['c4']
+export const flags = true
 export async function run (msg, suffix) {
     if (!suffix)
         return 'wrong usage'

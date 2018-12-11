@@ -13,6 +13,7 @@ Flags:
 \`\`\``
 export const usage = '<texto>[ --strength 4 | --mood happy | --raw]'
 export const aliases = ['whatsapp', 'vemdezap']
+export const flags = true
 export async function run (msg, text) {
     if (!text)
         return 'wrong usage'

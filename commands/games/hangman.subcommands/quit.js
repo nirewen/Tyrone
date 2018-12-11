@@ -2,6 +2,7 @@ import { MessageEmbed } from 'discord.js'
 
 export const desc = 'Sai de uma partida de Jogo da Forca'
 export const aliases = ['q', 'leave']
+export const flags = true
 export async function run (msg) {
     let { id } = msg.author
     let game = this.bot.games.get('hangman').get(msg.channel.id)
@@ -33,7 +34,7 @@ export async function run (msg) {
             if (game.started && game.queue.length <= 2) {
                 game.queue = game.queue.filter(p => p.id !== id)
                 this.bot.games.get('hangman').delete(game.channel.id)
-                
+
                 return msg.channel.send(new MessageEmbed()
                     .setTitle('Jogo da Forca')
                     .setDescription(`${out}\n${game.word}`)

@@ -10,6 +10,7 @@ const sleep = util.promisify(setTimeout)
 export const desc = 'Jogue jogo da velha pelo Discord'
 export const usage = '<@usuário>'
 export const aliases = ['jogodavelha', 'ttt', 'nac', 'noughtsandcrosses']
+export const flags = true
 export async function run (msg, suffix) {
     let mention = msg.mentions.users.first()
 

@@ -6,6 +6,7 @@ const modes = ['', 'taiko', 'catch', 'mania']
 export const desc = 'Mostra a tua assinatura com dados do osu!'
 export const usage = '<usuário>[ --color cor --mode modo]'
 export const cooldown = 2
+export const flags = true
 export async function run (msg, suffix) {
     if (!suffix)
         return 'wrong usage'
