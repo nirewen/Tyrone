@@ -19,30 +19,35 @@ util.inspect.styles = {
 export const hidden = true
 export const ownerOnly = true
 export async function run (msg, suffix) {
-    let code = suffix.replace(/^```(js|javascript ?\n)?|```$/g, '')
+    let code = suffix.replace(/^\u0060\u0060\u0060(js|javascript ?\n)?|\u0060\u0060\u0060$/g, '')
     let inspect  = (e, colors) => typeof e === 'string' ? e : util.inspect(e, { depth: 0, colors })
-    let codeblock = arg => `\`\`\`js\n${arg}\n\`\`\``
+    let codeblock = arg => `\u0060\u0060\u0060js\n${arg}\n\u0060\u0060\u0060`
 
     try {
-        let result = async (temp) => {
+        let awaitResult = async (temp) => {
             if (temp && temp[Symbol.toStringTag] === 'AsyncFunction')
-                return result(await temp())
+                return awaitResult(await temp())
             if (temp && temp instanceof Promise)
-                return result(await temp)
+                return awaitResult(await temp)
 
             return temp
         }
 
-        let message = await result(eval(code))
+        let result = eval(code)
+        let type = result.constructor.name
+        let message = await awaitResult(result)
+        let logMessage = `[${type}] => ${inspect(message, true)}`
 
-        this.logger.debug(inspect(message, true).split('\n').length > 1
-            ? '\n' + inspect(message, true)
-            : inspect(message, true), 'EVAL')
+        this.logger.debug(logMessage.split('\n').length > 1
+            ? '\n' + logMessage
+            : logMessage, 'EVAL')
 
         if (message && message.length > 2000)
             message = 'Mensagem muito longa, veja o console'
+        else
+            message = `[${type}] => ${inspect(message)}`
 
-        msg.send(codeblock(inspect(message)))
+        msg.send(codeblock(message))
     } catch (error) {
         this.logger.error(error)
         msg.send(codeblock(error)).catch(err => console.log(err.message))
