@@ -15,7 +15,7 @@ export async function run (msg, pid) {
     const votes = body.data.map(vote => {
         let percentage = Math.round(((vote.votes * 100) / (body.total_votes || 1)) / 30)
         let remaining = 30 - percentage
-        let bar = `${'█'.repeat(percentage)}${'_ '.repeat(remaining)}`
+        let bar = `${'█'.repeat(percentage)}${'_'.repeat(remaining)}`
 
         return `${vote.name} - ${parseFloat(percentage.toFixed(2))}% (${vote.votes} votos)\n\`${bar}\``
     })
