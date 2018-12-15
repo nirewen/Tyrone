@@ -10,6 +10,13 @@ export async function run (msg, pid) {
         return 'wrong usage'
 
     const body = await Strawpoll.get(pid)
+
+    if (!body)
+        return msg.send(new MessageEmbed()
+            .setAuthor('strawpoll', 'https://strawpoll.com/images/pie-chart-small.png', `http://strawpoll.com/${pid}`)
+            .setDescription('Enquete não encontrada')
+            .setColor('#FF6E51'))
+
     const chart = Strawpoll.render(body)
 
     const votes = body.data.map(vote => {
