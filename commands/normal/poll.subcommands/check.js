@@ -25,7 +25,8 @@ export async function run (msg, pid) {
         .setDescription(`**${body.total_votes}** votos no total`)
         .addField(body.title, votes.map((e, i, a) => i >= 10 ? `e mais ${a.length - 10} opções` : e).slice(0, 11))
         .setImage('attachment://chart.png')
-        .setFooter('Enquete criada em')
+        .setFooter('Enquete criada')
         .setTimestamp(new Date(body.date_created))
+        .setColor('#3EB991')
         .attachFiles([new MessageAttachment(chart, 'chart.png')]))
 }
