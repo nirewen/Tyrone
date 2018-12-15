@@ -7,7 +7,7 @@ export const usage = '<título> | <opção> | <opção> [| opção...]'
 export async function run (msg, suffix) {
     const [question, ...options] = suffix.split(/\s*\|\s*/)
 
-    if (!question || options.length > 2)
+    if (!question || options.length < 2)
         return 'wrong usage'
 
     const { pathname, href } = await Strawpoll.post(question, options)
