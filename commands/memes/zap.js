@@ -1,4 +1,4 @@
-import { Zapifier } from '../../utils/Zapifier'
+import { Zapifier } from '../../api/Zapifier'
 
 export const desc = 'Transforma sua mensagem em uma mensagem vem de zap'
 export const help = `\`\`\`

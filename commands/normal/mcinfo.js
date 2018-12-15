@@ -1,8 +1,8 @@
 import moment from 'moment'
 import request from 'request-promise-native'
 import { MessageEmbed, Util } from 'discord.js'
-import { Visage } from '../../utils/Visage'
-import { NameMC } from '../../utils/NameMC'
+import { Visage } from '../../api/Visage'
+import { NameMC } from '../../api/NameMC'
 
 const MINECRAFT = 'https://minecraft.net/en-us/profile/skin/remote'
 

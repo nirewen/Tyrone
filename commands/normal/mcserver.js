@@ -1,5 +1,5 @@
-import { MessageAttachment, MessageEmbed, Util } from 'discord.js'
-import { MCServerStatus } from '../../utils/MCServerStatus'
+import { MessageEmbed, Util } from 'discord.js'
+import { MCServerStatus } from '../../api/MCServerStatus'
 
 export const desc = 'Mostra as informações de um servidor Minecraft'
 export const usage = '<ip do servidor>'

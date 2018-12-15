@@ -1,6 +1,6 @@
 import { MessageAttachment, MessageEmbed } from 'discord.js'
 import request from 'request-promise-native'
-import { Visage } from '../../utils/Visage'
+import { Visage } from '../../api/Visage'
 
 const MOJANG = 'https://api.mojang.com/users/profiles/minecraft/'
 
