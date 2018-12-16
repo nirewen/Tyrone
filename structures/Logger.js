@@ -1,4 +1,5 @@
 import chalk from 'chalk'
+import moment from 'moment'
 import Table from 'cli-table2'
 
 export class Logger {
@@ -11,7 +12,7 @@ export class Logger {
     }
 
     get timestamp () {
-        return `[${new Date().toLocaleString('pt-BR')}] `
+        return `[${moment().format('DD/MM/YY, HH:mm:ss')}] `
     }
 
     log (text, color) {
