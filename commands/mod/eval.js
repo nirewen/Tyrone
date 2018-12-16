@@ -34,9 +34,9 @@ export async function run (msg, suffix) {
         }
 
         let result = eval(code)
-        let type = result.constructor.name
+        let type = result ? `[${result.constructor.name}] => ` : ''
         let message = await awaitResult(result)
-        let logMessage = `[${type}] => ${inspect(message, true)}`
+        let logMessage = `${type}${inspect(message, true)}`
 
         this.logger.debug(logMessage.split('\n').length > 1
             ? '\n' + logMessage
@@ -45,7 +45,7 @@ export async function run (msg, suffix) {
         if (message && message.length > 2000)
             message = 'Mensagem muito longa, veja o console'
         else
-            message = `[${type}] => ${inspect(message)}`
+            message = `${type}${inspect(message)}`
 
         msg.send(codeblock(message))
     } catch (error) {
