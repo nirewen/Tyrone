@@ -10,7 +10,7 @@ export async function run (msg) {
     let { file } = await searchImage(msg)
     let image = await Canvas.loadImage(file)
 
-    let canvas = new Canvas(image.width, image.height)
+    let canvas = Canvas.createCanvas(image.width, image.height)
     let ctx = canvas.getContext('2d')
     let size = (isNaN(msg.flags.get('fator')) || !msg.flags.has('fator') ? 10 : msg.flags.get('fator')) / 100
     let w = canvas.width * size
