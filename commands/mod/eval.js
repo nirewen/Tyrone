@@ -19,9 +19,8 @@ util.inspect.styles = {
 export const hidden = true
 export const ownerOnly = true
 export async function run (msg, suffix) {
-    let code = suffix.replace(/^\u0060\u0060\u0060(js|javascript ?\n)?|\u0060\u0060\u0060$/g, '')
+    let code = suffix.replace(/\u0060\u0060\u0060(js|javascript ?\n)?|\u0060\u0060\u0060/g, '')
     let inspect  = (e, colors) => typeof e === 'string' ? e : util.inspect(e, { depth: 0, colors })
-    let codeblock = arg => `\u0060\u0060\u0060js\n${arg}\n\u0060\u0060\u0060`
 
     try {
         let awaitResult = async (temp) => {
@@ -47,9 +46,9 @@ export async function run (msg, suffix) {
         else
             message = `${type}${inspect(message)}`
 
-        msg.send(codeblock(message))
+        msg.send(message, { code: 'js' })
     } catch (error) {
         this.logger.error(error)
-        msg.send(codeblock(error)).catch(err => console.log(err.message))
+        msg.send(error, { code: 'js' }).catch(err => console.log(err.message))
     }
 }
