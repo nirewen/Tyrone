@@ -34,7 +34,7 @@ export async function run (msg, suffix) {
         }
 
         let result = eval(code)
-        let type = result ? `[${result.constructor.name}] => ` : ''
+        let type = result ? `[${result.constructor ? result.constructor.name : 'Object'}] => ` : ''
         let message = await awaitResult(result)
         let logMessage = `${type}${inspect(message, true)}`
 
