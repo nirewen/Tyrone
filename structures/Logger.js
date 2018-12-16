@@ -12,7 +12,7 @@ export class Logger {
     }
 
     get timestamp () {
-        return `[${moment().format('DD/MM/YYYY, HH:mm:ss')}] `
+        return `[${moment().format('DD/MM/YYYY HH:mm:ss')}] `
     }
 
     log (text, color) {
