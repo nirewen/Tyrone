@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "babel-node index.js"
+    "dev": "babel-node index.js",
+    "start": "cd build && node .",
+    "build": "rm -rf build && babel . --out-dir build --copy-files --ignore 'node_modules'"
   },
   "keywords": [],
   "author": "",
