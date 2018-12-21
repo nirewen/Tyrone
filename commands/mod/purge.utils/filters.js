@@ -7,7 +7,7 @@ class Filter {
 
 const regexes = {
     id: /(\d{17,19})/g,
-    invite: /\bhttps?:\/\/discord.gg\/(invite)?\[a-z-A-Z-0-9]+?\b/g,
+    invite: /\b(https?:\/\/)?discord.gg\/(invite\/)?.+?\b/g,
     url: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/
 }
 
