@@ -4,11 +4,12 @@ import { schemes } from '../../../games/structures/Chess/schemes'
 export const desc = 'Move uma peça em um jogo de Xadrez'
 export const help = 'Use `ty.chess move A1 B1` para mover a peça `A1` para `B1`, no tabuleiro'
 export const usage = '<de> <para>'
+export const aliases = ['m', 'play', 'p']
 export async function run (msg, suffix) {
     if (!suffix)
         return msg.send(this.helpMessage)
-        
-    let args = suffix.split(/\s/)
+
+    let args = suffix.split(/\s+/)
     let game = this.bot.games.findGame('chess', msg.author.id)
 
     if (game) {
@@ -17,16 +18,14 @@ export async function run (msg, suffix) {
                 game.player.play(args[0].toLowerCase(), args[1].toLowerCase())
             }
             catch (e) {
-                return msg.send(`Movimento inválido ${args[0]} -> ${args[1]}`)
+                return msg.send(`Movimento inválido ${args[0]} -> ${args[1] || '\\*ar\\*'}`)
             }
+
+            if (game.game.isCheckmate)
+                return
 
             game.next()
 
-            if (game.game.isCheckmate || game.game.validMoves.length === 0) {
-                this.bot.games.get('chess').delete(this.bot.games.findGameKey('chess', msg.author.id))
-
-                return msg.channel.send('Check mate!')
-            }
             if (game.game.isCheck)
                 return
 

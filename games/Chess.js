@@ -27,17 +27,15 @@ export class Chess extends Game {
         return this.game.getStatus()
     }
 
-    get checkInfos () {
-        return this.game.game.board
-    }
-
     next () {
         this.queue.push(this.queue.shift())
         return this.player.username
     }
 
     play (src, dest) {
-        return this.game.move(src, dest, true)
+        this.lastMove = this.game.move(src, dest, true)
+
+        return this.lastMove
     }
 
     render (attacker) {
