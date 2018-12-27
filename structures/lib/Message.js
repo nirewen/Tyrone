@@ -22,7 +22,7 @@ export const Message = DiscordMessage => {
                 if (this.collector)
                     this.collector.stop()
 
-                if (!(content instanceof MessageEmbed))
+                if (this.embeds.length > 0 && !(content instanceof MessageEmbed))
                     content = { content, embed: null }
 
                 return this.response.edit(content, options)
