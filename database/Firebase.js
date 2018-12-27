@@ -15,4 +15,8 @@ export class Firebase {
     get (path) {
         return this.database.ref(path).once('value')
     }
+
+    set (path, value) {
+        return this.database.ref(path).set(value)
+    }
 }

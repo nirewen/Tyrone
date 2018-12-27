@@ -29,6 +29,7 @@
     "firebase-admin": "^6.3.0",
     "mathjs": "^5.2.3",
     "moment": "^2.22.2",
+    "moment-timezone": "^0.5.23",
     "random-puppy": "^1.1.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
