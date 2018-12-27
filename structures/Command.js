@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import reload from 'require-reload'
-import { MessageEmbed, Collection } from 'discord.js'
+import { Collection, MessageEmbed, Util } from 'discord.js'
 
 export class Command {
     constructor (name, category, cmd, bot) {
@@ -15,6 +15,7 @@ export class Command {
         this.cooldown = cmd.cooldown
         this.hidden = cmd.hidden || false
         this.ownerOnly = cmd.ownerOnly || false
+        this.guildOnly = cmd.guildOnly || false
         this.flags = cmd.flags || false
         this.subcommands = new Collection()
         this.run = cmd.run
@@ -29,6 +30,10 @@ export class Command {
 
     get fullName () {
         return this.parent ? `${this.parent.fullName} ${this.name}` : this.name
+    }
+
+    get isGuildOnly () {
+        return this.parent ? this.parent.isGuildOnly : this.guildOnly
     }
 
     get correctUsage () {
@@ -66,7 +71,7 @@ export class Command {
         if (this.ownerOnly && !this.bot.config.admins.includes(msg.author.id))
             return msg.channel.send('Este comando é só para o dono do bot')
 
-        if (!msg.guild && this.guildOnly)
+        if (!msg.guild && this.isGuildOnly)
             return msg.channel.send('Este comando só está disponível em servidores')
 
         if (this.flags)
@@ -77,9 +82,11 @@ export class Command {
             let [sub, ...args] = suffix.split(/\s/)
 
             if (this.find(sub))
-                result = await this.find(sub).process(msg, args.join(' '))
-            else
-                result = await this.run(msg, suffix)
+                return this.find(sub).process(msg, args.join(' '))
+
+            this.category.logger.logCommand(msg.guild ? msg.guild.name : null, msg.author.username, this.prefix + this.fullName, Util.cleanContent(suffix, msg))
+
+            result = await this.run(msg, suffix)
         } catch (err) {
             this.bot.logger.error(`${this.fullName} | ${err}\n${err.stack}`, 'ERRO DE EXECUÇÃO DE COMANDO')
             if (this.bot.config.errorMessage) {
@@ -99,6 +106,7 @@ export class Command {
         }
         else if (!this.bot.config.admins.includes(msg.author.id)) {
             this.usersOnCooldown.add(msg.author.id)
+
             setTimeout(() => {
                 this.usersOnCooldown.delete(msg.author.id)
             }, this.cooldown * 1000)

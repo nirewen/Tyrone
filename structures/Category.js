@@ -74,12 +74,8 @@ export class Category {
         if (name === 'help')
             return msg.send(this.help(this, msg, ...suffix.toLowerCase().split(/\s/)))
 
-        if (command) {
-            let cleanSuffix = msg.cleanContent.slice((this.prefix + name).length).trim()
-
-            this.logger.logCommand(msg.guild ? msg.guild.name : null, msg.author.username, this.prefix + command.name, cleanSuffix)
+        if (command)
             command.process(msg, suffix)
-        }
     }
 
     find (name) {
