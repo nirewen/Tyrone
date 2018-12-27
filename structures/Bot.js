@@ -20,7 +20,7 @@ export class Bot extends Client {
         this.database = new Firebase({ serviceAccount, databaseURL })
         this.categories = new Collection()
         this.events = new Collection()
-        this.games = new GameManager(...fs.readdirSync('./commands/games').map(c => c.substr(0, c.indexOf('.js'))))
+        this.games = new GameManager(...fs.readdirSync('./commands/games').filter(c => c.endsWith('.js')).map(c => c.substr(0, c.indexOf('.js'))))
         this.ownerId = OWNER_ID
         this.config = config
     }
