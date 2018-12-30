@@ -17,20 +17,23 @@ export const usage = '<cor> <valor>'
 export async function run (msg, suffix) {
     if (!suffix)
         return 'wrong usage'
-        
+
     let words = suffix.split(/\s/)
     let game = this.bot.games.get('uno').get(msg.channel.id)
 
     if (game) {
         if (!game.started)
-            return msg.channel.send('Desculpa, mas o jogo ainda não começou!')
+            return msg.send('Desculpa, mas o jogo ainda não começou!')
         if (game.player.id !== msg.author.id)
-            return msg.channel.send(`Não é seu turno ainda! É a vez de ${Util.escapeMarkdown(game.player.user.username)}.`)
+            return msg.send(`Não é seu turno ainda! É a vez de ${Util.escapeMarkdown(game.player.user.username)}.`)
+
+        if (words.length < 2)
+            return 'wrong usage'
 
         let card = game.player.getCard(words)
 
         if (!card)
-            return msg.channel.send('Você não tem essa carta... Tente novamente.')
+            return msg.send('Você não tem essa carta... Tente novamente.')
 
         if (!game.table.flipped.color || card.wild || card.id === game.table.flipped.id || card.color === game.table.flipped.color) {
             game.table.discard.push(card)
@@ -99,7 +102,7 @@ export async function run (msg, suffix) {
                 player.immune = true
 
                 await sleep(3E3)
-                
+
                 player.immune = false
             }
             await game.next()
