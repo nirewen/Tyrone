@@ -14,7 +14,6 @@ const fullwidth = (text) => {
 }
 
 export const desc = 'Formata seu texto em ＡＥＳＴＨＥＴＩＣ'
-export const cooldown = 3
 export const usage = '<texto>'
 export const aliases = ['fw', 'aesthetic']
 export async function run (msg, suffix) {
