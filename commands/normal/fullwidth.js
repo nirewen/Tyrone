@@ -1,13 +1,15 @@
 const fullwidth = (text) => {
     let temp = ''
+
     for (let char of text) {
-        if (char === ' ') {
+        if (char === ' ')
             char = String.fromCharCode(0x3000)
-        }
         else
             char = String.fromCharCode(char.charCodeAt(0) + 0xFEE0)
+
         temp += char
     }
+
     return temp
 }
 
