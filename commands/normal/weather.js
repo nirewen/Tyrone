@@ -21,7 +21,7 @@ export async function run (msg, suffix) {
         let city = msg.flags.get('city')
 
         this.bot.database.set(`users/${msg.author.id}/city`, city)
-        return msg.channel.createMessage(`Sua cidade foi definida para ${city}`)
+        return msg.send(`Sua cidade foi definida para ${city}`)
     }
 
     try {
