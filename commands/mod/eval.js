@@ -19,7 +19,7 @@ util.inspect.styles = {
 export const hidden = true
 export const ownerOnly = true
 export async function run (msg, suffix) {
-    let code = suffix.replace(/\u0060\u0060\u0060(js|javascript ?\n)?|\u0060\u0060\u0060/g, '')
+    let code = suffix.replace(/^\u0060\u0060\u0060(js|javascript ?\n)?|\u0060\u0060\u0060$/g, '')
     let inspect  = (e, colors) => typeof e === 'string' ? e : util.inspect(e, { depth: 0, colors })
 
     try {
