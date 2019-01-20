@@ -1,9 +1,8 @@
-import Canvas from 'canvas'
+import { CanvasUtils } from '../../utils/CanvasUtils'
 import { MessageEmbed, MessageAttachment } from 'discord.js'
 import * as utils from '../../utils/utils'
 
 const WHITE = '#FFFFFF'
-Canvas.registerFont('src/font/Whitney.otf', { family: 'Whitney' })
 
 export const desc = 'Mostra o seu avatar ou o de @alguém'
 export const aliases = ['foto', 'icon', 'pic', 'a']
@@ -16,34 +15,9 @@ export function run (msg, suffix) {
         if (msg.flags.has('server')) {
             embed
                 .setDescription(`:frame_photo: Aqui o ícone do servidor:`)
-                .setImage(msg.guild.icon == null || msg.flags.has('default') ? 'attachment://icon.png' : msg.guild.iconURL({ size: 2048 }))
+                .setImage(msg.guild.icon == null || msg.flags.has('default') ? `https://guild-default-icon.herokuapp.com/${msg.guild.nameAcronym}` : msg.guild.iconURL({ size: 2048 }))
                 .setColor(msg.guild.owner.displayColor)
 
-            if (msg.guild.icon == null || msg.flags.has('default')) {
-                let canvas = Canvas.createCanvas(512, 512)
-                let ctx = canvas.getContext('2d')
-
-                ctx.fillStyle = '#2f3136'
-                ctx.fillRect(0, 0, canvas.width, canvas.height)
-
-                let font = [184, 163, 163, 143, 122, 102][msg.guild.nameAcronym.length - 1] || 102
-                let x    = canvas.width / 2
-
-                ctx.font = font + 'px Whitney'
-                ctx.fillStyle = WHITE
-                ctx.textAlign = 'center'
-                ctx.textBaseline = 'middle'
-
-                if (ctx.measureText(msg.guild.nameAcronym).width > canvas.width) {
-                    ctx.textAlign = 'left'
-                    x = 0
-                }
-
-                ctx.fillText(msg.guild.nameAcronym, x, canvas.height / 2)
-                embed.attachFiles([
-                    new MessageAttachment(canvas.toBuffer(), 'icon.png')
-                ])
-            }
             return embed
         }
         if (bool) {
