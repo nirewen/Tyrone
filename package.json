@@ -3,6 +3,9 @@
   "version": "5.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "11.8.0"
+  },
   "scripts": {
     "dev": "babel-node index.js",
     "start": "cd build && node .",
