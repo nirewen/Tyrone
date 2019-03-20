@@ -1,0 +1,81 @@
+{
+    "shippStrings": {
+        "90": [
+            "😍 Foram feitos um para o outro! 😍",
+            "💖 São o casal perfeito! 💖"
+        ],
+        "80": [
+            "😊 Os dois formam um belo casal 😊",
+            "🤔 Pelo que vejo as chances são bem grandes 🤔"
+        ],
+        "70": [
+            "☺ Vejo um casal fofo se formando ☺",
+            "😊 Tem um pouco de interesses compatíveis aí 😊"
+        ],
+        "60": [
+            "💞 O amor está crescendo entre esses dois 💞",
+            "😜 Se conversarem mais talvez dê em algo 😜"
+        ],
+        "50": [
+            "😏 Amigos... mas quem sabe né? 😏",
+            "😕 Talvez... mas eu só vejo um querendo que dê certo aí 😕"
+        ],
+        "40": [
+            "🤷 É... Talvez, eu acho 🤷",
+            "😕 Se os dois quisessem, talvez desse certo, mas né 😕"
+        ],
+        "30": [
+            "😶 Acho que não seria um bom casal 😶",
+            "🤷 ️Talvez um dia... 🤷"
+        ],
+        "20": [
+            "🤷️ Queria dizer que vai dar certo, mas né 🤷",
+            "😢 Parece que são só conhecidos... 😢"
+        ],
+        "10": [
+            "😐 Queria muito dizer que é possível, mas... 😐",
+            "😣 Não, não, não. Muito incompatível. 😣"
+        ],
+        "0": [
+            "💔 As chances de algo dar certo são quase impossíveis! 💔",
+            "💉 Tá mais fácil curar o câncer... 💉"
+        ],
+        "same": {
+            "90": [
+                "😍 Amor próprio é tudo 😍",
+                "💞 O narcisismo em pessoa 💞"
+            ],
+            "80": [
+                "💖 Essa pessoa se ama muito 💖",
+                "💕 Amor próprio é tudo 💕"
+            ],
+            "70": [
+                "💗 O amor que essa pessoa tem por si mesma é grande 💗",
+                "💝 Grande amor próprio 💝"
+            ],
+            "60": [
+                "🤔 Não tenho certeza se essa pessoa se ama 🤔",
+                "😐 Precisa de mais amor aí 😐"
+            ],
+            "50": [
+                "🤷 Não se ama, nem se odeia 🤷️"
+            ],
+            "40": [
+                "😢 Essa pessoa não gosta muito de si mesma... 😢"
+            ],
+            "30": [
+                "💔 Parece que o amor próprio morreu faz muito tempo aqui... 💔"
+            ],
+            "20": [
+                "😶 Alguém dá amor pra essa pessoa? 😶",
+                "😶 Talvez ela só esteja esperando pela pessoa certa 😶"
+            ],
+            "10": [
+                "💔 Se nem ela se ama, quem vai amar? 💔"
+            ],
+            "0": [
+                "💔 Essa pessoa não tem amor nenhum por si mesma 💔"
+            ]
+        }
+    }
+}
