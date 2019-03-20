@@ -9,7 +9,9 @@
   "scripts": {
     "dev": "babel-node index.js",
     "start": "cd build && node .",
-    "build": "rm -rf build && babel . --out-dir build --copy-files --ignore 'node_modules'"
+    "build": "rm -rf build && babel . --out-dir build --copy-files --ignore 'node_modules'",
+    "deploy": "rm -rf tyrone-bot; npm run build; heroku git:clone -a tyrone-bot; cp -a build/. tyrone-bot/",
+    "heroku-postbuild": "echo Skipping build..."
   },
   "keywords": [],
   "author": "",
@@ -18,26 +20,27 @@
     "babel-cli": "^6.26.0",
     "babel-plugin-dotenv-import": "^2.0.0",
     "babel-preset-env": "^1.7.0",
-    "dotenv": "^6.0.0"
+    "dotenv": "^6.2.0"
   },
   "dependencies": {
     "babel-preset-stage-2": "^6.24.1",
-    "canvas": "^2.1.0",
-    "chalk": "^2.4.1",
+    "canvas": "^2.4.1",
+    "chalk": "^2.4.2",
     "cheerio": "^1.0.0-rc.2",
     "chess": "^0.3.3",
-    "chokidar": "^2.0.4",
+    "chokidar": "^2.1.2",
     "cli-table2": "^0.2.0",
     "discord.js": "github:nirewen/discord.js#idle-feature",
-    "firebase-admin": "^6.3.0",
-    "mathjs": "^5.2.3",
-    "moment": "^2.22.2",
+    "firebase-admin": "^6.5.1",
+    "humanize-duration": "^3.18.0",
+    "mathjs": "^5.7.0",
+    "moment": "^2.24.0",
     "moment-timezone": "^0.5.23",
     "random-puppy": "^1.1.0",
     "request": "^2.88.0",
-    "request-promise-native": "^1.0.5",
+    "request-promise-native": "^1.0.7",
     "require-reload": "^0.2.2",
     "simple-youtube-api": "^5.1.1",
-    "xml-js": "^1.6.8"
+    "xml-js": "^1.6.11"
   }
 }
