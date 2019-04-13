@@ -6,7 +6,7 @@ import moment from 'moment-timezone'
 
 moment.locale('pt-br')
 
-Canvas.registerFont('src/font/Roboto.ttf', { family: 'Roboto' })
+Canvas.registerFont('src/font/Product Sans Regular.ttf', { family: 'Product' })
 
 export class Weather {
     static async card (address) {
@@ -78,7 +78,7 @@ export class Weather {
         ctx.fill()
 
         ctx.fillStyle = '#ffffff'
-        ctx.font = '15px Roboto'
+        ctx.font = '15px Product'
         ctx.textAlign = 'center'
         ctx.textBaseline = 'middle'
         ctx.shadowColor = 'rgba(0, 0, 0, 0.8)'
@@ -88,7 +88,7 @@ export class Weather {
         for (let [i, { temperatureHigh }] of body.daily.data.entries())
             ctx.fillText(`${parseFloat(temperatureHigh.toFixed(1))}°`, (i * 55) + 38, 256)
 
-        ctx.font = `12px Roboto`
+        ctx.font = `12px Product`
 
         for (let [i, { time, icon }] of body.daily.data.entries()) {
             ctx.fillText(moment.unix(time).format('ddd').toUpperCase(), (i * 55) + 35, 181)
@@ -103,22 +103,22 @@ export class Weather {
         ctx.drawImage(icon, 272, 35, 95, 95)
 
         ctx.shadowColor = 'rgba(0, 0, 0, 0.8)'
-        ctx.font = `16px Roboto`
+        ctx.font = `16px Product`
         ctx.fillStyle = '#ffffff'
         ctx.textAlign = 'left'
         ctx.textBaseline = 'top'
         ctx.fillText(location, 20, 16)
 
-        ctx.font = `98px Roboto`
+        ctx.font = `98px Product`
         ctx.fillText(temperature, 20, 30)
 
-        ctx.font = `13px Roboto`
+        ctx.font = `13px Product`
         // ctx.textAlign = 'center'
         // ctx.textBaseline = 'top'
         // ctx.fillText(condition, 320, 140)
         CanvasUtils.printText(ctx, condition, 272, 130, 15, 95)
 
-        ctx.font = `16px Roboto`
+        ctx.font = `16px Product`
         ctx.textAlign = 'left'
         ctx.textBaseline = 'top'
         let length = ctx.measureText(maxMin).width + 22
@@ -132,7 +132,7 @@ export class Weather {
         ctx.shadowBlur = 1
         ctx.translate(length, 141)
         ctx.drawImage(wind, -4, 0, 20, 20)
-        ctx.font = `14px Roboto`
+        ctx.font = `14px Product`
         ctx.fillText(windSpeed, 20, 2)
         ctx.translate(ctx.measureText(windSpeed).width + 25, 3)
         if (windBearing > 0) {
@@ -144,7 +144,7 @@ export class Weather {
 
         ctx.restore()
 
-        ctx.font = `13px Roboto`
+        ctx.font = `13px Product`
         ctx.textAlign = 'right'
         ctx.textBaseline = 'top'
         ctx.fillText(date, 372, 16)
