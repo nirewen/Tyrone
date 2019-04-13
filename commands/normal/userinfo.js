@@ -65,12 +65,12 @@ export async function run (msg, suffix) {
             let userRoles       = userRolesLength > 0 ? Util.discordSort(userMember.roles) : null
             let userStatus      = userMember && userMember.presence.status
             let userJoinedAt    = userMember && (new Date(userMember.joinedAt))
-            let gamesArr        = [
-                `:video_game: Jogando`,
-                `${findEmoji('streaming')} Transmitindo`,
-                `:headphones: Ouvindo`,
-                `:tv: Assistindo`
-            ]
+            let gamesArr        = {
+                PLAYING: `:video_game: Jogando`,
+                STREAMING: `${findEmoji('streaming')} Transmitindo`,
+                LISTENING: `:headphones: Ouvindo`,
+                WATCHING: `:tv: Assistindo`
+            }
             let userStatuses    = {
                 streaming: `${findEmoji('streaming')} Transmitindo`,
                 online   : `${findEmoji('online')} Disponível`,
@@ -84,18 +84,18 @@ export async function run (msg, suffix) {
 
             userStatus = userStatuses[userStatus]
 
-            embed.fields.splice(1, 0, { name: ':label: Apelido', value: userNickname, inline: true })
-            embed.fields.splice(3, 0, { name: ':eye_in_speech_bubble: Status', value: userStatus, inline: true })
-            embed.fields.splice(5, 0, { name: ':inbox_tray: Entrou no servidor', value: `${moment(userJoinedAt).format(dateFormat)}\n${humanize(userJoinedAt)} atrás`, inline: true })
+            embed.spliceField(1, 0, ':label: Apelido', userNickname, true)
+            embed.spliceField(3, 0, ':eye_in_speech_bubble: Status', userStatus, true)
+            embed.spliceField(5, 0, ':inbox_tray: Entrou no servidor', `${moment(userJoinedAt).format(dateFormat)}\n${humanize(userJoinedAt)} atrás`, true)
             embed.addField(`:briefcase: Cargos [${userRolesLength}]`, `${userRoles ? userRoles.map(r => r).slice(0, 15).join(', ') : 'Nenhum'}`)
             if (userMember.presence.activity) {
-                if (userMember.presence.activity.type === 2 && userMember.presence.activity.state && userMember.presence.activity.name === 'Spotify') {
+                if (userMember.presence.activity.type === 'LISTENING' && userMember.presence.activity.state && userMember.presence.activity.name === 'Spotify') {
                     embed.addField(gamesArr[userMember.presence.activity.type], `${findEmoji('spotify')} **${userMember.presence.activity.name}**`)
-                    embed.setFooter(`${userMember.presence.activity.state.replace(/;/g, ' &')} - ${userMember.presence.activity.details}`, `https://i.scdn.co/image/${userMember.presence.activity.assets.large_image.split(':')[1]}`)
+                    embed.setFooter(`${userMember.presence.activity.state.replace(/;/g, ' &')} - ${userMember.presence.activity.details}`, `https://i.scdn.co/image/${userMember.presence.activity.assets.largeImage.split(':')[1]}`)
                 }
-                else if (userMember.presence.activity.type === 1 && userMember.presence.activity.details) {
+                else if (userMember.presence.activity.type === 'STREAMING' && userMember.presence.activity.details) {
                     embed.addField(gamesArr[userMember.presence.activity.type], `${findEmoji('twitch')} **[${userMember.presence.activity.name}](${userMember.presence.activity.url})**`)
-                    embed.setFooter(`${userMember.presence.activity.details}`, `https://static-cdn.jtvnw.net/previews-ttv/live_user_${userMember.presence.activity.assets.large_image.split(':')[1]}-60x60.jpg`)
+                    embed.setFooter(`${userMember.presence.activity.details}`, `https://static-cdn.jtvnw.net/previews-ttv/live_user_${userMember.presence.activity.assets.largeImage.split(':')[1]}-60x60.jpg`)
                 } else
                     embed.addField(gamesArr[userMember.presence.activity.type], userMember.presence.activity.name)
             }
