@@ -4,6 +4,7 @@ import reload from 'require-reload'
 import { MessageEmbed, Collection } from 'discord.js'
 import { Command } from './Command'
 import { Logger } from './Logger'
+import { escapeRegex } from '../utils/utils'
 
 export class Category {
     constructor (name, prefix, dir, color) {
@@ -67,7 +68,7 @@ export class Category {
     }
 
     process (msg) {
-        let name = msg.content.split(/\s+/)[0].replace(new RegExp(this.prefix, 'i'), '').toLowerCase()
+        let name = msg.content.split(/\s+/)[0].replace(new RegExp(escapeRegex(this.prefix), 'i'), '').toLowerCase()
         let suffix = msg.content.slice((this.prefix + name).length).trim()
         let command = this.find(name)
 

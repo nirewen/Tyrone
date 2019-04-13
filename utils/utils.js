@@ -8,6 +8,10 @@ export async function osu (user, mode, color) {
     return request({ url, encoding: null })
 }
 
+export function escapeRegex (string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
 export function findRole (query, guild, exact = false) {
     let found = null
     if (query === undefined || guild === undefined)
@@ -167,8 +171,8 @@ export async function searchImage (msg, defaultToAvatar = true) {
         }).then(c => c.array())
 
         for (let message of messages)
-            if (message.author.id !== msg.client.user.id && 
-                (message.attachments.size > 0 && regex.test(message.attachments.first().url) && message.attachments.first().size > 128) || 
+            if (message.author.id !== msg.client.user.id &&
+                (message.attachments.size > 0 && regex.test(message.attachments.first().url) && message.attachments.first().size > 128) ||
                 (message.embeds.length > 0 &&
                 message.embeds[0].image &&
                 regex.test(message.embeds[0].image.url)))
