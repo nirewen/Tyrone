@@ -1,6 +1,7 @@
 import fs from 'fs'
 import reload from 'require-reload'
 import config from '../config.json'
+import * as APIs from '../api'
 import { Client, Collection, Structures } from 'discord.js'
 import { Category } from './Category'
 import * as DiscordStructures from './lib'
@@ -17,6 +18,7 @@ export class Bot extends Client {
 
         this.token = TOKEN
         this.logger = new Logger()
+        this.apis = APIs
         this.database = new Firebase({ serviceAccount, databaseURL })
         this.categories = new Collection()
         this.events = new Collection()
