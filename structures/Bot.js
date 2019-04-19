@@ -9,7 +9,7 @@ import { Event } from './Event'
 import { Firebase } from '../database/Firebase'
 import { GameManager } from './GameManager'
 import { Logger } from './Logger'
-import { credentials as serviceAccount } from '../firebase-credentials'
+import { credentials as serviceAccount } from '../credentials/firebase-credentials'
 import { TOKEN, OWNER_ID, FIREBASE_URL as databaseURL } from '@env'
 
 export class Bot extends Client {

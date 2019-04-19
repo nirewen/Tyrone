@@ -1,6 +1,6 @@
 build/
 node_modules/
 .vscode/
-.env
+credentials/*.js
+credentials/.env
 package-lock.json
-firebase-credentials.js

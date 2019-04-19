@@ -10,7 +10,7 @@
     "plugins": [
         ["dotenv-import", {
           "moduleName": "@env",
-          "path": ".env",
+          "path": "credentials/.env",
           "safe": true
         }]
     ]
