@@ -12,11 +12,15 @@ export class Firebase {
         return firebase.database()
     }
 
+    ref (path) {
+        return this.database.ref(path)
+    }
+
     get (path) {
-        return this.database.ref(path).once('value')
+        return this.ref(path).once('value')
     }
 
     set (path, value) {
-        return this.database.ref(path).set(value)
+        return this.ref(path).set(value)
     }
 }

@@ -1,8 +1,10 @@
 import fs from 'fs'
 import path from 'path'
 import reload from 'require-reload'
+import TatsuScript from './interpreter/TatsuScript'
 import { MessageEmbed, Collection } from 'discord.js'
 import { Command } from './Command'
+import { CustomCommand } from './CustomCommand'
 import { Logger } from './Logger'
 import { escapeRegex } from '../utils/utils'
 
@@ -18,6 +20,8 @@ export class Category {
     }
 
     initialize (bot) {
+        this.bot = bot
+
         return new Promise((resolve, reject) => {
             try {
                 let files = fs.readdirSync(this.directory)
@@ -38,7 +42,7 @@ export class Category {
         })
     }
 
-    help (collection, msg, ...suffix) {
+    async help (collection, msg, ...suffix) {
         let [command, ...subcommands] = suffix
 
         if (!command) {
@@ -50,33 +54,49 @@ export class Category {
                 .setFooter(`Para mais informações, digite ${this.prefix}help ‹comando›`)
                 .setColor('ORANGE')
         } else {
-            let cmd = collection.find(command)
+            let cmd = collection.find(command) || await this.findCustomCommand(msg, command)
 
-            if (!cmd)
+            if (!cmd) {
                 return new MessageEmbed()
                     .setDescription(`:interrobang: Comando \`${this.prefix}${command}\` não encontrado`)
                     .setColor('RED')
-            else {
-                if (subcommands.length > 0)
-                    return this.help(cmd, msg, ...subcommands)
-
-                this.logger.logCommand(msg.guild ? msg.guild.name : null, msg.author.username, this.prefix + 'help', cmd.fullName)
-
-                return cmd.helpMessage
             }
+
+            if (subcommands.length > 0 && cmd instanceof Command)
+                return this.help(cmd, msg, ...subcommands)
+
+            this.logger.logCommand(msg.guild ? msg.guild.name : null, msg.author.username, this.prefix + 'help', cmd.fullName)
+
+            return cmd.helpMessage
         }
     }
 
-    process (msg) {
+    async process (msg) {
         let name = msg.content.split(/\s+/)[0].replace(new RegExp(escapeRegex(this.prefix), 'i'), '').toLowerCase()
         let suffix = msg.content.slice((this.prefix + name).length).trim()
-        let command = this.find(name)
+        let command = this.find(name) || await this.findCustomCommand(msg, name)
 
         if (name === 'help')
-            return msg.send(this.help(this, msg, ...suffix.toLowerCase().split(/\s/)))
+            return msg.send(await this.help(this, msg, ...suffix.toLowerCase().split(/\s/)))
 
         if (command)
             command.process(msg, suffix)
+    }
+
+    async findCustomCommand (msg, cmd) {
+        let snap = await this.bot.database.get(`guilds/${msg.guild.id}/commands`)
+        let value = snap.val()
+
+        if (!value)
+            return
+
+        let commands = Object.entries(value).map(([name, command]) => {
+            msg.command = { name }
+
+            return new CustomCommand(name, this, TatsuScript.run(command.script, msg), this.bot, snap)
+        })
+
+        return commands.find(c => c.name === cmd || c.aliases.includes(cmd))
     }
 
     find (name) {
