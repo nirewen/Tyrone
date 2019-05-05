@@ -31,6 +31,7 @@
     "chokidar": "^2.1.2",
     "cli-table2": "^0.2.0",
     "discord.js": "github:nirewen/discord.js#idle-feature",
+    "discord.js-lavalink": "npm:lavalink-dev-version@^1.0.0",
     "firebase-admin": "^6.5.1",
     "googleapis": "^39.2.0",
     "humanize-duration": "^3.18.0",
@@ -42,6 +43,7 @@
     "request-promise-native": "^1.0.7",
     "require-reload": "^0.2.2",
     "simple-youtube-api": "^5.1.1",
+    "snekfetch": "^4.0.4",
     "tatsuscript": "^2.0.1",
     "xml-js": "^1.6.11"
   }
