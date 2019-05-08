@@ -53,26 +53,44 @@ export class Weather {
         ctx.fillRect(7, 167, 386, 101)
 
         let curr  = ~~(body.currently.temperature * 50 / 100)
-        let temps = Array(7).fill(0)
+        let temps = body.daily.data.map(t => t.temperatureHigh)
+        let min = Math.min(...temps)
+        let max = Math.max(...temps) - min
 
-        for (let [i, { temperatureHigh }] of body.daily.data.entries())
-            temps[i] = ~~(temperatureHigh * 50 / 100)
-
-        let pos = temps.reduce((curr, next) => curr + next, 0) < 0 ? 168 : 268
+        let points = temps.map((temp, i) => {
+            return {
+                x: (i * 55) + 35,
+                y: 248 - ((temp - min) * 60) / max
+            }
+        })
 
         ctx.strokeStyle = '#ffcc00'
         ctx.shadowColor = 'rgba(0, 0, 0, 0)'
         ctx.lineWidth = 2
         ctx.beginPath()
-        ctx.moveTo(7, 217 - curr)
+        ctx.moveTo(7, 248 - ((curr - (curr < min ? curr : min)) * 60) / max)
 
-        for (let [i, temp] of temps.entries())
-            ctx.lineTo((i * 55) + 35, 217 - temp)
+        points.push({
+            x: 393,
+            y: 248 - ((curr - (curr < min ? curr : min)) * 60) / max
+        })
 
-        ctx.lineTo(393, 217 - curr)
+        for(let i = 0; i < points.length - 1; i++) {
+            let x_mid = (points[i].x + points[i+1].x) / 2
+            let y_mid = (points[i].y + points[i+1].y) / 2
+            let cp_x1 = (x_mid + points[i].x) / 2
+            let cp_x2 = (x_mid + points[i+1].x) / 2
+
+            ctx.quadraticCurveTo(cp_x1, points[i].y, x_mid, y_mid)
+            ctx.quadraticCurveTo(cp_x2, points[i+1].y, points[i+1].x, points[i+1].y)
+        }
+
+        // for (let [i, temp] of temps.entries()) {
+        //     ctx.lineTo((i * 55) + 35, 255 - ((temp - min) * 73) / max)
+        // }
         ctx.stroke()
-        ctx.lineTo(393, pos)
-        ctx.lineTo(7, pos)
+        ctx.lineTo(393, 268)
+        ctx.lineTo(7, 268)
         ctx.closePath()
         ctx.fillStyle = 'rgba(255, 204, 0, 0.2)'
         ctx.fill()
