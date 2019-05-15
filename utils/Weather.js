@@ -18,7 +18,9 @@ export class Weather {
         let windSpeed     = `${body.currently.windSpeed} km/h`
         let windBearing   = body.currently.windBearing
         let windDirection = 'NW'
-        let maxMin        = `${parseFloat(body.daily.data[0].temperatureMax.toFixed(1))}°↑ ${parseFloat(body.daily.data[0].temperatureMin.toFixed(1))}°↓ `
+        let maxTemp       = body.daily.data[0].temperatureMax
+        let minTemp       = body.daily.data[0].temperatureMin
+        let maxMin        = `${parseFloat(maxTemp.toFixed(1))}°↑ ${parseFloat(minTemp.toFixed(1))}°↓ `
         let timeTz        = moment.unix(body.currently.time).tz(body.timezone)
         let time          = new Date(timeTz._d.valueOf() + timeTz._d.getTimezoneOffset() * 60000)
         let date          = moment(time).format('HH:mm').toLowerCase()
@@ -54,8 +56,8 @@ export class Weather {
 
         let curr  = ~~(body.currently.temperature * 50 / 100)
         let temps = body.daily.data.map(t => t.temperatureHigh)
-        let min = Math.min(...temps)
-        let max = Math.max(...temps) - min
+        let min = Math.min(...[maxTemp, ...temps])
+        let max = Math.max(...[maxTemp, ...temps]) - min
 
         let points = temps.map((temp, i) => {
             return {
@@ -68,21 +70,21 @@ export class Weather {
         ctx.shadowColor = 'rgba(0, 0, 0, 0)'
         ctx.lineWidth = 2
         ctx.beginPath()
-        ctx.moveTo(7, 248 - ((curr - (curr < min ? curr : min)) * 60) / max)
+        ctx.moveTo(7, 248 - ((maxTemp - min) * 60) / max)
 
         points.push({
             x: 393,
-            y: 248 - ((curr - (curr < min ? curr : min)) * 60) / max
+            y: 248 - ((maxTemp - min) * 60) / max
         })
 
         for(let i = 0; i < points.length - 1; i++) {
-            let x_mid = (points[i].x + points[i+1].x) / 2
-            let y_mid = (points[i].y + points[i+1].y) / 2
+            let x_mid = (points[i].x + points[i + 1].x) / 2
+            let y_mid = (points[i].y + points[i + 1].y) / 2
             let cp_x1 = (x_mid + points[i].x) / 2
-            let cp_x2 = (x_mid + points[i+1].x) / 2
+            let cp_x2 = (x_mid + points[i + 1].x) / 2
 
             ctx.quadraticCurveTo(cp_x1, points[i].y, x_mid, y_mid)
-            ctx.quadraticCurveTo(cp_x2, points[i+1].y, points[i+1].x, points[i+1].y)
+            ctx.quadraticCurveTo(cp_x2, points[i + 1].y, points[i + 1].x, points[i + 1].y)
         }
 
         // for (let [i, temp] of temps.entries()) {
