@@ -11,15 +11,15 @@ export class NameMC {
     static async getNicknames (uuid) {
         let $ = await this.get(`${BASE}/profile/${uuid}`)
 
-        return $('.card.mb-3').eq(1).find('.list-group').children().map((_i, e) => {
-            let index = $(e).find('.row .order-md-1').text()
-            let username = $(e).find('.row .order-md-2').text()
-            let date = $(e).find('.row .order-md-3 time').attr('datetime')
-            
-            if (date)
-                date = new Date(date)
-                
-            return { index, username, date }
+        return $('.card.mb-3').eq(1).find('.card-body').children().map((_i, e) => {
+            let index = $(e).find('.order-md-1').text()
+            let username = $(e).find('.order-md-2').text()
+            let date = $(e).find('.order-md-3 time').attr('datetime')
+
+             if (date)
+                 date = new Date(date)
+
+             return { index, username, date }
         }).get()
     }
 
