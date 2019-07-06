@@ -59,7 +59,7 @@ export async function run (msg, suffix) {
         .addField('UUID', id, true)
         .setColor('BLUE')
 
-    if (nicknames) {
+    if (nicknames.length > 0) {
         embed.addField('Histórico de nomes', nicknames.map(n => Util.escapeMarkdown(n.username)), true)
         if (nicknames.filter(n => n.date).length > 0)
             embed.addField('\u200b', nicknames.map(n => n.date && moment(n.date).format('DD/MM/YYYY [-] HH:mm')), true)
