@@ -15,7 +15,7 @@ export async function run (msg, suffix) {
         if (mention.bot)
             return 'wrong usage'
 
-        let type = msg.flags.get('type') || '1'
+        let type = msg.props.get('type') || '1'
         let jogoUser = this.bot.games.findGame('connect4', msg.author.id)
         let jogoOponente = this.bot.games.findGame('connect4', mention.id)
 

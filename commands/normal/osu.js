@@ -12,8 +12,8 @@ export async function run (msg, suffix) {
         return 'wrong usage'
 
     let user  = suffix
-    let mode  = msg.flags.get('mode')
-    let color = msg.flags.get('color') || 'pink'
+    let mode  = msg.props.get('mode')
+    let color = msg.props.get('color') || 'pink'
 
     mode = modes.indexOf(mode) > -1 ? modes.indexOf(mode) : 0
 

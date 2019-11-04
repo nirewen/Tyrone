@@ -8,7 +8,7 @@ export async function run (msg, suffix) {
     if (!suffix)
         return 'wrong usage'
     
-    msg.channel.startTyping()
+//    msg.channel.startTyping()
 
     let server = await MCServerStatus.get(suffix)
     let embed = new MessageEmbed()

@@ -4,18 +4,18 @@ import { CCA_API_KEY } from '@env'
 export class Currency {
     static async fetch (amount, from, to) {
         let res = await request({
-            url: 'http://free.currencyconverterapi.com/api/v6/convert',
+            url: 'https://api.exchangeratesapi.io/latest',
             qs: {
-                q: from + '_' + to,
-                apiKey: CCA_API_KEY
+		base: from,
+		symbols: to
             },
             json: true
-        })
+        }).catch(({ error }) => ({ error }));
 
-        if (res.query.count === 0)
+        if (res.error)
             return this.fetchCrypto(amount, from, to)
         else
-            return amount * res.results[`${from}_${to}`].val
+            return amount * res.rates[to]
     }
 
     static async fetchCrypto (amount, from, to) {

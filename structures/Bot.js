@@ -93,9 +93,11 @@ export class Bot extends Client {
     login (token) {
         this.logger.logBold('Logando...', 'green')
 
-        super.login(token).then(() => this.setLavalink()).catch(error => {
-            this.logger.error(error, 'LOGIN ERROR')
-        })
+        super.login(token)
+		    .then(() => this.setLavalink())
+		    .catch(error => {
+	            this.logger.error(error, 'LOGIN ERROR')
+        	})
     }
 
     setLavalink () {

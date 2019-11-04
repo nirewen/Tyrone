@@ -17,8 +17,8 @@ export async function run (msg, suffix) {
     if (!suffix || !mention || mention.id === msg.author.id || (mention.bot && mention.id !== this.bot.user.id))
         return 'wrong usage'
 
-    let mode = modes.indexOf(msg.flags.get('mode')) > -1 ? msg.flags.get('mode') : 'hard'
-    let type = msg.flags.get('type') || 'x'
+    let mode = modes.indexOf(msg.props.get('mode')) > -1 ? msg.props.get('mode') : 'hard'
+    let type = msg.props.get('type') || 'x'
     let jogoUser = this.bot.games.findGame('tictactoe', msg.author.id)
     let jogoOponente = this.bot.games.findGame('tictactoe', mention.id)
 

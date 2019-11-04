@@ -25,7 +25,7 @@ export async function run (msg, suffix) {
         if (jogoUser && jogoUser.started)
             return msg.send('Você já está em jogo')
 
-        let scheme = msg.flags.has('scheme') && schemes[msg.flags.get('scheme')] ? msg.flags.get('scheme') : 'sandcastle'
+        let scheme = msg.props.has('scheme') && schemes[msg.props.get('scheme')] ? msg.props.get('scheme') : 'sandcastle'
         let game = this.bot.games.get('chess').set(msg.author.id, new Chess(msg.author.id, scheme))
 
         game.addPlayer(msg.author)

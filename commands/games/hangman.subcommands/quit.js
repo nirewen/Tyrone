@@ -12,7 +12,7 @@ export async function run (msg) {
             return msg.send('Aguarde o jogo ser criado para poder entrar')
 
         if (game.author.id === id) {
-            if (msg.flags.has('y') || msg.flags.has('yes'))
+            if (msg.props.has('y') || msg.props.has('yes'))
                 this.bot.games.get('hangman').delete(msg.channel.id)
             else {
                 let message = await msg.channel.send('Tem certeza que deseja deletar esse jogo?')

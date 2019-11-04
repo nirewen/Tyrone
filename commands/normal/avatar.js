@@ -12,10 +12,10 @@ export function run (msg, suffix) {
     let build = async function (member, bool) {
         let embed = new MessageEmbed()
 
-        if (msg.flags.has('server')) {
+        if (msg.props.has('server')) {
             embed
                 .setDescription(`:frame_photo: Aqui o ícone do servidor:`)
-                .setImage(msg.guild.icon == null || msg.flags.has('default') ? `https://guild-default-icon.herokuapp.com/${msg.guild.nameAcronym}` : msg.guild.iconURL({ size: 2048 }))
+                .setImage(msg.guild.icon == null || msg.props.has('default') ? `https://guild-default-icon.herokuapp.com/${msg.guild.nameAcronym}` : msg.guild.iconURL({ size: 2048 }))
                 .setColor(msg.guild.owner.displayColor)
 
             return embed
@@ -42,11 +42,11 @@ export function run (msg, suffix) {
 
         return embed
             .setDescription(`:frame_photo: Aqui o avatar de **${user.username}**:`)
-            .setImage(msg.flags.has('default') ? user.defaultAvatarURL : user.displayAvatarURL({ size: 2048 }))
+            .setImage(msg.props.has('default') ? user.defaultAvatarURL : user.displayAvatarURL({ size: 2048 }))
             .setColor(member.displayColor && member.displayColor > 0 ? member.displayColor : WHITE)
     }
 
-    if ((msg.guild && suffix) || (msg.guild && msg.flags.has('server'))) {
+    if ((msg.guild && suffix) || (msg.guild && msg.props.has('server'))) {
         if (msg.mentions.members.first()) {
             return build(msg.mentions.members.first(), false)
                 .then(embed => msg.send(embed))
@@ -68,7 +68,7 @@ export function run (msg, suffix) {
 
         return msg.send(new MessageEmbed()
             .setDescription(`:frame_photo: Aqui seu avatar, **${msg.author.username}**:`)
-            .setImage(msg.flags.has('default') ? msg.author.defaultAvatarURL : msg.author.displayAvatarURL({ size: 2048 }))
+            .setImage(msg.props.has('default') ? msg.author.defaultAvatarURL : msg.author.displayAvatarURL({ size: 2048 }))
             .setColor(sideColor))
     }
 }

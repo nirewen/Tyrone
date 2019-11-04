@@ -81,7 +81,7 @@ export async function run (msg, suffix) {
             game = this.bot.games.get('hangman').set(msg.channel.id, new Hangman(msg.author))
             let word
 
-            if (!msg.flags.has('random')) {
+            if (!msg.props.has('random')) {
                 let { channel } = await msg.author.send('Você criou um novo Jogo da Forca!')
 
                 word = await chooseWord(channel)

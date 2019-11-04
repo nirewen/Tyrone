@@ -8,7 +8,7 @@ export const aliases = ['w', 'clima']
 export const cooldown = 5
 export const flags = true
 export async function run (msg, suffix) {
-    if (!suffix && !msg.flags.has('city')) {
+    if (!suffix && !msg.props.has('city')) {
         let city = await this.bot.database.get(`users/${msg.author.id}/city`).then(d => d.val())
 
         if (city)
@@ -17,8 +17,8 @@ export async function run (msg, suffix) {
             return 'wrong usage'
     }
 
-    if (msg.flags.has('city')) {
-        let city = msg.flags.get('city')
+    if (msg.props.has('city')) {
+        let city = msg.props.get('city')
 
         this.bot.database.set(`users/${msg.author.id}/city`, city)
         return msg.send(`Sua cidade foi definida para ${city}`)

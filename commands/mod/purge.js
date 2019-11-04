@@ -30,7 +30,7 @@ export async function run (msg, suffix) {
     if (!suffix || isNaN(limit) || limit > 100 || limit < 1)
         return 'wrong usage'
 
-    const filters = Array.from(msg.flags, ([name, value]) => value ? { filter: Filters.find(filter => filter.name === name), value } : null)
+    const filters = Array.from(msg.props, ([name, value]) => value ? { filter: Filters.find(filter => filter.name === name), value } : null)
     const messages = await msg.channel.messages.fetch({ limit, before: msg.id })
         .then(messages => messages.filter(
             message => filters.every(

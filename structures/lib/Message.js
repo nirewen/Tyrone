@@ -33,7 +33,7 @@ export const Message = DiscordMessage => {
             return this.response
         }
 
-        get flags () {
+        get props () {
             let flags = new Map()
 
             Object.defineProperty(flags, 'regex', {

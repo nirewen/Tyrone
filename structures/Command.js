@@ -75,7 +75,7 @@ export class Command {
             return msg.channel.send('Este comando só está disponível em servidores')
 
         if (this.flags)
-            suffix = suffix.replace(msg.flags.regex, '').trim()
+            suffix = suffix.replace(msg.props.regex, '').trim()
 
         let result
         try {

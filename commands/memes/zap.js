@@ -18,9 +18,9 @@ export async function run (msg, text) {
     if (!text)
         return 'wrong usage'
 
-    let mood = msg.flags.get('mood')
-    let strength = msg.flags.get('strength')
-    let raw = msg.flags.has('raw')
+    let mood = msg.props.get('mood')
+    let strength = msg.props.get('strength')
+    let raw = msg.props.has('raw')
 
     let { zap } = await Zapifier.zap({ text, mood, strength })
 
