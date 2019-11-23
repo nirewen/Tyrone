@@ -16,7 +16,7 @@ export async function run (msg, suffix) {
             hl: lang,
             ds: 'i',
             output: 'firefox',
-            q: suffix
+            q: suffix.replace(/_$/, ' ')
         },
         json: true,
         encoding: 'latin1'
