@@ -10,6 +10,7 @@
     "dev": "babel-node index.js",
     "start": "cd build && node .",
     "build": "rm -rf build && babel . --out-dir build --copy-files --ignore 'node_modules'",
+    "build-file": "babel --out-dir build",
     "deploy": "rm -rf tyrone-bot; npm run build; heroku git:clone -a tyrone-bot; cp -a build/. tyrone-bot/",
     "heroku-postbuild": "echo Skipping build..."
   },
