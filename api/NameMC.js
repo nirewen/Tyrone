@@ -15,19 +15,11 @@ export class NameMC {
             let index = $(e).find('.order-md-1').text()
             let username = $(e).find('.order-md-2').text()
             let date = $(e).find('.order-md-3 time').attr('datetime')
-<<<<<<< HEAD
-            
+
             if (date)
                 date = new Date(date)
-                
+
             return { index, username, date }
-=======
-
-             if (date)
-                 date = new Date(date)
-
-             return { index, username, date }
->>>>>>> refs/remotes/origin/master
         }).get()
     }
 

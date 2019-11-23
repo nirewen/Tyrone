@@ -7,7 +7,13 @@ export async function run (msg, suffix) {
     if (!suffix)
         return 'wrong usage'
 
-    let res = await reddit(suffix)
+    let res
+
+    try {
+        res = await reddit(suffix)
+    } catch (e) {
+        return msg.send('mas qu e porra \'-\'')
+    }
     let embed = new MessageEmbed()
         .setAuthor(`Reddit: ${suffix}`, 'https://www.redditstatic.com/desktop2x/img/favicon/apple-icon-114x114.png')
         .setColor('ORANGE')
