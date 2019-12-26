@@ -18,7 +18,7 @@ export const regions = {
 }
 export const regionEmojis = {
     ':earth_americas:': ['us-central', 'us-east', 'brazil', 'us-south', 'us-west'],
-    ':earth_africa:'  : ['eu-central', 'eu-west', 'london', 'amsterdam', 'frankfurt'],
+    ':earth_africa:'  : ['eu-central', 'eu-west', 'europe', 'london', 'amsterdam', 'frankfurt'],
     ':earth_asia:'    : ['hongkong', 'russia', 'singapore', 'sydney', 'japan']
 }
 export const format = 'D [de] MMMM [de] YYYY, [às] HH:mm'
