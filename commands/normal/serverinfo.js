@@ -19,8 +19,13 @@ export async function run (msg) {
 
         return c
     }, {})
-    let regionEmoji = Object.entries(regionEmojis).find(([e, v]) => v.includes(region))[0]
-    let serverRegion = regions[region]
+    let regionEmoji = Object.entries(regionEmojis).find(([e, v]) => v.includes(region))
+    let serverEmoji = ':earth_americas: Desconhecida'
+
+    if (!regionEmoji[0])
+        console.warn(region)
+    else
+        serverRegion = regions[region]
 
     msg.send(new MessageEmbed()
         .setTitle(`${findEmoji('discord')} ${Util.escapeMarkdown(name)}`)

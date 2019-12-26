@@ -1,6 +1,7 @@
 export const regions = {
     'amsterdam' : ':flag_nl: Amsterdã',
     'brazil'    : ':flag_br: Brasil',
+    'europe'    : ':flag_eu: Europa',
     'eu-central': ':flag_eu: Europa Central',
     'eu-west'   : ':flag_eu: Europa Ocidental',
     'frankfurt' : ':flag_de: Frankfurt',
