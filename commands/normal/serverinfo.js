@@ -22,7 +22,7 @@ export async function run (msg) {
     let regionEmoji = Object.entries(regionEmojis).find(([e, v]) => v.includes(region))
     let serverEmoji = ':earth_americas: Desconhecida'
 
-    if (!regionEmoji[0])
+    if (!regionEmoji)
         console.warn(region)
     else
         serverRegion = regions[region]
