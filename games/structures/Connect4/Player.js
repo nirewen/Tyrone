@@ -8,6 +8,6 @@ export class Player extends AbstractPlayer {
     }
 
     get label () {
-        return [':white_circle:', ':large_blue_circle:', ':red_circle:'][this.color]
+        return [':white_circle:', ':yellow_circle:', ':red_circle:'][this.color]
     }
 }
