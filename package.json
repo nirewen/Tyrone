@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "babel-node index.js",
     "start": "cd build && node .",
-    "build": "rm -rf build && babel . --out-dir build --copy-files --ignore 'node_modules'",
+    "build": "rm -rf build && babel . --out-dir build --copy-files --ignore \"node_modules\"",
     "build-file": "babel --out-dir build"
   },
   "keywords": [],
@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
+    "aki-api": "^3.2.1",
     "babel-preset-stage-2": "^6.24.1",
     "canvas": "^2.6.1",
     "chalk": "^2.4.2",
@@ -28,6 +29,7 @@
     "chokidar": "^3.4.0",
     "cli-table2": "^0.2.0",
     "discord.js": "^12.2.0",
+    "discord.js-lavalink": "npm:lavalink-dev-version@^1.0.0",
     "firebase-admin": "^8.12.1",
     "googleapis": "^39.2.0",
     "humanize-duration": "^3.18.0",
