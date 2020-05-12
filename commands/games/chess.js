@@ -9,7 +9,7 @@ export const flags = true
 export async function run (msg, suffix) {
     let mention = msg.mentions.users.first()
 
-    if (!suffix || !mention/* || (mention && mention.bot) */)
+    if (!suffix || !mention || (mention && mention.bot))
         return 'wrong usage'
 
     if (mention.id !== msg.author.id) {
@@ -48,7 +48,7 @@ export async function run (msg, suffix) {
 
         let canvas = await game.render()
         let embed = () => new MessageEmbed()
-            .setAuthor('Xadrez', 'https://png.icons8.com/windows/100/d5d5d5/queen-uk.png')
+            .setAuthor('Xadrez', 'https://img.icons8.com/windows/100/d5d5d5/queen-uk.png')
             .setColor(schemes[scheme][2])
 
         game.game.on('check', async attacker => {
