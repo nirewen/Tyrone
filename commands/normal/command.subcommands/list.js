@@ -7,7 +7,7 @@ export const aliases = ['ls']
 export async function run (msg) {
     let commands = await this.bot.database.get(`guilds/${msg.guild.id}/commands`).then(d => d.val())
     let embed = new MessageEmbed()
-        .setTitle(`Comandos personalizados de ${Util.cleanContent(msg.guild.name)}`)
+        .setTitle(`Comandos personalizados de ${Util.cleanContent(msg.guild.name, msg)}`)
         .setColor('ORANGE')
 
     if (!commands)

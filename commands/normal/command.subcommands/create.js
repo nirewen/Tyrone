@@ -1,9 +1,13 @@
 import TatsuScript from '../../../structures/interpreter/TatsuScript'
 
 export const desc = 'Crie comandos personalizados no Tyrone'
+export const usage = '<nome>'
 export const guildOnly = true
 export const aliases = ['register', 'add']
 export async function run (msg, suffix) {
+    if (!suffix)
+        return 'wrong usage'
+        
     const commands = await this.bot.database.get(`guilds/${msg.guild.id}/commands`)
     const args = suffix.split(' ')
 

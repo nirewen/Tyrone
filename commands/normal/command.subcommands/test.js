@@ -2,6 +2,7 @@ import { MessageEmbed } from 'discord.js'
 import TatsuScript from '../../../structures/interpreter/TatsuScript'
 
 export const desc = 'Teste um script antes de criar o comando'
+export const usage = '<script>'
 export const guildOnly = true
 export async function run (msg, suffix) {
     if (!suffix)

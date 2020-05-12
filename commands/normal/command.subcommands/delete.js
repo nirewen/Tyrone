@@ -1,9 +1,13 @@
 import TatsuScript from '../../../structures/interpreter/TatsuScript'
 
 export const desc = 'Apaga comandos do servidor se eles forem seus'
+export const usage = '<nome>'
 export const guildOnly = true
 export const aliases = ['remove']
 export async function run (msg, name) {
+    if (!name)
+        return 'wrong usage'
+        
     let commands = await this.bot.database.get(`guilds/${msg.guild.id}/commands`)
 
     if (!commands.hasChild(name))

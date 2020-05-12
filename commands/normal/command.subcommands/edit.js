@@ -1,9 +1,13 @@
 import TatsuScript from '../../../structures/interpreter/TatsuScript'
 
 export const desc = 'Edite um comando customizado seu'
+export const usage = '<nome> <script>'
 export const guildOnly = true
 export const aliases = ['update']
 export async function run (msg, suffix) {
+    if (!suffix)
+        return 'wrong usage'
+        
     const commands = await this.bot.database.get(`guilds/${msg.guild.id}/commands`)
     let [name, ...script] = suffix.split(' ')
 
