@@ -15,7 +15,7 @@ export async function run (msg) {
         .setTitle(question)
         .setDescription(answers.map((answer, i) => `${i + 1}\u20E3 ${answer}`))
         .setThumbnail('https://raw.githubusercontent.com/nirewen/Tyrone/master/src/img/akinator.png')
-        .setFooter(`${Math.floor(game.progression)}% ${game.progressionBar}`)
+        .setFooter(`${game.progress}% ${game.progressBar}`)
         .setColor('#149EFF')
 
     let message = await msg.send(embed)
@@ -44,13 +44,13 @@ export async function run (msg) {
                 .setDescription(question.description)
                 .setImage(question.image)
                 .setThumbnail()
-                .setFooter(`Ranking: ${question.ranking} • Resposta alcançada em ${game.step} jogadas`)
+                .setFooter(`Ranking: ${question.ranking} • Resposta alcançada em ${question.guesses} jogadas`)
 
             this.stop()
         } else
             embed
                 .setTitle(question)
-                .setFooter(`${Math.floor(game.progression)}% ${game.progressionBar}`)
+                .setFooter(`${game.progress}% ${game.progressBar}`)
 
         message.edit(embed)
         r.users.remove(u)
