@@ -20,7 +20,7 @@ export async function run (msg, suffix) {
     else {
         embed
             .setTitle(`${embed.title} — Significado de **${result.word}**`)
-            .setDescription(result.meaning.map(m => `*${m.type}*\n\n${m.description.join('\n')}\n`))
+            .setDescription(result.meaning.map(m => `*${m.type}*\n\n${m.description.join('\n')}\n${m.etymology ? '\n__' + m.etymology + '__' : ''}`))
 
         if (result.synonyms.length)
             embed.addField(`<:synonym:393098157132611594> Sinônimos de **${result.word}**`, result.synonyms.join(', '))
@@ -29,9 +29,6 @@ export async function run (msg, suffix) {
 
         if (result.examples.length)
             embed.addField(':pen_fountain: Exemplos em frases', result.examples.join(`\n\n`))
-
-        if (result.etymology)
-            embed.setFooter(`Etimologia: ${result.etymology}`)
         
         if (result.image)
             embed.setImage(result.image)
