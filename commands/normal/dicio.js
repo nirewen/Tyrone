@@ -20,18 +20,24 @@ export async function run (msg, suffix) {
     else {
         embed
             .setTitle(`${embed.title} — Significado de **${result.word}**`)
-            .setDescription(result.meaning.map(m => `*${m.type}*\n\n${m.description.join('\n')}\n${m.etymology ? '\n__Etimologia: ' + m.etymology + '__\n' : ''}`))
+            .setDescription(result.meaning.map(m => `*${m.type}*\n\n• ${m.description.join('\n• ')}\n${m.etymology ? '\n__Etimologia: ' + m.etymology + '__\n' : ''}`))
 
         if (result.synonyms.length)
             embed.addField(`<:synonym:393098157132611594> Sinônimos de **${result.word}**`, result.synonyms.join(', '))
         if (result.antonyms.length)
             embed.addField(`<:antonym:393098156855787541> Antônimos de **${result.word}**`, result.antonyms.join(', '))
 
+        
+        if (result.sentences.length)
+            embed.addField(':speech_left: Citações em frases', result.sentences.join(`\n\n`))
+
         if (result.examples.length)
             embed.addField(':pen_fountain: Exemplos em frases', result.examples.join(`\n\n`))
         
-        if (result.image)
+        if (result.image) {
+            embed.addField(':frame_photo: Imagem', `[Link](${result.image})`)
             embed.setImage(result.image)
+        }
     }
 
     msg.send(embed)
