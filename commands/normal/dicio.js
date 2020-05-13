@@ -32,6 +32,9 @@ export async function run (msg, suffix) {
 
         if (result.etymology)
             embed.setFooter(`Etimologia: ${result.etymology}`)
+        
+        if (result.image)
+            embed.setImage(result.image)
     }
 
     msg.send(embed)
