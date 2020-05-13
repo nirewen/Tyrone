@@ -79,16 +79,16 @@ export async function run (msg, suffix) {
                 offline  : `${findEmoji('offline')} Offline`
             }
 
-            if (userMember.presence.activities.length > 0 && userMember.presence.activities[0].type === 'STREAMING')
+            if (userMember.presence.activities.length && userMember.presence.activities.find(a => a.type === 'STREAMING'))
                 userStatus = 'streaming'
 
             userStatus = userStatuses[userStatus]
 
-            embed.spliceField(1, 0, ':label: Apelido', userNickname, true)
-            embed.spliceField(3, 0, ':eye_in_speech_bubble: Status', userStatus, true)
-            embed.spliceField(5, 0, ':inbox_tray: Entrou no servidor', `${moment(userJoinedAt).format(dateFormat)}\n${humanize(userJoinedAt)} atrás`, true)
+            embed.spliceFields(1, 0, { name: ':label: Apelido', value: userNickname, inline: true })
+            embed.spliceFields(3, 0, { name: ':eye_in_speech_bubble: Status', value: userStatus, inline: true })
+            embed.spliceFields(5, 0, { name: ':inbox_tray: Entrou no servidor', value: `${moment(userJoinedAt).format(dateFormat)}\n${humanize(userJoinedAt)} atrás`, inline: true })
             embed.addField(`:briefcase: Cargos [${userRolesLength}]`, `${userRoles ? userRoles.map(r => r).slice(0, 15).join(', ') : 'Nenhum'}`)
-            if (userMember.presence.activities) {
+            if (userMember.presence.activities.length) {
                 userMember.presence.activities.sort((a, b) => {
                     if (a.type === b.type)
                         return 0
