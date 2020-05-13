@@ -8,7 +8,7 @@ export async function run (msg, suffix) {
     if (!suffix)
         return 'wrong usage'
 
-    const emojiTranslate = this.bot.emojis.find(e => e.guild.id === '199330631061078017' && e.name === 'translate')
+    const emojiTranslate = this.bot.emojis.cache.find(e => e.guild.id === '199330631061078017' && e.name === 'translate')
     let args = suffix.split(' ')
     let from = 'auto'
     let to = args[0]
@@ -33,7 +33,7 @@ export async function run (msg, suffix) {
         .addField(`${languages[res.outputLanguage] || res.outputLanguage}`, res.output, true)
         .setColor('BLUE'))
 
-    await message.react(this.bot.emojis.find(e => e.guild.id === '199330631061078017' && e.name === 'switch'))
+    await message.react(this.bot.emojis.cache.find(e => e.guild.id === '199330631061078017' && e.name === 'switch'))
 
     msg.collector = message.createReactionCollector((r, u) => r.me && u.id === msg.author.id, { idle: 3E4 })
 
