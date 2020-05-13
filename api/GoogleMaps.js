@@ -2,7 +2,7 @@ import request from 'request-promise-native'
 import { GMAPS_API_KEY as key } from '@env'
 
 export class GoogleMaps {
-    static async reverse (address, filter = ['administrative_area_level_2', 'locality']) {
+    static async reverse (address, filter = ['administrative_area_level_1', 'administrative_area_level_2', 'locality']) {
         const body = await this.get({ address })
 
         if (body.status !== 'OK' || !body.results[0].address_components.find(a => filter.some(e => a.types.includes(e))))
