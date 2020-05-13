@@ -30,7 +30,7 @@ export async function run (msg, suffix) {
         msg.send(new MessageAttachment(card, 'weather.png'))
     } catch (e) {
         msg.send(new MessageEmbed()
-            .setAuthor('Clima', 'https://png.icons8.com/no-rain/dusk/128')
+            .setAuthor('Clima', 'https://img.icons8.com/dusk/100/d5d5d5D5/no-rain.png')
             .setDescription(e.message)
             .setColor('RED'))
     }
