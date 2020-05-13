@@ -20,7 +20,7 @@ export async function run (msg, suffix) {
     else {
         embed
             .setTitle(`${embed.title} — Significado de **${result.word}**`)
-            .setDescription(result.meaning.map(m => `*${m.type}*\n\n${m.description.join('\n')}\n${m.etymology ? '\n__Etimologia: ' + m.etymology + '__' : ''}`))
+            .setDescription(result.meaning.map(m => `*${m.type}*\n\n${m.description.join('\n')}\n${m.etymology ? '\n__Etimologia: ' + m.etymology + '__\n' : ''}`))
 
         if (result.synonyms.length)
             embed.addField(`<:synonym:393098157132611594> Sinônimos de **${result.word}**`, result.synonyms.join(', '))
