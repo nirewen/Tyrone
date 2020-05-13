@@ -129,7 +129,7 @@ export async function run (msg, suffix) {
                         if (message.guild)
                             message.reactions.removeAll()
                         else
-                            message.reactions.get(position + '\u20E3').users.remove()
+                            message.reactions.cache.get(position + '\u20E3').users.remove()
 
                         message.edit(`:hash:${game.player.label}:crown:\n\n${game.render()}`)
                         return this.stop()
@@ -137,14 +137,16 @@ export async function run (msg, suffix) {
                         if (message.guild)
                             message.reactions.removeAll()
                         else
-                            message.reactions.get(position + '\u20E3').users.remove()
+                            message.reactions.cache.get(position + '\u20E3').users.remove()
 
                         message.edit(`:hash::older_woman:\n\n${game.render()}`)
                         return this.stop()
                     }
+
                     await game.next()
+
                     message.edit(`:hash:${game.player.label}\n\n${game.render()}`)
-                    message.reactions.get(position + '\u20E3').users.remove()
+                    message.reactions.cache.get(position + '\u20E3').users.remove()
                 }
             }
         }

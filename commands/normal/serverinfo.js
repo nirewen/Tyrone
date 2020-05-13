@@ -9,7 +9,7 @@ export async function run (msg) {
     const findEmoji = name => this.bot.emojis.find(e => e.name === name && e.guild.id === '199330631061078017')
     let { name, id, icon, members, region, roles, channels, owner, joinedAt, createdAt } = msg.guild
     let guildIcon = icon ? msg.guild.iconURL({ format: 'png', size: 2048 }) : `https://guild-default-icon.herokuapp.com/${msg.guild.nameAcronym}`
-    let statuses = msg.guild.members.reduce((c, n) => {
+    let statuses = msg.guild.members.cache.reduce((c, n) => {
         c[n.presence.status] = (c[n.presence.status] || 0) + 1
 
         if (n.user.bot)

@@ -18,9 +18,9 @@ export function findRole (query, guild, exact = false) {
         return found
 
     query = query.toLowerCase()
-    guild.roles.each(r => { if (r.name.toLowerCase() === query) found = r })
-    if (!found && !exact) guild.roles.each(r => { if (r.name.toLowerCase().indexOf(query) === 0) found = r })
-    if (!found && !exact) guild.roles.each(r => { if (r.name.toLowerCase().includes(query)) found = r })
+    guild.roles.cache.each(r => { if (r.name.toLowerCase() === query) found = r })
+    if (!found && !exact) guild.roles.cache.each(r => { if (r.name.toLowerCase().indexOf(query) === 0) found = r })
+    if (!found && !exact) guild.roles.cache.each(r => { if (r.name.toLowerCase().includes(query)) found = r })
     return found
 }
 
@@ -29,12 +29,12 @@ export function findMember (query, guild, exact = false) {
     if (query === undefined || guild === undefined)
         return found
     query = query.toLowerCase()
-    guild.members.each(m => { if (m.user.username.toLowerCase() === query) found = m })
-    if (!found) guild.members.each(m => { if (m.nickname && m.nickname.toLowerCase() === query) found = m })
-    if (!found && !exact) guild.members.each(m => { if (m.user.username.toLowerCase().indexOf(query) === 0) found = m })
-    if (!found && !exact) guild.members.each(m => { if (m.nickname && m.nickname.toLowerCase().indexOf(query) === 0) found = m })
-    if (!found && !exact) guild.members.each(m => { if (m.user.username.toLowerCase().includes(query)) found = m })
-    if (!found && !exact) guild.members.each(m => { if (m.nickname && m.nickname.toLowerCase().includes(query)) found = m })
+    guild.members.cache.each(m => { if (m.user.username.toLowerCase() === query) found = m })
+    if (!found) guild.members.cache.each(m => { if (m.nickname && m.nickname.toLowerCase() === query) found = m })
+    if (!found && !exact) guild.members.cache.each(m => { if (m.user.username.toLowerCase().indexOf(query) === 0) found = m })
+    if (!found && !exact) guild.members.cache.each(m => { if (m.nickname && m.nickname.toLowerCase().indexOf(query) === 0) found = m })
+    if (!found && !exact) guild.members.cache.each(m => { if (m.user.username.toLowerCase().includes(query)) found = m })
+    if (!found && !exact) guild.members.cache.each(m => { if (m.nickname && m.nickname.toLowerCase().includes(query)) found = m })
     return found
 }
 
@@ -44,9 +44,9 @@ export function findGuild (query, guilds, exact = false) {
         return found
 
     query = query.toLowerCase()
-    guilds.each(g => { if (g.name.toLowerCase() === query) found = g })
-    if (!found && !exact) guilds.each(g => { if (g.name.toLowerCase().indexOf(query) === 0) found = g })
-    if (!found && !exact) guilds.each(g => { if (g.name.toLowerCase().includes(query)) found = g })
+    guilds.cache.each(g => { if (g.name.toLowerCase() === query) found = g })
+    if (!found && !exact) guilds.cache.each(g => { if (g.name.toLowerCase().indexOf(query) === 0) found = g })
+    if (!found && !exact) guilds.cache.each(g => { if (g.name.toLowerCase().includes(query)) found = g })
     return found
 }
 
@@ -56,18 +56,18 @@ export function findUserInGuild (query, guild, exact = false) {
         return found
 
     query = query.toLowerCase()
-    guild.members.each(m => { if (m.user.username.toLowerCase() === query) found = m })
-    if (!found) guild.members.each(m => { if (m.nickname && m.nickname.toLowerCase() === query) found = m })
-    if (!found && !exact) guild.members.each(m => { if (m.user.username.toLowerCase().indexOf(query) === 0) found = m })
-    if (!found && !exact) guild.members.each(m => { if (m.nickname && m.nickname.toLowerCase().indexOf(query) === 0) found = m })
-    if (!found && !exact) guild.members.each(m => { if (m.user.username.toLowerCase().includes(query)) found = m })
-    if (!found && !exact) guild.members.each(m => { if (m.nickname && m.nickname.toLowerCase().includes(query)) found = m })
+    guild.members.cache.each(m => { if (m.user.username.toLowerCase() === query) found = m })
+    if (!found) guild.members.cache.each(m => { if (m.nickname && m.nickname.toLowerCase() === query) found = m })
+    if (!found && !exact) guild.members.cache.each(m => { if (m.user.username.toLowerCase().indexOf(query) === 0) found = m })
+    if (!found && !exact) guild.members.cache.each(m => { if (m.nickname && m.nickname.toLowerCase().indexOf(query) === 0) found = m })
+    if (!found && !exact) guild.members.cache.each(m => { if (m.user.username.toLowerCase().includes(query)) found = m })
+    if (!found && !exact) guild.members.cache.each(m => { if (m.nickname && m.nickname.toLowerCase().includes(query)) found = m })
     return found === null ? found : found.user
 }
 
 export async function findUser (guild, id) {
-    if (guild.members.has(id)) {
-        return guild.members.get(id)
+    if (guild.members.cache.has(id)) {
+        return guild.members.cache.get(id)
     } else {
         let bot  = guild.client
 
@@ -99,13 +99,13 @@ export function getMentions (msg) {
         .forEach(async ({ type, specific, id }) => {
             if (type === '@') {
                 if (specific === '&') {
-                    let role = msg.guild.roles.has(id) && msg.guild.roles.get(id)
+                    let role = msg.guild.roles.cache.has(id) && msg.guild.roles.cache.get(id)
                     if (role)
                         return finalMentions.roles.push(role)
                 }
 
                 if (!specific || specific === '!') {
-                    let member = msg.channel.guild.members.has(id) && msg.channel.guild.members.get(id)
+                    let member = msg.channel.guild.members.cache.has(id) && msg.channel.guild.members.cache.get(id)
                     let user = member.user
 
                     if (member) {

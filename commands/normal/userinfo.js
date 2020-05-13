@@ -11,7 +11,7 @@ export const usage = '[[@]usuario]'
 export const aliases = ['info', 'profile', 'ui']
 export const guildOnly = true
 export async function run (msg, suffix) {
-    let findEmoji = name => this.bot.emojis.find(e => e.guild.id === '199330631061078017' && e.name === name)
+    let findEmoji = name => this.bot.emojis.cache.find(e => e.guild.id === '199330631061078017' && e.name === name)
     let build = async (msg, user, bool = false) => {
         if (bool === true) {
             let userMember = utils.findMember(user, msg.guild)
@@ -61,8 +61,8 @@ export async function run (msg, suffix) {
 
         if (userMember) {
             let userNickname = userMember.nickname ? Util.escapeMarkdown(userMember.nickname) : 'Nenhum'
-            let userRolesLength = userMember && userMember.roles.size
-            let userRoles       = userRolesLength > 0 ? Util.discordSort(userMember.roles) : null
+            let userRolesLength = userMember && userMember.roles.cache.size
+            let userRoles       = userRolesLength > 0 ? Util.discordSort(userMember.roles.cache) : null
             let userStatus      = userMember && userMember.presence.status
             let userJoinedAt    = userMember && (new Date(userMember.joinedAt))
             let gamesArr        = {
@@ -79,7 +79,7 @@ export async function run (msg, suffix) {
                 offline  : `${findEmoji('offline')} Offline`
             }
 
-            if (userMember.presence.activity && userMember.presence.activity.type && userMember.presence.activity.type === 1)
+            if (userMember.presence.activities.length > 0 && userMember.presence.activities[0].type === 'STREAMING')
                 userStatus = 'streaming'
 
             userStatus = userStatuses[userStatus]
@@ -88,16 +88,27 @@ export async function run (msg, suffix) {
             embed.spliceField(3, 0, ':eye_in_speech_bubble: Status', userStatus, true)
             embed.spliceField(5, 0, ':inbox_tray: Entrou no servidor', `${moment(userJoinedAt).format(dateFormat)}\n${humanize(userJoinedAt)} atrás`, true)
             embed.addField(`:briefcase: Cargos [${userRolesLength}]`, `${userRoles ? userRoles.map(r => r).slice(0, 15).join(', ') : 'Nenhum'}`)
-            if (userMember.presence.activity) {
-                if (userMember.presence.activity.type === 'LISTENING' && userMember.presence.activity.state && userMember.presence.activity.name === 'Spotify') {
-                    embed.addField(gamesArr[userMember.presence.activity.type], `${findEmoji('spotify')} **${userMember.presence.activity.name}**`)
-                    embed.setFooter(`${userMember.presence.activity.state.replace(/;/g, ' &')} - ${userMember.presence.activity.details}`, `https://i.scdn.co/image/${userMember.presence.activity.assets.largeImage.split(':')[1]}`)
+            if (userMember.presence.activities) {
+                userMember.presence.activities.sort((a, b) => {
+                    if (a.type === b.type)
+                        return 0
+                    else if (a.type === 'LISTENING')
+                        return 1
+                    else if (b.type === 'LISTENING')
+                        return -1
+                })
+
+                for (let activity of userMember.presence.activities) {
+                    if (activity.type === 'LISTENING' && activity.state && activity.name === 'Spotify') {
+                        embed.addField(gamesArr[activity.type], `${findEmoji('spotify')} **${activity.name}**`)
+                        embed.setFooter(`${activity.state.replace(/;/g, ' &')} - ${activity.details}`, `https://i.scdn.co/image/${activity.assets.largeImage.split(':')[1]}`)
+                    }
+                    else if (activity.type === 'STREAMING' && activity.details) {
+                        embed.addField(gamesArr[activity.type], `${findEmoji('twitch')} **[${activity.name}](${activity.url})**`)
+                        embed.setFooter(`${activity.details}`, `https://static-cdn.jtvnw.net/previews-ttv/live_user_${activity.assets.largeImage.split(':')[1]}-60x60.jpg`)
+                    } else
+                        embed.addField(gamesArr[activity.type], activity.name)
                 }
-                else if (userMember.presence.activity.type === 'STREAMING' && userMember.presence.activity.details) {
-                    embed.addField(gamesArr[userMember.presence.activity.type], `${findEmoji('twitch')} **[${userMember.presence.activity.name}](${userMember.presence.activity.url})**`)
-                    embed.setFooter(`${userMember.presence.activity.details}`, `https://static-cdn.jtvnw.net/previews-ttv/live_user_${userMember.presence.activity.assets.largeImage.split(':')[1]}-60x60.jpg`)
-                } else
-                    embed.addField(gamesArr[userMember.presence.activity.type], userMember.presence.activity.name)
             }
         }
         return msg.send(embed)
