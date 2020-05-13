@@ -12,7 +12,7 @@ export class MCServerStatus {
         server.icon = `https://mcservericon.now.sh/?server=${server.hostname}`
 
         if (server.motd)
-            server.motd.raw = server.motd.raw.join('\n\u200b').replace(/§[a-z-0-9]/gi, '')
+            server.motd.clean = server.motd.clean.join('\n\u200b')
 
         if (server.players && !server.players.list)
             server.players.list = ['\u200b']

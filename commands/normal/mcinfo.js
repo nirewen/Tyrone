@@ -17,6 +17,9 @@ export async function run (msg, suffix) {
     let mojang = await request({ url: `https://api.mojang.com/users/profiles/minecraft/${username}`, json: true })
 
     if (!mojang) {
+        if (username.includes('.'))
+            return msg.send('Para procurar por servidores, use ty!mcserver')
+            
         let users = await NameMC.search(username)
 
         if (users.length > 0) {
