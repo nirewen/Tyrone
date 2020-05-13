@@ -8,7 +8,7 @@ export async function run (msg, suffix) {
     if (!suffix)
         return 'wrong usage'
 
-    const result = await Dicio.fetch(suffix).catch(e => e)
+    const result = await Dicio.fetch(suffix, msg.props.has('first')).catch(e => e)
     const embed = new MessageEmbed()
         .setTitle('\uD83D\uDCD6 Dicio')
         .setColor('#91D3FF')
