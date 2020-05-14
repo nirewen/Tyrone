@@ -1,6 +1,6 @@
 import moment from 'moment'
 import request from 'request-promise-native'
-import util from './minecraft.utils/utils'
+import * as util from './minecraft.utils/utils'
 import { MessageEmbed, Util } from 'discord.js'
 import { Visage } from '../../api/Visage'
 import { NameMC } from '../../api/NameMC'

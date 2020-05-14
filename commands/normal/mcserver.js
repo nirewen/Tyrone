@@ -1,4 +1,4 @@
-import util from './minecraft.utils/utils'
+import * as util from './minecraft.utils/utils'
 import { MessageEmbed, Util } from 'discord.js'
 import { MCServerStatus } from '../../api/MCServerStatus'
 
