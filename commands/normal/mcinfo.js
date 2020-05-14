@@ -1,5 +1,6 @@
 import moment from 'moment'
 import request from 'request-promise-native'
+import util from './minecraft.utils/utils'
 import { MessageEmbed, Util } from 'discord.js'
 import { Visage } from '../../api/Visage'
 import { NameMC } from '../../api/NameMC'
@@ -14,12 +15,13 @@ export async function run (msg, suffix) {
         return 'wrong usage'
 
     let [username] = suffix.split(' ')
+
+    if (!util.validateUsername(username))
+        return msg.send('Nome do usuário inválido (somente A-Z, a-z, 0-9 e _ de 3-32 caracteres)')
+
     let mojang = await request({ url: `https://api.mojang.com/users/profiles/minecraft/${username}`, json: true })
 
     if (!mojang) {
-        if (username.includes('.'))
-            return msg.send('Para procurar por servidores, use ty!mcserver')
-            
         let users = await NameMC.search(username)
 
         if (users.length > 0) {

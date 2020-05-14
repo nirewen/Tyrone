@@ -1,3 +1,4 @@
+import util from './minecraft.utils/utils'
 import { MessageEmbed, Util } from 'discord.js'
 import { MCServerStatus } from '../../api/MCServerStatus'
 
@@ -7,6 +8,9 @@ export const aliases = ['mcstatus']
 export async function run (msg, suffix) {
     if (!suffix)
         return 'wrong usage'
+
+    if (!util.validateServer(username))
+        return msg.send('Servidor inválido (somente A-Z, a-z, 0-9, _ e . de pelo menos 4 caracteres)')
 
     try {
         let server = await MCServerStatus.get(suffix)

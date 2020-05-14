@@ -1,5 +1,6 @@
 import { MessageAttachment, MessageEmbed } from 'discord.js'
 import request from 'request-promise-native'
+import util from './minecraft.utils/utils'
 import { Visage } from '../../api/Visage'
 
 const MOJANG = 'https://api.mojang.com/users/profiles/minecraft/'
@@ -12,6 +13,10 @@ export async function run (msg, suffix) {
         return 'wrong usage'
 
     let [username] = suffix.split(' ')
+
+    if (!util.validateUsername(username))
+        return msg.send('Nome do usuário inválido (somente A-Z, a-z, 0-9 e _ de 3-32 caracteres)')
+
     let mojang = await request({ url: `${MOJANG}${username}`, json: true })
 
     if (!mojang)
