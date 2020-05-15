@@ -9,7 +9,9 @@ export async function run (msg, suffix) {
     if (!suffix)
         return 'wrong usage'
 
-    if (!util.validateServer(username))
+    suffix = suffix.split(' ')[0]
+
+    if (!util.validateServer(suffix))
         return msg.send('Servidor inválido (somente A-Z, a-z, 0-9, _ e . de pelo menos 4 caracteres)')
 
     try {
