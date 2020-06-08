@@ -7,6 +7,7 @@ import { Category } from './Category'
 import * as DiscordStructures from './lib'
 import { Event } from './Event'
 import { Firebase } from '../database/Firebase'
+import { CategoryManager } from './CategoryManager'
 import { GameManager } from './GameManager'
 import { Logger } from './Logger'
 import { PlayerManager } from '../music/PlayerManager'
@@ -21,7 +22,7 @@ export class Bot extends Client {
         this.logger = new Logger()
         this.apis = APIs
         this.database = new Firebase({ serviceAccount, databaseURL })
-        this.categories = new Collection()
+        this.categories = new CategoryManager(this)
         this.events = new Collection()
         this.games = new GameManager(...fs.readdirSync('./commands/games').filter(c => c.endsWith('.js')).map(c => c.substr(0, c.indexOf('.js'))))
         this.ownerId = OWNER_ID

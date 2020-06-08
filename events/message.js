@@ -1,5 +1,6 @@
 export async function run (msg) {
     let category = this.categories.find(c => msg.content.toLowerCase().startsWith(c.prefix))
+
     if (category)
         return category.process(msg)
 
@@ -10,4 +11,7 @@ export async function run (msg) {
             delete msg.response
         }
     }
+
+    if (new RegExp(`^<@!?${msg.guild.me.id}> ?comandos$`).test(msg.content))
+        msg.send(this.categories.list.embed)
 }
