@@ -10,9 +10,8 @@ import { Firebase } from '../database/Firebase'
 import { CategoryManager } from './CategoryManager'
 import { GameManager } from './GameManager'
 import { Logger } from './Logger'
-import { PlayerManager } from '../music/PlayerManager'
 import { credentials as serviceAccount } from '../credentials/firebase-credentials'
-import { TOKEN, OWNER_ID, LAVALINK_HOST, LAVALINK_PASS, FIREBASE_URL as databaseURL } from '@env'
+import { TOKEN, OWNER_ID, FIREBASE_URL as databaseURL } from '@env'
 
 export class Bot extends Client {
     constructor (clientOptions) {
@@ -95,19 +94,9 @@ export class Bot extends Client {
         this.logger.logBold('Logando...', 'green')
 
         super.login(token)
-		    .then(() => this.setLavalink())
 		    .catch(error => {
 	            this.logger.error(error, 'LOGIN ERROR')
         	})
-    }
-
-    setLavalink () {
-        this.player = new PlayerManager(this, [
-            { host: LAVALINK_HOST, port: 80, region: 'us-west', password: LAVALINK_PASS }
-        ], {
-            user: this.user.id,
-            shards: 1
-        })
     }
 
     async start () {
