@@ -28,7 +28,7 @@
     "chess": "^0.3.3",
     "chokidar": "^3.4.0",
     "cli-table2": "^0.2.0",
-    "discord.js": "^12.2.0",
+    "discord.js": "^12.4.1",
     "discord.js-lavalink": "npm:lavalink-dev-version@^1.0.0",
     "firebase-admin": "^8.12.1",
     "googleapis": "^39.2.0",
