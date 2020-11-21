@@ -1,7 +1,9 @@
 import chokidar from 'chokidar'
 import { Bot } from './structures/Bot'
 
-const client = new Bot()
+const client = new Bot({
+    fetchAllMembers: true
+})
 const watcher = chokidar.watch([
     './commands',
     './events',
