@@ -40,7 +40,7 @@ export async function run (msg) {
             `${findEmoji('text')}` + channels.filter(c => c.type === 'text').size,
             `${findEmoji('voice')}` + channels.filter(c => c.type === 'voice').size
         ], true)
-        .addField(':busts_in_silhouette: Membros', `${emojify(memberCount)}`)
+        .addField(':busts_in_silhouette: Membros', `${emojify(memberCount)}`, true)
         .addField(':date: Criado em', moment(createdAt).format(format))
         .addField(':star2: Entrei aqui em', moment(joinedAt).format(format))
         // .addField(`:busts_in_silhouette: Membros [${members.size}]`, [
