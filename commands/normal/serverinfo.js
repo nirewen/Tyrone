@@ -7,7 +7,7 @@ export const guildOnly = true
 export const aliases = ['server', 'si']
 export async function run (msg) {
     const findEmoji = name => this.bot.emojis.cache.find(e => e.name === name && e.guild.id === '199330631061078017')
-    let { name, id, icon, members: { cache: members }, region, roles: { cache: roles }, channels: { cache: channels }, ownerId, joinedAt, createdAt } = msg.guild
+    let { name, id, icon, members: { cache: members }, region, roles: { cache: roles }, channels: { cache: channels }, ownerID, joinedAt, createdAt } = msg.guild
     let guildIcon = icon ? msg.guild.iconURL({ format: 'png', size: 2048 }) : `https://guild-default-icon.herokuapp.com/${msg.guild.nameAcronym}`
     // let statuses = members.reduce((c, n) => {
     //     c[n.presence.status] = (c[n.presence.status] || 0) + 1
@@ -34,7 +34,7 @@ export async function run (msg) {
         .setTitle(`${findEmoji('discord')} ${Util.escapeMarkdown(name)}`)
         .setThumbnail(guildIcon)
         .addField(':snowflake: ID', id, true)
-        .addField(':crown: Dono', `<@${ownerId}>`, true)
+        .addField(':crown: Dono', `<@${ownerID}>`, true)
         .addField(`${regionEmoji} Região`, serverRegion, true)
         .addField(':speech_balloon: Canais', [
             `${findEmoji('text')}` + channels.filter(c => c.type === 'text').size,
