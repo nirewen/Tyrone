@@ -42,7 +42,7 @@ export function run (msg, suffix) {
 
         return embed
             .setDescription(`:frame_photo: Aqui o avatar de **${user.username}**:`)
-            .setImage(msg.props.has('default') ? user.defaultAvatarURL : user.displayAvatarURL({ size: 2048 }))
+            .setImage(msg.props.has('default') ? user.defaultAvatarURL : user.displayAvatarURL({ size: 2048, dynamic: true }))
             .setColor(member.displayColor && member.displayColor > 0 ? member.displayColor : WHITE)
     }
 
@@ -68,7 +68,7 @@ export function run (msg, suffix) {
 
         return msg.send(new MessageEmbed()
             .setDescription(`:frame_photo: Aqui seu avatar, **${msg.author.username}**:`)
-            .setImage(msg.props.has('default') ? msg.author.defaultAvatarURL : msg.author.displayAvatarURL({ size: 2048 }))
+            .setImage(msg.props.has('default') ? msg.author.defaultAvatarURL : msg.author.displayAvatarURL({ size: 2048, dynamic: true }))
             .setColor(sideColor))
     }
 }
