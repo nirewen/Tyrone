@@ -16,7 +16,7 @@ export function run (msg, suffix) {
             embed
                 .setDescription(`:frame_photo: Aqui o ícone do servidor:`)
                 .setImage(msg.guild.icon == null || msg.props.has('default') ? `https://guild-default-icon.herokuapp.com/${msg.guild.nameAcronym}` : msg.guild.iconURL({ size: 2048 }))
-                .setColor(msg.guild.owner.displayColor)
+                .setColor('BLUE')
 
             return embed
         }
