@@ -85,7 +85,7 @@ export async function run (msg, suffix) {
             // userStatus = userStatuses[userStatus]
 
             embed.spliceFields(1, 0, { name: ':label: Apelido', value: userNickname, inline: true })
-            embed.spliceFields(3, 0, { name: ':eye_in_speech_bubble: Status', value: userStatus, inline: true })
+            // embed.spliceFields(3, 0, { name: ':eye_in_speech_bubble: Status', value: userStatus, inline: true })
             embed.spliceFields(5, 0, {
                 name: ':inbox_tray: Entrou no servidor',
                 value: `${moment(userJoinedAt).format(dateFormat)}\n${humanize(userJoinedAt)} atrás`,
