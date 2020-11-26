@@ -22,3 +22,5 @@ export const regionEmojis = {
     ':earth_asia:'    : ['hongkong', 'russia', 'singapore', 'sydney', 'japan']
 }
 export const format = 'D [de] MMMM [de] YYYY, [às] HH:mm'
+
+export const emojify = n => `${n}`.split('').map(i => i + '\u20E3').join('')
