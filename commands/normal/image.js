@@ -9,7 +9,7 @@ export async function run (msg, suffix) {
     if (!suffix)
         return 'wrong usage'
 
-    const images = await Google.image(suffix).then(r => r.data.items.map(i => i.link))
+    const images = await Google.image(suffix).then(r => r.data.items ? r.data.items.map(i => i.link) : [])
 
     if (!images.length)
         return msg.send('Nenhuma imagem encontrada...')
