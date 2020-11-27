@@ -41,7 +41,7 @@ export async function run (msg, suffix) {
         let userTag       = user.discriminator
         let userAvatar    = user.displayAvatarURL({ size: 2048 })
         let userCreatedAt = new Date(user.createdAt)
-        let userOwner     = msg.guild.owner.id === userId
+        let userOwner     = msg.guild.ownerID === userId
         let dateFormat    = 'D [de] MMMM [de] YYYY, [às] HH:mm'
         let humanize = ms => human(Date.now() - ms, {
             language: 'pt',
